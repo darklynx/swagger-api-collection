@@ -62,8 +62,8 @@ paths:
         - users
       summary: Get basic information about a user.
       description: |
-          Get basic information about a user. To get information about the owner of the access token, you can
-          use **self** instead of the user-id.
+          Get basic information about a user. To get information about the owner of the access token, you can use
+          **self** instead of the user-id.
       parameters:
         - name: user-id
           in: path
@@ -120,8 +120,8 @@ paths:
         - users
       summary: Get the most recent media published by a user.
       description: |
-          Get the most recent media published by a user. To get the most recent media published by the owner
-          of the access token, you can use **self** instead of the user-id.
+          Get the most recent media published by a user. To get the most recent media published by the owner of the
+          access token, you can use **self** instead of the user-id.
       parameters:
         - name: user-id
           in: path
@@ -171,9 +171,9 @@ paths:
         - users
       summary: See the list of media liked by the authenticated user.
       description: |
-          See the list of media liked by the authenticated user. Private media is returned as long as the
-          authenticated user has permission to view that media. Liked media lists are only available for the
-          currently authenticated user.
+          See the list of media liked by the authenticated user. Private media is returned as long as the authenticated
+          user has permission to view that media. Liked media lists are only available for the currently authenticated
+          user.
       parameters:
         - name: count
           in: query
@@ -228,8 +228,8 @@ paths:
         - relationships
       summary: Get the list of users this user follows.
       description: |
-          Get the list of users this user follows. To get follows of the owner of the access token, you can
-          use **self** instead of the user-id.
+          Get the list of users this user follows. To get follows of the owner of the access token, you can use **self**
+          instead of the user-id.
       parameters:
         - name: user-id
           in: path
@@ -252,8 +252,8 @@ paths:
         - relationships
       summary: Get the list of users this user is followed by.
       description: |
-          Get the list of users this user is followed by. To get users followed by the owner of the access token, you can
-          use **self** instead of the user-id.
+          Get the list of users this user is followed by. To get users followed by the owner of the access token, you
+          can use **self** instead of the user-id.
       parameters:
         - name: user-id
           in: path
@@ -341,11 +341,11 @@ paths:
         - media
       summary: Get information about a media object.
       description: |
-          Get information about a media object. The returned type key will allow you to differentiate between
-          image and video media.
+          Get information about a media object. The returned type key will allow you to differentiate between image and
+          video media.
 
-          Note: if you authenticate with an OAuth Token, you will receive the user_has_liked key which quickly
-          tells you whether the current user has liked this media item.
+          Note: if you authenticate with an OAuth Token, you will receive the user_has_liked key which quickly tells you
+          whether the current user has liked this media item.
       parameters:
         - name: media-id
           in: path
@@ -354,9 +354,103 @@ paths:
           required: true
       responses:
         200:
-          description: Media information.
+          description: Media resource information.
           schema:
             $ref: '#/definitions/MediaResponse'
+      security:
+        - api_key: []
+        - instagram_auth:
+          - basic
+
+  /media/shortcode/{shortcode}:
+    get:
+      tags:
+        - media
+      summary: Get information about a media object.
+      description: |
+          This endpoint returns the same response as `GET /media/{media-id}`.
+
+          A media object's shortcode can be found in its shortlink URL. An example shortlink is
+          `http://instagram.com/p/D/`, its corresponding shortcode is `D`.
+      parameters:
+        - name: shortcode
+          in: path
+          type: string
+          description: The short code of the media resource.
+          required: true
+      responses:
+        200:
+          description: Media resource information.
+          schema:
+            $ref: '#/definitions/MediaResponse'
+      security:
+        - api_key: []
+        - instagram_auth:
+          - basic
+
+  /media/search:
+    get:
+      tags:
+        - media
+      summary: Search for media in a given area.
+      description: |
+          Search for media in a given area. The default time span is set to 5 days. The time span must not exceed 7 days.
+          Defaults time stamps cover the last 5 days. Can return mix of `image` and `video` types.
+      parameters:
+        - name: lat
+          in: query
+          type: number
+          format: double
+          description: Latitude of the center search coordinate. If used, `lng` is required.
+          required: true
+        - name: lng
+          in: query
+          type: number
+          format: double
+          description: Longitude of the center search coordinate. If used, `lat` is required.
+          required: true
+        - name: min_timestamp
+          in: query
+          type: integer
+          format: int64
+          description: A unix timestamp. All media returned will be taken later than this timestamp.
+          required: false
+        - name: max_timestamp
+          in: query
+          type: integer
+          format: int64
+          description: A unix timestamp. All media returned will be taken earlier than this timestamp.
+          required: false
+        - name: distance
+          in: query
+          type: integer
+          format: int32
+          description: Default is 1km (distance=1000), max distance is 5km.
+          required: false
+      responses:
+        200:
+          description: Found media resources (without likes information) in a given area.
+          schema:
+            $ref: '#/definitions/MediaSearchResponse'
+      security:
+        - api_key: []
+        - instagram_auth:
+          - basic
+
+  /media/popular:
+    get:
+      tags:
+        - media
+      summary: Get a list of currently popular media.
+      description: |
+          Get a list of what media is most popular at the moment. Can return mix of `image` and `video` types.
+
+          Note: this does not work at the moment and returns HTTP 404
+      responses:
+        200:
+          description: Found media resources (without likes information).
+          schema:
+            $ref: '#/definitions/MediaSearchResponse'
       security:
         - api_key: []
         - instagram_auth:
@@ -490,6 +584,17 @@ definitions:
       data:
         type: array
         description: User media entries
+        items:
+          $ref: '#/definitions/MediaEntry'
+
+  MediaSearchResponse:
+    properties:
+      meta:
+        $ref: '#/definitions/MetaData'
+        description: Response meta-data
+      data:
+        type: array
+        description: Found media entries (without likes information)
         items:
           $ref: '#/definitions/MediaEntry'
 

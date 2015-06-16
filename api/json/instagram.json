@@ -45,7 +45,7 @@
       "get" : {
         "tags" : [ "users" ],
         "summary" : "Get basic information about a user.",
-        "description" : "Get basic information about a user. To get information about the owner of the access token, you can\nuse **self** instead of the user-id.\n",
+        "description" : "Get basic information about a user. To get information about the owner of the access token, you can use\n**self** instead of the user-id.\n",
         "parameters" : [ {
           "name" : "user-id",
           "in" : "path",
@@ -114,7 +114,7 @@
       "get" : {
         "tags" : [ "users" ],
         "summary" : "Get the most recent media published by a user.",
-        "description" : "Get the most recent media published by a user. To get the most recent media published by the owner\nof the access token, you can use **self** instead of the user-id.\n",
+        "description" : "Get the most recent media published by a user. To get the most recent media published by the owner of the\naccess token, you can use **self** instead of the user-id.\n",
         "parameters" : [ {
           "name" : "user-id",
           "in" : "path",
@@ -173,7 +173,7 @@
       "get" : {
         "tags" : [ "users" ],
         "summary" : "See the list of media liked by the authenticated user.",
-        "description" : "See the list of media liked by the authenticated user. Private media is returned as long as the\nauthenticated user has permission to view that media. Liked media lists are only available for the\ncurrently authenticated user.\n",
+        "description" : "See the list of media liked by the authenticated user. Private media is returned as long as the authenticated\nuser has permission to view that media. Liked media lists are only available for the currently authenticated\nuser.\n",
         "parameters" : [ {
           "name" : "count",
           "in" : "query",
@@ -239,7 +239,7 @@
       "get" : {
         "tags" : [ "relationships" ],
         "summary" : "Get the list of users this user follows.",
-        "description" : "Get the list of users this user follows. To get follows of the owner of the access token, you can\nuse **self** instead of the user-id.\n",
+        "description" : "Get the list of users this user follows. To get follows of the owner of the access token, you can use **self**\ninstead of the user-id.\n",
         "parameters" : [ {
           "name" : "user-id",
           "in" : "path",
@@ -266,7 +266,7 @@
       "get" : {
         "tags" : [ "relationships" ],
         "summary" : "Get the list of users this user is followed by.",
-        "description" : "Get the list of users this user is followed by. To get users followed by the owner of the access token, you can\nuse **self** instead of the user-id.\n",
+        "description" : "Get the list of users this user is followed by. To get users followed by the owner of the access token, you\ncan use **self** instead of the user-id.\n",
         "parameters" : [ {
           "name" : "user-id",
           "in" : "path",
@@ -373,7 +373,7 @@
       "get" : {
         "tags" : [ "media" ],
         "summary" : "Get information about a media object.",
-        "description" : "Get information about a media object. The returned type key will allow you to differentiate between\nimage and video media.\n\nNote: if you authenticate with an OAuth Token, you will receive the user_has_liked key which quickly\ntells you whether the current user has liked this media item.\n",
+        "description" : "Get information about a media object. The returned type key will allow you to differentiate between image and\nvideo media.\n\nNote: if you authenticate with an OAuth Token, you will receive the user_has_liked key which quickly tells you\nwhether the current user has liked this media item.\n",
         "parameters" : [ {
           "name" : "media-id",
           "in" : "path",
@@ -383,9 +383,113 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "Media information.",
+            "description" : "Media resource information.",
             "schema" : {
               "$ref" : "#/definitions/MediaResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        }, {
+          "instagram_auth" : [ "basic" ]
+        } ]
+      }
+    },
+    "/media/shortcode/{shortcode}" : {
+      "get" : {
+        "tags" : [ "media" ],
+        "summary" : "Get information about a media object.",
+        "description" : "This endpoint returns the same response as `GET /media/{media-id}`.\n\nA media object's shortcode can be found in its shortlink URL. An example shortlink is\n`http://instagram.com/p/D/`, its corresponding shortcode is `D`.\n",
+        "parameters" : [ {
+          "name" : "shortcode",
+          "in" : "path",
+          "description" : "The short code of the media resource.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Media resource information.",
+            "schema" : {
+              "$ref" : "#/definitions/MediaResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        }, {
+          "instagram_auth" : [ "basic" ]
+        } ]
+      }
+    },
+    "/media/search" : {
+      "get" : {
+        "tags" : [ "media" ],
+        "summary" : "Search for media in a given area.",
+        "description" : "Search for media in a given area. The default time span is set to 5 days. The time span must not exceed 7 days.\nDefaults time stamps cover the last 5 days. Can return mix of `image` and `video` types.\n",
+        "parameters" : [ {
+          "name" : "lat",
+          "in" : "query",
+          "description" : "Latitude of the center search coordinate. If used, `lng` is required.",
+          "required" : true,
+          "type" : "number",
+          "format" : "double"
+        }, {
+          "name" : "lng",
+          "in" : "query",
+          "description" : "Longitude of the center search coordinate. If used, `lat` is required.",
+          "required" : true,
+          "type" : "number",
+          "format" : "double"
+        }, {
+          "name" : "min_timestamp",
+          "in" : "query",
+          "description" : "A unix timestamp. All media returned will be taken later than this timestamp.",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "max_timestamp",
+          "in" : "query",
+          "description" : "A unix timestamp. All media returned will be taken earlier than this timestamp.",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "distance",
+          "in" : "query",
+          "description" : "Default is 1km (distance=1000), max distance is 5km.",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Found media resources (without likes information) in a given area.",
+            "schema" : {
+              "$ref" : "#/definitions/MediaSearchResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        }, {
+          "instagram_auth" : [ "basic" ]
+        } ]
+      }
+    },
+    "/media/popular" : {
+      "get" : {
+        "tags" : [ "media" ],
+        "summary" : "Get a list of currently popular media.",
+        "description" : "Get a list of what media is most popular at the moment. Can return mix of `image` and `video` types.\n\nNote: this does not work at the moment and returns HTTP 404\n",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Found media resources (without likes information).",
+            "schema" : {
+              "$ref" : "#/definitions/MediaSearchResponse"
             }
           }
         },
@@ -575,6 +679,21 @@
         "data" : {
           "description" : "Media resource information",
           "$ref" : "#/definitions/MediaEntry"
+        }
+      }
+    },
+    "MediaSearchResponse" : {
+      "properties" : {
+        "meta" : {
+          "description" : "Response meta-data",
+          "$ref" : "#/definitions/MetaData"
+        },
+        "data" : {
+          "type" : "array",
+          "description" : "Found media entries (without likes information)",
+          "items" : {
+            "$ref" : "#/definitions/MediaEntry"
+          }
         }
       }
     },
