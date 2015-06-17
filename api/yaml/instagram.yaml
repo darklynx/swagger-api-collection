@@ -328,7 +328,7 @@ paths:
         200:
           description: Relationship information.
           schema:
-            $ref: '#/definitions/RelationshipResponse'
+            $ref: '#/definitions/RelationshipPostResponse'
       security:
         - api_key: []
         - instagram_auth:
@@ -445,7 +445,7 @@ paths:
       description: |
           Get a list of what media is most popular at the moment. Can return mix of `image` and `video` types.
 
-          Note: this does not work at the moment and returns HTTP 404
+          Note: this endpoint does not work at the moment and returns HTTP 404
       responses:
         200:
           description: Found media resources (without likes information).
@@ -455,6 +455,89 @@ paths:
         - api_key: []
         - instagram_auth:
           - basic
+
+  /media/{media-id}/comments:
+    get:
+      tags:
+        - comments
+      summary: Get a list of recent comments on a media object.
+      description: Get a list of recent comments on a media object.
+      parameters:
+        - name: media-id
+          in: path
+          type: string
+          description: The ID of the media resource.
+          required: true
+      responses:
+        200:
+          description: List of comments of the media resource.
+          schema:
+            $ref: '#/definitions/CommentsResponse'
+      security:
+        - api_key: []
+        - instagram_auth:
+          - basic
+    post:
+      tags:
+        - comments
+      summary: Create a comment on a media object.
+      description: |
+          Create a comment on a media object with the following rules:
+
+            * The total length of the comment cannot exceed 300 characters.
+            * The comment cannot contain more than 4 hashtags.
+            * The comment cannot contain more than 1 URL.
+            * The comment cannot consist of all capital letters.
+      parameters:
+        - name: media-id
+          in: path
+          type: string
+          description: The ID of the media resource.
+          required: true
+        - name: text
+          in: query
+          type: string
+          description: Text to post as a comment on the media object as specified in `media-id`.
+          required: true
+      responses:
+        200:
+          description: Result of posting a comment.
+          schema:
+            $ref: '#/definitions/StatusResponse'
+      security:
+        - api_key: []
+        - instagram_auth:
+          - basic
+          - comments
+
+  /media/{media-id}/comments/{comment-id}:
+    delete:
+      tags:
+        - comments
+      summary: Remove a comment.
+      description: |
+          Remove a comment either on the authenticated user's media object or authored by the authenticated user.
+      parameters:
+        - name: media-id
+          in: path
+          type: string
+          description: The ID of the media resource.
+          required: true
+        - name: comment-id
+          in: path
+          type: string
+          description: The ID of the comment entry.
+          required: true
+      responses:
+        200:
+          description: Result of deleting a comment.
+          schema:
+            $ref: '#/definitions/StatusResponse'
+      security:
+        - api_key: []
+        - instagram_auth:
+          - basic
+          - comments
 
 # Model
 definitions:
@@ -704,7 +787,7 @@ definitions:
         description: Nember of likes available, data does not necessary contain all comments
       data:
         type: array
-        description: Collection of user who liked
+        description: Collection of users who liked
         items:
           $ref: '#/definitions/UserShortInfo'
 
@@ -799,6 +882,22 @@ definitions:
         type: boolean
         description: Indicates whether target user is private or not
 
+  RelationshipPostResponse:
+    properties:
+      meta:
+        $ref: '#/definitions/MetaData'
+        description: Response meta-data
+      data:
+        $ref: '#/definitions/RelationshipStatus'
+        description: Current relationship status
+
+  RelationshipStatus:
+    properties:
+      outgoing_status:
+        type: string
+        enum: [ 'none', 'follows', 'requested' ]
+        description: Status of outgoing relationship
+
   MediaResponse:
     properties:
       meta:
@@ -807,3 +906,23 @@ definitions:
       data:
         $ref: '#/definitions/MediaEntry'
         description: Media resource information
+
+  CommentsResponse:
+    properties:
+      meta:
+        $ref: '#/definitions/MetaData'
+        description: Response meta-data
+      data:
+        type: array
+        description: Collection of comments
+        items:
+          $ref: '#/definitions/CommentEntry'
+
+  StatusResponse:
+    properties:
+      meta:
+        $ref: '#/definitions/MetaData'
+        description: Response meta-data
+      data:
+        type: string
+        description: No data - 'null'

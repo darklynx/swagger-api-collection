@@ -358,7 +358,7 @@
           "200" : {
             "description" : "Relationship information.",
             "schema" : {
-              "$ref" : "#/definitions/RelationshipResponse"
+              "$ref" : "#/definitions/RelationshipPostResponse"
             }
           }
         },
@@ -483,7 +483,7 @@
       "get" : {
         "tags" : [ "media" ],
         "summary" : "Get a list of currently popular media.",
-        "description" : "Get a list of what media is most popular at the moment. Can return mix of `image` and `video` types.\n\nNote: this does not work at the moment and returns HTTP 404\n",
+        "description" : "Get a list of what media is most popular at the moment. Can return mix of `image` and `video` types.\n\nNote: this endpoint does not work at the moment and returns HTTP 404\n",
         "parameters" : [ ],
         "responses" : {
           "200" : {
@@ -497,6 +497,97 @@
           "api_key" : [ ]
         }, {
           "instagram_auth" : [ "basic" ]
+        } ]
+      }
+    },
+    "/media/{media-id}/comments" : {
+      "get" : {
+        "tags" : [ "comments" ],
+        "summary" : "Get a list of recent comments on a media object.",
+        "description" : "Get a list of recent comments on a media object.",
+        "parameters" : [ {
+          "name" : "media-id",
+          "in" : "path",
+          "description" : "The ID of the media resource.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of comments of the media resource.",
+            "schema" : {
+              "$ref" : "#/definitions/CommentsResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        }, {
+          "instagram_auth" : [ "basic" ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "comments" ],
+        "summary" : "Create a comment on a media object.",
+        "description" : "Create a comment on a media object with the following rules:\n\n  * The total length of the comment cannot exceed 300 characters.\n  * The comment cannot contain more than 4 hashtags.\n  * The comment cannot contain more than 1 URL.\n  * The comment cannot consist of all capital letters.\n",
+        "parameters" : [ {
+          "name" : "media-id",
+          "in" : "path",
+          "description" : "The ID of the media resource.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "text",
+          "in" : "query",
+          "description" : "Text to post as a comment on the media object as specified in `media-id`.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Result of posting a comment.",
+            "schema" : {
+              "$ref" : "#/definitions/StatusResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        }, {
+          "instagram_auth" : [ "basic", "comments" ]
+        } ]
+      }
+    },
+    "/media/{media-id}/comments/{comment-id}" : {
+      "delete" : {
+        "tags" : [ "comments" ],
+        "summary" : "Remove a comment.",
+        "description" : "Remove a comment either on the authenticated user's media object or authored by the authenticated user.\n",
+        "parameters" : [ {
+          "name" : "media-id",
+          "in" : "path",
+          "description" : "The ID of the media resource.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "comment-id",
+          "in" : "path",
+          "description" : "The ID of the comment entry.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Result of deleting a comment.",
+            "schema" : {
+              "$ref" : "#/definitions/StatusResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        }, {
+          "instagram_auth" : [ "basic", "comments" ]
         } ]
       }
     }
@@ -840,7 +931,7 @@
         },
         "data" : {
           "type" : "array",
-          "description" : "Collection of user who liked",
+          "description" : "Collection of users who liked",
           "items" : {
             "$ref" : "#/definitions/UserShortInfo"
           }
@@ -966,6 +1057,54 @@
         "target_user_is_private" : {
           "type" : "boolean",
           "description" : "Indicates whether target user is private or not"
+        }
+      }
+    },
+    "RelationshipPostResponse" : {
+      "properties" : {
+        "meta" : {
+          "description" : "Response meta-data",
+          "$ref" : "#/definitions/MetaData"
+        },
+        "data" : {
+          "description" : "Current relationship status",
+          "$ref" : "#/definitions/RelationshipStatus"
+        }
+      }
+    },
+    "RelationshipStatus" : {
+      "properties" : {
+        "outgoing_status" : {
+          "type" : "string",
+          "description" : "Status of outgoing relationship",
+          "enum" : [ "none", "follows", "requested" ]
+        }
+      }
+    },
+    "CommentsResponse" : {
+      "properties" : {
+        "meta" : {
+          "description" : "Response meta-data",
+          "$ref" : "#/definitions/MetaData"
+        },
+        "data" : {
+          "type" : "array",
+          "description" : "Collection of comments",
+          "items" : {
+            "$ref" : "#/definitions/CommentEntry"
+          }
+        }
+      }
+    },
+    "StatusResponse" : {
+      "properties" : {
+        "meta" : {
+          "description" : "Response meta-data",
+          "$ref" : "#/definitions/MetaData"
+        },
+        "data" : {
+          "type" : "string",
+          "description" : "No data - 'null'"
         }
       }
     }
