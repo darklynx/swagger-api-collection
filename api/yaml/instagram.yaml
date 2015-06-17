@@ -49,10 +49,10 @@ securityDefinitions:
     authorizationUrl: https://instagram.com/oauth/authorize/
     flow: implicit
     scopes:
-      basic: to read data on a user’s behalf, e.g. recent media, following lists (granted by default)
-      comments: to create or delete comments on a user’s behalf
-      relationships: to follow and unfollow accounts on a user’s behalf
-      likes: to like and unlike media on a user’s behalf
+      basic: to read data on a user's behalf, e.g. recent media, following lists (granted by default)
+      comments: to create or delete comments on a user's behalf
+      relationships: to follow and unfollow accounts on a user's behalf
+      likes: to like and unlike media on a user's behalf
 
 # URL patterns
 paths:
@@ -214,9 +214,9 @@ paths:
           required: false
       responses:
         200:
-          description: Found users information.
+          description: List of found users.
           schema:
-            $ref: '#/definitions/UserSearchResponse'
+            $ref: '#/definitions/UsersInfoResponse'
       security:
         - api_key: []
         - instagram_auth:
@@ -240,7 +240,7 @@ paths:
         200:
           description: List of users this user follows.
           schema:
-            $ref: '#/definitions/UsersResponse'
+            $ref: '#/definitions/UsersPagingResponse'
       security:
         - api_key: []
         - instagram_auth:
@@ -264,7 +264,7 @@ paths:
         200:
           description: List of users this user is followed by.
           schema:
-            $ref: '#/definitions/UsersResponse'
+            $ref: '#/definitions/UsersPagingResponse'
       security:
         - api_key: []
         - instagram_auth:
@@ -280,7 +280,7 @@ paths:
         200:
           description: List of users who have requested this user's permission to follow.
           schema:
-            $ref: '#/definitions/UserSearchResponse'
+            $ref: '#/definitions/UsersInfoResponse'
       security:
         - api_key: []
         - instagram_auth:
@@ -539,6 +539,70 @@ paths:
           - basic
           - comments
 
+  /media/{media-id}/likes:
+    get:
+      tags:
+        - likes
+      summary: Get a list of users who have liked this media.
+      description: Get a list of users who have liked this media.
+      parameters:
+        - name: media-id
+          in: path
+          type: string
+          description: The ID of the media resource.
+          required: true
+      responses:
+        200:
+          description: List of users who liked the media resource.
+          schema:
+            $ref: '#/definitions/UsersInfoResponse'
+      security:
+        - api_key: []
+        - instagram_auth:
+          - basic
+    post:
+      tags:
+        - likes
+      summary: Set a like on this media by the current user.
+      description: Set a like on this media by the currently authenticated user.
+      parameters:
+        - name: media-id
+          in: path
+          type: string
+          description: The ID of the media resource.
+          required: true
+      responses:
+        200:
+          description: Result of setting a like.
+          schema:
+            $ref: '#/definitions/StatusResponse'
+      security:
+        - api_key: []
+        - instagram_auth:
+          - basic
+          - likes
+    delete:
+      tags:
+        - likes
+      summary: Remove a like on this media by the current user.
+      description: Remove a like on this media by the currently authenticated user.
+      parameters:
+        - name: media-id
+          in: path
+          type: string
+          description: The ID of the media resource.
+          required: true
+      responses:
+        200:
+          description: Result of removing a like.
+          schema:
+            $ref: '#/definitions/StatusResponse'
+      security:
+        - api_key: []
+        - instagram_auth:
+          - basic
+          - likes
+
 # Model
 definitions:
 
@@ -616,7 +680,7 @@ definitions:
         format: int32
         description: Number of followers of this user
 
-  UserSearchResponse:
+  UsersInfoResponse:
     properties:
       meta:
         $ref: '#/definitions/MetaData'
@@ -627,7 +691,7 @@ definitions:
         items:
           $ref: '#/definitions/UserShortInfo'
 
-  UsersResponse:
+  UsersPagingResponse:
     properties:
       pagination:
         $ref: '#/definitions/PaginationCursorInfo'
