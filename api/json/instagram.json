@@ -1,7 +1,7 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "RESTful API for Instagram services.",
+    "description" : "Description of Instagram RESTful API.\n\nDate: 2015-06-18\n\nCurrent limitations:\n * Instagram service does not support [cross origin headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS)\n for security reasons, therefore it is not possible to use Swagger UI and make API calls directly from browser.\n * Modification API requests (`POST`, `DELETE`) require additional security [scopes](https://instagram.com/developer/authentication/#scope)\n that are [not available](http://stackoverflow.com/questions/20580535/instagram-api-do-scopes-work-with-oauth2-implicit-authentication-flow/30834127#30834127)\n for new clients.\n",
     "version" : "1.0.0",
     "title" : "Instagram API",
     "termsOfService" : "https://instagram.com/about/legal/terms/api/",
