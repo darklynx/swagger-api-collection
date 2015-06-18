@@ -114,12 +114,12 @@ paths:
         - name: min_id
           in: query
           type: string
-          description: Return media later than this min_id.
+          description: Return media later than this `min_id`.
           required: false
         - name: max_id
           in: query
           type: string
-          description: Return media earlier than this max_id.
+          description: Return media earlier than this `max_id`.
           required: false
       responses:
         200:
@@ -165,12 +165,12 @@ paths:
         - name: min_id
           in: query
           type: string
-          description: Return media later than this min_id.
+          description: Return media later than this `min_id`.
           required: false
         - name: max_id
           in: query
           type: string
-          description: Return media earlier than this max_id.
+          description: Return media earlier than this `max_id`.
           required: false
       responses:
         200:
@@ -664,12 +664,12 @@ paths:
         - name: min_tag_id
           in: query
           type: string
-          description: Return media before this min_tag_id.
+          description: Return media before this `min_tag_id`.
           required: false
         - name: max_tag_id
           in: query
           type: string
-          description: Return media after this max_tag_id.
+          description: Return media after this `max_tag_id`.
           required: false
       responses:
         200:
@@ -698,6 +698,126 @@ paths:
           description: List of found tags and their statistics.
           schema:
             $ref: '#/definitions/TagSearchResponse'
+      security:
+        - api_key: []
+        - instagram_auth:
+          - basic
+
+  /locations/{location-id}:
+    get:
+      tags:
+        - locations
+      summary: Get information about a location.
+      description: Get information about a location.
+      parameters:
+        - name: location-id
+          in: path
+          type: string
+          description: The location ID.
+          required: true
+      responses:
+        200:
+          description: Location information response.
+          schema:
+            $ref: '#/definitions/LocationInfoResponse'
+      security:
+        - api_key: []
+        - instagram_auth:
+          - basic
+
+  /locations/{location-id}/media/recent:
+    get:
+      tags:
+        - locations
+      summary: Get a list of recent media objects from a given location.
+      description: Get a list of recent media objects from a given location.
+      parameters:
+        - name: location-id
+          in: path
+          type: string
+          description: The location ID.
+          required: true
+        - name: min_timestamp
+          in: query
+          type: integer
+          format: int64
+          description: Return media after this UNIX timestamp.
+          required: false
+        - name: max_timestamp
+          in: query
+          type: integer
+          format: int64
+          description: Return media before this UNIX timestamp.
+          required: false
+        - name: min_id
+          in: query
+          type: string
+          description: Return media before this `min_id`.
+          required: false
+        - name: max_id
+          in: query
+          type: string
+          description: Return media after this `max_id`.
+          required: false
+      responses:
+        200:
+          description: List of media entries from this location.
+          schema:
+            $ref: '#/definitions/LocationMediaResponse'
+      security:
+        - api_key: []
+        - instagram_auth:
+          - basic
+
+  /locations/search:
+    get:
+      tags:
+        - locations
+      summary: Search for a location by geographic coordinate.
+      description: Search for a location by geographic coordinate.
+      parameters:
+        - name: distance
+          in: query
+          type: integer
+          format: int32
+          description: Default is 1000m (distance=1000), max distance is 5000.
+          required: false
+        - name: facebook_places_id
+          in: query
+          type: string
+          description: Returns a location mapped off of a Facebook places id. If used, a Foursquare id and `lat`, `lng` are not required.
+          required: false
+        - name: foursquare_id
+          in: query
+          type: string
+          description: |
+              Returns a location mapped off of a foursquare v1 api location id. If used, you are not required to use
+              `lat` and `lng`. Note that this method is deprecated; you should use the new foursquare IDs with V2 of their API.
+          required: false
+        - name: lat
+          in: query
+          type: number
+          format: double
+          description: Latitude of the center search coordinate. If used, `lng` is required.
+          required: false
+        - name: lng
+          in: query
+          type: number
+          format: double
+          description: Longitude of the center search coordinate. If used, `lat` is required.
+          required: false
+        - name: foursquare_v2_id
+          in: query
+          type: string
+          description: |
+              Returns a location mapped off of a foursquare v2 api location id. If used, you are not required to use
+              `lat` and `lng`.
+          required: false
+      responses:
+        200:
+          description: List of found locations.
+          schema:
+            $ref: '#/definitions/LocationSearchResponse'
       security:
         - api_key: []
         - instagram_auth:
@@ -904,8 +1024,8 @@ definitions:
   LocationInfo:
     properties:
       id:
-        type: integer
-        description: ID of this location
+        type: string
+        description: ID of this location (in some responses it has a type of 'integer')
       latitude:
         type: number
         format: double
@@ -1155,3 +1275,37 @@ definitions:
         description: List of found tags with brief statistics
         items:
           $ref: '#/definitions/TagInfo'
+
+  LocationInfoResponse:
+    properties:
+      meta:
+        $ref: '#/definitions/MetaData'
+        description: Response meta-data
+      data:
+        $ref: '#/definitions/LocationInfo'
+        description: Location brief information
+
+  LocationMediaResponse:
+    properties:
+      pagination:
+        $ref: '#/definitions/IdPaginationInfo'
+        description: Information for pagination
+      meta:
+        $ref: '#/definitions/MetaData'
+        description: Response meta-data
+      data:
+        type: array
+        description: List of media entries from this location
+        items:
+          $ref: '#/definitions/MediaEntry'
+
+  LocationSearchResponse:
+    properties:
+      meta:
+        $ref: '#/definitions/MetaData'
+        description: Response meta-data
+      data:
+        type: array
+        description: List of found locations
+        items:
+          $ref: '#/definitions/LocationInfo'
