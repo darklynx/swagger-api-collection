@@ -667,6 +667,105 @@
           "instagram_auth" : [ "basic", "likes" ]
         } ]
       }
+    },
+    "/tags/{tag-name}" : {
+      "get" : {
+        "tags" : [ "tags" ],
+        "summary" : "Get information about a tag object.",
+        "description" : "Get information about a tag object.",
+        "parameters" : [ {
+          "name" : "tag-name",
+          "in" : "path",
+          "description" : "The tag name.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Tag information response.",
+            "schema" : {
+              "$ref" : "#/definitions/TagInfoResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        }, {
+          "instagram_auth" : [ "basic" ]
+        } ]
+      }
+    },
+    "/tags/{tag-name}/media/recent" : {
+      "get" : {
+        "tags" : [ "tags" ],
+        "summary" : "Get a list of recently tagged media.",
+        "description" : "Get a list of recently tagged media. Use the `max_tag_id` and `min_tag_id` parameters in the pagination\nresponse to paginate through these objects.\n",
+        "parameters" : [ {
+          "name" : "tag-name",
+          "in" : "path",
+          "description" : "The tag name.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "count",
+          "in" : "query",
+          "description" : "Count of tagged media to return.",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "min_tag_id",
+          "in" : "query",
+          "description" : "Return media before this min_tag_id.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "max_tag_id",
+          "in" : "query",
+          "description" : "Return media after this max_tag_id.",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of media entries with this tag.",
+            "schema" : {
+              "$ref" : "#/definitions/TagMediaResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        }, {
+          "instagram_auth" : [ "basic" ]
+        } ]
+      }
+    },
+    "/tags/search" : {
+      "get" : {
+        "tags" : [ "tags" ],
+        "summary" : "Search for tags by name.",
+        "description" : "Search for tags by name.",
+        "parameters" : [ {
+          "name" : "q",
+          "in" : "query",
+          "description" : "A valid tag name without a leading \\#. (eg. snowy, nofilter)",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of found tags and their statistics.",
+            "schema" : {
+              "$ref" : "#/definitions/TagSearchResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        }, {
+          "instagram_auth" : [ "basic" ]
+        } ]
+      }
     }
   },
   "securityDefinitions" : {
@@ -697,7 +796,7 @@
         }
       }
     },
-    "PaginationIdInfo" : {
+    "IdPaginationInfo" : {
       "properties" : {
         "next_url" : {
           "type" : "string",
@@ -709,7 +808,7 @@
         }
       }
     },
-    "PaginationCursorInfo" : {
+    "CursorPaginationInfo" : {
       "properties" : {
         "next_url" : {
           "type" : "string",
@@ -803,7 +902,7 @@
       "properties" : {
         "pagination" : {
           "description" : "Information for pagination",
-          "$ref" : "#/definitions/PaginationCursorInfo"
+          "$ref" : "#/definitions/CursorPaginationInfo"
         },
         "meta" : {
           "description" : "Response meta-data",
@@ -1182,6 +1281,93 @@
         "data" : {
           "type" : "string",
           "description" : "No data - 'null'"
+        }
+      }
+    },
+    "TagInfoResponse" : {
+      "properties" : {
+        "meta" : {
+          "description" : "Response meta-data",
+          "$ref" : "#/definitions/MetaData"
+        },
+        "data" : {
+          "description" : "Tag brief information",
+          "$ref" : "#/definitions/TagInfo"
+        }
+      }
+    },
+    "TagInfo" : {
+      "properties" : {
+        "media_count" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Overall number of media entries taged with this name"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Tag name"
+        }
+      }
+    },
+    "TagMediaResponse" : {
+      "properties" : {
+        "pagination" : {
+          "description" : "Information for pagination",
+          "$ref" : "#/definitions/TagPaginationInfo"
+        },
+        "meta" : {
+          "description" : "Response meta-data",
+          "$ref" : "#/definitions/MetaData"
+        },
+        "data" : {
+          "type" : "array",
+          "description" : "List of media entries with this tag",
+          "items" : {
+            "$ref" : "#/definitions/MediaEntry"
+          }
+        }
+      }
+    },
+    "TagPaginationInfo" : {
+      "properties" : {
+        "next_max_tag_id" : {
+          "type" : "string",
+          "description" : "The max ID of a tag for the next page"
+        },
+        "deprecation_warning" : {
+          "type" : "string",
+          "description" : "The deprication warrning, if information is available"
+        },
+        "next_max_id" : {
+          "type" : "string",
+          "description" : "Depricated. Use min_tag_id instead"
+        },
+        "next_min_id" : {
+          "type" : "string",
+          "description" : "Depricated. Use max_tag_id instead"
+        },
+        "min_tag_id" : {
+          "type" : "string",
+          "description" : "The min ID of a tag for the next page"
+        },
+        "next_url" : {
+          "type" : "string",
+          "description" : "URL to retrieve next page of entries"
+        }
+      }
+    },
+    "TagSearchResponse" : {
+      "properties" : {
+        "meta" : {
+          "description" : "Response meta-data",
+          "$ref" : "#/definitions/MetaData"
+        },
+        "data" : {
+          "type" : "array",
+          "description" : "List of found tags with brief statistics",
+          "items" : {
+            "$ref" : "#/definitions/TagInfo"
+          }
         }
       }
     }

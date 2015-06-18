@@ -603,6 +603,89 @@ paths:
           - basic
           - likes
 
+  /tags/{tag-name}:
+    get:
+      tags:
+        - tags
+      summary: Get information about a tag object.
+      description: Get information about a tag object.
+      parameters:
+        - name: tag-name
+          in: path
+          type: string
+          description: The tag name.
+          required: true
+      responses:
+        200:
+          description: Tag information response.
+          schema:
+            $ref: '#/definitions/TagInfoResponse'
+      security:
+        - api_key: []
+        - instagram_auth:
+          - basic
+
+  /tags/{tag-name}/media/recent:
+    get:
+      tags:
+        - tags
+      summary: Get a list of recently tagged media.
+      description: |
+          Get a list of recently tagged media. Use the `max_tag_id` and `min_tag_id` parameters in the pagination
+          response to paginate through these objects.
+      parameters:
+        - name: tag-name
+          in: path
+          type: string
+          description: The tag name.
+          required: true
+        - name: count
+          in: query
+          type: integer
+          description: Count of tagged media to return.
+          required: false
+        - name: min_tag_id
+          in: query
+          type: string
+          description: Return media before this min_tag_id.
+          required: false
+        - name: max_tag_id
+          in: query
+          type: string
+          description: Return media after this max_tag_id.
+          required: false
+      responses:
+        200:
+          description: List of media entries with this tag.
+          schema:
+            $ref: '#/definitions/TagMediaResponse'
+      security:
+        - api_key: []
+        - instagram_auth:
+          - basic
+
+  /tags/search:
+    get:
+      tags:
+        - tags
+      summary: Search for tags by name.
+      description: Search for tags by name.
+      parameters:
+        - name: q
+          in: query
+          type: string
+          description: A valid tag name without a leading \#. (eg. snowy, nofilter)
+          required: true
+      responses:
+        200:
+          description: List of found tags and their statistics.
+          schema:
+            $ref: '#/definitions/TagSearchResponse'
+      security:
+        - api_key: []
+        - instagram_auth:
+          - basic
+
 # Model
 definitions:
 
@@ -614,7 +697,7 @@ definitions:
         format: int32
         description: HTTP result code
 
-  PaginationIdInfo:
+  IdPaginationInfo:
     properties:
       next_url:
         type: string
@@ -623,7 +706,7 @@ definitions:
         type: string
         description: The max ID of the next page
 
-  PaginationCursorInfo:
+  CursorPaginationInfo:
     properties:
       next_url:
         type: string
@@ -694,7 +777,7 @@ definitions:
   UsersPagingResponse:
     properties:
       pagination:
-        $ref: '#/definitions/PaginationCursorInfo'
+        $ref: '#/definitions/CursorPaginationInfo'
         description: Information for pagination
       meta:
         $ref: '#/definitions/MetaData'
@@ -723,14 +806,14 @@ definitions:
   MediaResponse:
     properties:
       pagination:
-        $ref: '#/definitions/PaginationIdInfo'
+        $ref: '#/definitions/IdPaginationInfo'
         description: Information for pagination
       meta:
         $ref: '#/definitions/MetaData'
         description: Response meta-data
       data:
         type: array
-        description: User media entries
+        description: List of media entries
         items:
           $ref: '#/definitions/MediaEntry'
 
@@ -990,3 +1073,68 @@ definitions:
       data:
         type: string
         description: No data - 'null'
+
+  TagInfoResponse:
+    properties:
+      meta:
+        $ref: '#/definitions/MetaData'
+        description: Response meta-data
+      data:
+        $ref: '#/definitions/TagInfo'
+        description: Tag brief information
+
+  TagInfo:
+    properties:
+      media_count:
+        type: integer
+        format: int64
+        description: Overall number of media entries taged with this name
+      name:
+        type: string
+        description: Tag name
+
+  TagMediaResponse:
+    properties:
+      pagination:
+        $ref: '#/definitions/TagPaginationInfo'
+        description: Information for pagination
+      meta:
+        $ref: '#/definitions/MetaData'
+        description: Response meta-data
+      data:
+        type: array
+        description: List of media entries with this tag
+        items:
+          $ref: '#/definitions/MediaEntry'
+
+  TagPaginationInfo:
+    properties:
+      next_max_tag_id:
+        type: string
+        description: The max ID of a tag for the next page
+      deprecation_warning:
+        type: string
+        description: The deprication warrning, if information is available
+      next_max_id:
+        type: string
+        description: Depricated. Use min_tag_id instead
+      next_min_id:
+        type: string
+        description: Depricated. Use max_tag_id instead
+      min_tag_id:
+        type: string
+        description: The min ID of a tag for the next page
+      next_url:
+        type: string
+        description: URL to retrieve next page of entries
+
+  TagSearchResponse:
+    properties:
+      meta:
+        $ref: '#/definitions/MetaData'
+        description: Response meta-data
+      data:
+        type: array
+        description: List of found tags with brief statistics
+        items:
+          $ref: '#/definitions/TagInfo'
