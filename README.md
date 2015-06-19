@@ -57,6 +57,10 @@ Launch the server with following command:
 
 Now you can open browser at URL: `http://localhost:8080/`
 
+### Other alternatives
+
+If you didn't anything from above, please ahe a look at the [big list of HTTP static server one-liners](https://gist.github.com/willurd/5720255)
+
 ## License
 
 The API descriptions in YAML and JSON Swagger format are desctributed under MIT license that could be found in `api/` folder.
