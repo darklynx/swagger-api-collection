@@ -12,7 +12,7 @@ API descriptions for different RESTful APIs could be found in:
 
 Currently available API descriptions:
 
- * `instagram.yaml` - [Instagram API](https://instagram.com/developer/endpoints/) description (incomplete)
+ * `instagram.yaml` - [Instagram API](https://instagram.com/developer/endpoints/) description
 
 
 ## Browser

@@ -1,7 +1,7 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "Description of Instagram RESTful API.\n\nDate: 2015-06-18\n\nCurrent limitations:\n * Instagram service does not support [cross origin headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS)\n for security reasons, therefore it is not possible to use Swagger UI and make API calls directly from browser.\n * Modification API requests (`POST`, `DELETE`) require additional security [scopes](https://instagram.com/developer/authentication/#scope)\n that are [not available](http://stackoverflow.com/questions/20580535/instagram-api-do-scopes-work-with-oauth2-implicit-authentication-flow/30834127#30834127)\n for new clients.\n",
+    "description" : "Description of Instagram RESTful API.\n\nDate: 2015-06-19\n\nCurrent limitations:\n * Instagram service does not support [cross origin headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS)\n for security reasons, therefore it is not possible to use Swagger UI and make API calls directly from browser.\n * Modification API requests (`POST`, `DELETE`) require additional security [scopes](https://instagram.com/developer/authentication/#scope)\n that are [not available](http://stackoverflow.com/questions/20580535/instagram-api-do-scopes-work-with-oauth2-implicit-authentication-flow/30834127#30834127)\n for new clients.\n * Consider the [Instagram limitations](https://instagram.com/developer/limits/) for API calls.\n",
     "version" : "1.0.0",
     "title" : "Instagram API",
     "termsOfService" : "https://instagram.com/about/legal/terms/api/",
@@ -45,7 +45,7 @@
       "get" : {
         "tags" : [ "users" ],
         "summary" : "Get basic information about a user.",
-        "description" : "Get basic information about a user. To get information about the owner of the access token, you can use\n**self** instead of the user-id.\n",
+        "description" : "Get basic information about a user. To get information about the owner of the access token, you can use\n**self** instead of the `user-id`.\n",
         "parameters" : [ {
           "name" : "user-id",
           "in" : "path",
@@ -114,7 +114,7 @@
       "get" : {
         "tags" : [ "users" ],
         "summary" : "Get the most recent media published by a user.",
-        "description" : "Get the most recent media published by a user. To get the most recent media published by the owner of the\naccess token, you can use **self** instead of the user-id.\n",
+        "description" : "Get the most recent media published by a user. To get the most recent media published by the owner of the\naccess token, you can use **self** instead of the `user-id`.\n",
         "parameters" : [ {
           "name" : "user-id",
           "in" : "path",
@@ -239,7 +239,7 @@
       "get" : {
         "tags" : [ "relationships" ],
         "summary" : "Get the list of users this user follows.",
-        "description" : "Get the list of users this user follows. To get follows of the owner of the access token, you can use **self**\ninstead of the user-id.\n",
+        "description" : "Get the list of users this user follows. To get follows of the owner of the access token, you can use **self**\ninstead of the `user-id`.\n",
         "parameters" : [ {
           "name" : "user-id",
           "in" : "path",
@@ -266,7 +266,7 @@
       "get" : {
         "tags" : [ "relationships" ],
         "summary" : "Get the list of users this user is followed by.",
-        "description" : "Get the list of users this user is followed by. To get users followed by the owner of the access token, you\ncan use **self** instead of the user-id.\n",
+        "description" : "Get the list of users this user is followed by. To get users followed by the owner of the access token, you\ncan use **self** instead of the `user-id`.\n",
         "parameters" : [ {
           "name" : "user-id",
           "in" : "path",
@@ -373,7 +373,7 @@
       "get" : {
         "tags" : [ "media" ],
         "summary" : "Get information about a media object.",
-        "description" : "Get information about a media object. The returned type key will allow you to differentiate between image and\nvideo media.\n\nNote: if you authenticate with an OAuth Token, you will receive the user_has_liked key which quickly tells you\nwhether the current user has liked this media item.\n",
+        "description" : "Get information about a media object. The returned type key will allow you to differentiate between image and\nvideo media.\n\n**Note:** if you authenticate with an OAuth Token, you will receive the user_has_liked key which quickly tells\nyou whether the current user has liked this media item.\n",
         "parameters" : [ {
           "name" : "media-id",
           "in" : "path",
@@ -483,7 +483,7 @@
       "get" : {
         "tags" : [ "media" ],
         "summary" : "Get a list of currently popular media.",
-        "description" : "Get a list of what media is most popular at the moment. Can return mix of `image` and `video` types.\n\nNote: this endpoint does not work at the moment and returns HTTP 404\n",
+        "description" : "Get a list of what media is most popular at the moment. Can return mix of `image` and `video` types.\n",
         "parameters" : [ ],
         "responses" : {
           "200" : {
@@ -906,6 +906,46 @@
           "instagram_auth" : [ "basic" ]
         } ]
       }
+    },
+    "/geographies/{geo-id}/media/recent" : {
+      "get" : {
+        "tags" : [ "geographies" ],
+        "summary" : "Get recent media from a custom geo-id.",
+        "description" : "Get recent media from a geography subscription that you created.\n\n**Note:** You can only access Geographies that were explicitly created by your OAuth client. Check the\nGeography Subscriptions section of the [real-time updates page](https://instagram.com/developer/realtime/).\nWhen you create a subscription to some geography that you define, you will be returned a unique `geo-id` that\ncan be used in this query. To backfill photos from the location covered by this geography, use the\n[media search endpoint](https://instagram.com/developer/endpoints/media/).\n\n**Warrning:** Actual response of this end-point is [not documented](https://instagram.com/developer/endpoints/geographies/).\n",
+        "parameters" : [ {
+          "name" : "geo-id",
+          "in" : "path",
+          "description" : "The geography ID.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "count",
+          "in" : "query",
+          "description" : "Max number of media to return.",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "min_id",
+          "in" : "query",
+          "description" : "Return media before this `min_id`.",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of recent media entries from a geography subscription.",
+            "schema" : {
+              "$ref" : "#/definitions/LocationMediaResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        }, {
+          "instagram_auth" : [ "basic" ]
+        } ]
+      }
     }
   },
   "securityDefinitions" : {
@@ -1097,7 +1137,7 @@
         },
         "data" : {
           "type" : "array",
-          "description" : "Found media entries (without likes information)",
+          "description" : "Found media entries; some end-points do not return likes informtaion",
           "items" : {
             "$ref" : "#/definitions/MediaEntry"
           }
