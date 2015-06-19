@@ -23,45 +23,62 @@
 
   <script type="text/javascript">
     $(function () {
-      var url = window.location.search.match(/url=([^&]+)/);
-      if (url && url.length > 1) {
-        url = decodeURIComponent(url[1]);
-      } else {
-        url = "http://petstore.swagger.io/v2/swagger.json";
-      }
-      window.swaggerUi = new SwaggerUi({
-        url: url,
-        dom_id: "swagger-ui-container",
-        supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
-        onComplete: function(swaggerApi, swaggerUi){
-          if(typeof initOAuth == "function") {
-            initOAuth({
-              clientId: "your-client-id",
-              realm: "your-realms",
-              appName: "Swagger UI"
-            });
-          }
+      // Load catalog of RESTful API descriptions
+      $.getJSON( "catalog.json", function( data ) {
+        $.each( data, function( key, val ) {
+          $('#input_baseUrl').append(
+            $("<option></option>").attr("value", val.url).text(val.name)
+          );
+        });
+        var option = $('#input_baseUrl option').first();
+        if (option && option.val()) {
+          window.swaggerUi = new SwaggerUi({
+            url: option.val(),
+            dom_id: "swagger-ui-container",
+            supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
+            onComplete: function(swaggerApi, swaggerUi){
+              if(typeof initOAuth == "function") {
+                initOAuth({
+                  clientId: "your-client-id",
+                  realm: "your-realms",
+                  appName: "Swagger UI"
+                });
+              }
 
-          $('pre code').each(function(i, e) {
-            hljs.highlightBlock(e)
+              $('pre code').each(function(i, e) {
+                hljs.highlightBlock(e)
+              });
+
+              var currentUrl = this.url;
+              log("Selected API location: " + currentUrl);
+              $('#input_baseUrl option').each(function(i, e) {
+                if ( currentUrl.endsWith( $(e).val() ) ) {
+                  $(e).attr("selected", true);
+                }
+              });
+
+              addApiKeyAuthorization();
+            },
+            onFailure: function(data) {
+              log("Unable to Load SwaggerUI");
+            },
+            docExpansion: "none",
+            apisSorter: "alpha",
+            showRequestHeaders: false
           });
 
-          addApiKeyAuthorization();
-        },
-        onFailure: function(data) {
-          log("Unable to Load SwaggerUI");
-        },
-        docExpansion: "none",
-        apisSorter: "alpha",
-        showRequestHeaders: false
+          window.swaggerUi.load();
+        }
       });
 
       function addApiKeyAuthorization(){
-        var key = encodeURIComponent($('#input_apiKey')[0].value);
-        if(key && key.trim() != "") {
-            var apiKeyAuth = new SwaggerClient.ApiKeyAuthorization("access_token", key, "query");
-            window.swaggerUi.api.clientAuthorizations.add("api_key", apiKeyAuth);
-            log("added key " + key);
+        if (window.swaggerUi) {
+          var key = encodeURIComponent($('#input_apiKey')[0].value);
+          if(key && key.trim() != "") {
+              var apiKeyAuth = new SwaggerClient.ApiKeyAuthorization("access_token", key, "query");
+              window.swaggerUi.api.clientAuthorizations.add("api_key", apiKeyAuth);
+              log("added key " + key);
+          }
         }
       }
 
@@ -72,8 +89,6 @@
         var apiKey = "myApiKeyXXXX123456789";
         $('#input_apiKey').val(apiKey);
       */
-
-      window.swaggerUi.load();
 
       function log() {
         if ('console' in window) {
@@ -89,7 +104,9 @@
   <div class="swagger-ui-wrap">
     <a id="logo" href="http://swagger.io">swagger</a>
     <form id='api_selector'>
-      <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
+      <div class='input'>
+        <select id="input_baseUrl" name="baseUrl"></select>
+      </div>
       <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>
       <div class='input'><a id="explore" href="#">Explore</a></div>
     </form>

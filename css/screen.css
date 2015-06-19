@@ -1245,10 +1245,21 @@
   margin: 0 10px 0 0;
 }
 .swagger-section #header form#api_selector .input input#input_apiKey {
-  width: 200px;
+  width: 350px;
 }
 .swagger-section #header form#api_selector .input input#input_baseUrl {
   width: 400px;
+}
+.swagger-section #header form#api_selector .input select {
+  font-size: 0.9em;
+  padding: 3px;
+  margin: 0;
+  /*-webkit-appearance: none;*/
+}
+.swagger-section #header form#api_selector .input option {
+  font-size: 0.9em;
+  /*padding: 3px;*/
+  margin: 0;
 }
 .swagger-section #header form#api_selector .input a#explore {
   display: block;

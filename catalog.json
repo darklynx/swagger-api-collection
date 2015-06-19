@@ -1,0 +1,10 @@
+{
+  "instagram": {
+    "name": "Instagram API",
+    "url": "api/json/instagram.json"
+  },
+  "petstore": {
+    "name": "Swagger Petstore API (demo)",
+    "url": "http://petstore.swagger.io/v2/swagger.json"
+  }
+}
