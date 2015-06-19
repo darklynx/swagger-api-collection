@@ -59,7 +59,7 @@ Now you can open browser at URL: `http://localhost:8080/`
 
 ### Other alternatives
 
-If you didn't anything from above, please ahe a look at the [big list of HTTP static server one-liners](https://gist.github.com/willurd/5720255)
+If you didn't like anything from above, please have a look at the [big list of HTTP static server one-liners](https://gist.github.com/willurd/5720255)
 
 ## License
 
