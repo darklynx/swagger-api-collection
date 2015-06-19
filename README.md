@@ -21,14 +21,41 @@ This project contains a pre-build version of [Swagger UI](https://github.com/swa
 
 Simply launch a web-server that targets a root directory and open `index.html` in any browser.
 
-For example using python:
+### Python
+
+Python comes with a [simple HTTP server](https://docs.python.org/2/library/simplehttpserver.html) out of the box:
 
     ~/rest-api-collection > python -m SimpleHTTPServer
     Serving HTTP on 0.0.0.0 port 8000 ...
 
 
-After that you can open browser at URL: `http://localhost:8000/`
+Now you can open browser at URL: `http://localhost:8000/`
 
+### Twisted
+
+[Twisted](http://twistedmatrix.com) is a cross-platform event-driven networking engine written in Python:
+
+    ~/rest-api-collection > twistd -no web --path=.
+    2015-06-20 00:09:13+0200 [-] Log opened.
+    2015-06-20 00:09:13+0200 [-] twistd 14.0.2 (/usr/bin/python 2.7.9) starting up.
+    2015-06-20 00:09:13+0200 [-] reactor class: twisted.internet.epollreactor.EPollReactor.
+    2015-06-20 00:09:13+0200 [-] Site starting on 8080
+
+Now you can open browser at URL: `http://localhost:8080/`
+
+### NodeJS
+
+Install [node.js](https://nodejs.org/) if you haven't already. Then use the node package manager (`npm`) to install the [http-server](https://github.com/nodeapps/http-server) package:
+
+    ~ > npm install http-server -g
+
+Launch the server with following command:
+
+    ~/rest-api-collection > http-server .
+    Starting up http-server, serving . on: http://0.0.0.0:8080
+    Hit CTRL-C to stop the server
+
+Now you can open browser at URL: `http://localhost:8080/`
 
 ## License
 
