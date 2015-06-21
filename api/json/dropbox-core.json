@@ -1,0 +1,633 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "The **Core API** is the underlying interface for all of our official [Dropbox mobile apps](https://www.dropbox.com/mobile)\nand our [SDKs](https://www.dropbox.com/developers/core/sdk). It's the most direct way to access the API. This\nreference document is designed for those interested in developing for platforms not supported by the SDKs or for\nthose interested in exploring API features in detail.\n\nPlease refer to official Dropbox [developers documentation](https://www.dropbox.com/developers/core/docs) for any\nadditional remarks.\n\nCurrent limitations:\n * TODO: find out\n",
+    "version" : "1.0.0",
+    "title" : "Dropbox Core API",
+    "termsOfService" : "https://www.dropbox.com/developers/reference/tos",
+    "contact" : {
+      "name" : "Dropbox",
+      "url" : "https://www.dropbox.com/developers"
+    }
+  },
+  "host" : "api.dropbox.com",
+  "basePath" : "/1",
+  "tags" : [ {
+    "name" : "tokens",
+    "description" : "Manage access tokens"
+  }, {
+    "name" : "accounts",
+    "description" : "Dropbox accounts"
+  }, {
+    "name" : "files",
+    "description" : "Files and metadata"
+  }, {
+    "name" : "operations",
+    "description" : "File operations"
+  } ],
+  "schemes" : [ "https" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/oauth2/token_from_oauth1" : {
+      "post" : {
+        "tags" : [ "tokens" ],
+        "summary" : "Convert OAuth 1 token to OAuth 2 token.",
+        "description" : "This endpoint should be used by apps transitioning from OAuth 1 to OAuth 2. It will return an OAuth 2 token\nfor the authenticated user.\n",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "OAuth 2 token response.",
+            "schema" : {
+              "$ref" : "#/definitions/OAuth2Token"
+            }
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/disable_access_token" : {
+      "post" : {
+        "tags" : [ "tokens" ],
+        "summary" : "Disables the access token.",
+        "description" : "Disables the access token used to authenticate the call. This method works for OAuth 1 and OAuth 2 tokens.\n",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "An empty JSON dictionary, which indicates success."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/account/info" : {
+      "get" : {
+        "tags" : [ "accounts" ],
+        "summary" : "Retrieves information about the user's account.",
+        "description" : "Retrieves information about the user's account.",
+        "parameters" : [ {
+          "name" : "locale",
+          "in" : "query",
+          "description" : "Use to specify language settings for user error messages and other language specific text. See the\n[locale notes](https://www.dropbox.com/developers/core/docs#param.locale) for more information about\nsupported locales.\n",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "User account information.",
+            "schema" : {
+              "$ref" : "#/definitions/UserAccountInfo"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why."
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+          },
+          "403" : {
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+          },
+          "404" : {
+            "description" : "File or folder not found at the specified path."
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST)."
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota."
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/metadata/{root}/{path}" : {
+      "get" : {
+        "tags" : [ "files" ],
+        "summary" : "Retrieves file and folder metadata.",
+        "description" : "Retrieves file and folder metadata.\n\n**Note:** `modified`, `rev`, and `revision` aren't returned in the metadata for the root/top-level path.\n",
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "path",
+          "description" : "Root folder: `auto` - automatically determines the appropriate root folder using your app's permission\nlevel (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "path",
+          "description" : "The path to the file or folder.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "file_limit",
+          "in" : "query",
+          "description" : "Default is 10,000 (max is 25,000). When listing a folder, the service won't report listings containing\nmore than the specified amount of files and will instead respond with a 406 (Not Acceptable) status response.\n",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "hash",
+          "in" : "query",
+          "description" : "Each call to `/metadata` on a folder will return a `hash` field, generated by hashing all of the metadata\ncontained in that response. On later calls to `/metadata`, you should provide that value via this\nparameter so that if nothing has changed, the response will be a 304 (Not Modified) status code instead\nof the full, potentially very large, folder listing. This parameter is ignored if the specified path is\nassociated with a file or if `list=false`.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "list",
+          "in" : "query",
+          "description" : "The strings `true` and `false` are valid values. `true` is the default. If `true`, the folder's metadata will\ninclude a contents field with a list of metadata entries for the contents of the folder. If `false`, the\ncontents field will be omitted.\n",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "include_deleted",
+          "in" : "query",
+          "description" : "Only applicable when `list` is set. If this parameter is set to `true`, then contents will include the\nmetadata of deleted children. Note that the target of the metadata call is always returned even when it\nhas been deleted (with `is_deleted` set to `true`) regardless of this flag.\n",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "rev",
+          "in" : "query",
+          "description" : "If you include a particular revision number, then only the metadata for that revision will be returned.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "locale",
+          "in" : "query",
+          "description" : "The metadata returned will have its `size` field translated based on the given `locale`. For more\ninformation see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "include_media_info",
+          "in" : "query",
+          "description" : "If `true`, each file will include a `photo_info` dictionary for photos and a `video_info` dictionary\nfor videos with additional media info. If the data isn't available yet, the string `pending` will be\nreturned instead of a dictionary.\n",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "include_membership",
+          "in" : "query",
+          "description" : "If `true`, metadata for a shared folder will include a list of members and a list of groups.",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The metadata for the file or folder at the given `path`. If `path` represents a folder and the `list` parameter\nis `true`, the metadata will also include a listing of metadata for the folder's contents.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ResourceMetadata"
+            }
+          },
+          "304" : {
+            "description" : "The folder contents have not changed (relies on hash parameter)."
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why."
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+          },
+          "403" : {
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+          },
+          "404" : {
+            "description" : "File or folder not found at the specified path."
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST)."
+          },
+          "406" : {
+            "description" : "There are too many file entries to return."
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota."
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/delta" : {
+      "post" : {
+        "tags" : [ "files" ],
+        "summary" : "A way of letting you keep up with changes to files and folders in a user's Dropbox.",
+        "description" : "A way of letting you keep up with changes to files and folders in a user's Dropbox.\n\nYou can periodically call `/delta` to get a list of \"delta entries\", which are instructions on how to\nupdate your local state to match the server's state.\n\nIf you use the `path_prefix` parameter, you must continue to pass the correct prefix on subsequent calls\nusing the returned cursor. You can switch the `path_prefix` on any existing cursor to a descendant of the\nexisting `path_prefix` on subsequent calls to `/delta`. For example if your cursor has no `path_prefix`,\nyou can switch to any `path_prefix`. If your cursor has a `path_prefix` of \"/Photos\", you can switch it\nto \"/Photos/Vacaction\".\n\nWhen `include_media_info` is specified, files will only appear in delta responses when the media info is\nready. If you use the `include_media_info` parameter, you must continue to pass the same value on subsequent\ncalls using the returned cursor.\n\n**Important:** Unfortunately it is not possible to model correct Dropbox response with Swagger specification,\ndue to [nested array](https://github.com/swagger-api/swagger-spec/issues/40) usage in delta response.\n\nSuccessful result [will return](https://gist.github.com/ando-takahiro/5203137) an array of delta `entries`.\nEach delta entry is a 2-item list of one of the following forms:\n\n  * `[<path>, <metadata>]` - Indicates that there is a file/folder at the given path. You should add the entry\n  to your local state. The metadata value is the same as what would be returned by the `/metadata` call, except\n  folder metadata doesn't have `hash` or `contents` fields. To correctly process delta entries:\n    * If the new entry includes parent folders that don't yet exist in your local state, create those parent\n    folders in your local state.\n    * If the new entry is a file, replace whatever your local state has at path with the new entry.\n    * If the new entry is a folder, check what your local state has at `<path>`. If it's a file, replace it\n    with the new entry. If it's a folder, apply the new `<metadata>` to the folder, but don't modify the\n    folder's children. If your local state doesn't yet include this path, create it as a folder.\n    * If the new entry is a folder with the `read-only` field set to `true`, apply the read-only permission\n    recursively to all files within the shared folder.\n  * `[<path>, null]` - Indicates that there is no file/folder at the given path. To update your local state\n  to match, anything at path and all its children should be deleted. Deleting a folder in your Dropbox will\n  sometimes send down a single deleted entry for that folder, and sometimes separate entries for the folder\n  and all child paths. If your local state doesn't have anything at path, ignore this entry.\n\n**Note:** Dropbox treats file names in a case-insensitive but case-preserving way. To facilitate this,\nthe `<path>` values above are lower-cased versions of the actual path. The last path component of the\n`<metadata>` value will be case-preserved.\n",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "parameters" : [ {
+          "name" : "cursor",
+          "in" : "formData",
+          "description" : "A string that is used to keep track of your current state. On the next call pass in this value to return\ndelta entries that have been recorded since the cursor was returned.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "locale",
+          "in" : "formData",
+          "description" : "The metadata returned will have its `size` field translated based on the given `locale`. For more\ninformation see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "path_prefix",
+          "in" : "formData",
+          "description" : "If present, this parameter filters the response to only include entries at or under the specified path.\nFor example, a `path_prefix` of \"/Photos/Vacation\" will return entries for the path \"/Photos/Vacation\"\nand any files and folders under that path.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "include_media_info",
+          "in" : "formData",
+          "description" : "If `true`, each file will include a `photo_info` dictionary for photos and a `video_info` dictionary for\nvideos with additional media info.\n",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Changes to files and folders in a user's Dropbox.",
+            "schema" : {
+              "$ref" : "#/definitions/DeltaResult"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why."
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+          },
+          "403" : {
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+          },
+          "404" : {
+            "description" : "File or folder not found at the specified path."
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST)."
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota."
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "dropbox_auth" : {
+      "type" : "oauth2",
+      "authorizationUrl" : "https://www.dropbox.com/1/oauth2/authorize",
+      "flow" : "implicit"
+    }
+  },
+  "definitions" : {
+    "OAuth2Token" : {
+      "properties" : {
+        "access_token" : {
+          "type" : "string",
+          "description" : "OAuth 2 access token"
+        },
+        "token_type" : {
+          "type" : "string",
+          "description" : "Token type; the token type will always be \"bearer\"",
+          "enum" : [ "bearer" ]
+        }
+      }
+    },
+    "UserAccountInfo" : {
+      "properties" : {
+        "uid" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The user's unique Dropbox ID"
+        },
+        "display_name" : {
+          "type" : "string",
+          "description" : "The user's display name"
+        },
+        "name_details" : {
+          "description" : "The user's name details",
+          "$ref" : "#/definitions/NameDetails"
+        },
+        "referral_link" : {
+          "type" : "string",
+          "description" : "The user's [referral link](https://www.dropbox.com/referrals)"
+        },
+        "country" : {
+          "type" : "string",
+          "description" : "The user's two-letter country code, if available"
+        },
+        "locale" : {
+          "type" : "string",
+          "description" : "Locale preference set by the user (e.g. en-us)"
+        },
+        "is_paired" : {
+          "type" : "boolean",
+          "description" : "If `true`, there is a paired account associated with this user"
+        },
+        "team" : {
+          "description" : "If the user belongs to a team, contains team information; otherwise, `null`",
+          "$ref" : "#/definitions/Team"
+        },
+        "quota_info" : {
+          "description" : "The user's quota information",
+          "$ref" : "#/definitions/QuotaInfo"
+        }
+      }
+    },
+    "NameDetails" : {
+      "properties" : {
+        "familiar_name" : {
+          "type" : "string",
+          "description" : "The locale-dependent familiar name for the user"
+        },
+        "given_name" : {
+          "type" : "string",
+          "description" : "The user's given name"
+        },
+        "surname" : {
+          "type" : "string",
+          "description" : "The user's surname"
+        }
+      }
+    },
+    "Team" : {
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "description" : "The name of the team the user belongs to"
+        },
+        "team_id" : {
+          "type" : "string",
+          "description" : "The ID of the team the user belongs to"
+        }
+      }
+    },
+    "QuotaInfo" : {
+      "properties" : {
+        "shared" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The user's used quota in shared folders (bytes); if the user belongs to a team, this includes all usage\ncontributed to the team's quota outside of the user's own used quota (bytes)\n"
+        },
+        "quota" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The user's total quota allocation (bytes); if the user belongs to a team, the team's total quota\nallocation (bytes)\n"
+        },
+        "normal" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The user's used quota outside of shared folders (bytes)"
+        }
+      }
+    },
+    "ResourceMetadata" : {
+      "properties" : {
+        "size" : {
+          "type" : "string",
+          "description" : "A human-readable description of the file size (translated by [locale](https://www.dropbox.com/developers/core/docs#param.locale))"
+        },
+        "bytes" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The file size in bytes"
+        },
+        "path" : {
+          "type" : "string",
+          "description" : "Returns the canonical path to the file or folder"
+        },
+        "is_dir" : {
+          "type" : "boolean",
+          "description" : "Whether the given entry is a folder or not"
+        },
+        "is_deleted" : {
+          "type" : "boolean",
+          "description" : "Whether the given entry is deleted (only included if deleted files are being returned)"
+        },
+        "rev" : {
+          "type" : "string",
+          "description" : "A unique identifier for the current revision of a file; this field is the same `rev` as elsewhere in\nthe API and can be used to detect changes and avoid conflicts.\n"
+        },
+        "hash" : {
+          "type" : "string",
+          "description" : "A folder's `hash` is useful for indicating changes to the folder's contents in later calls to\n[/metadata](https://www.dropbox.com/developers/core/docs#metadata); this is roughly the folder equivalent\nto a file's `rev`\n"
+        },
+        "thumb_exists" : {
+          "type" : "boolean",
+          "description" : "`true` if the file is an image that can be converted to a thumbnail via the\n[/thumbnails](https://www.dropbox.com/developers/core/docs#thumbnails) call\n"
+        },
+        "photo_info" : {
+          "description" : "Only returned when the `include_media_info` parameter is `true` and the file is an image",
+          "$ref" : "#/definitions/PhotoInfo"
+        },
+        "video_info" : {
+          "description" : "Only returned when the `include_media_info` parameter is `true` and the file is a video",
+          "$ref" : "#/definitions/VideoInfo"
+        },
+        "icon" : {
+          "type" : "string",
+          "description" : "The name of the icon used to illustrate the file type in Dropbox's\n[icon library](https://www.dropbox.com/static/images/dropbox-api-icons.zip)\n"
+        },
+        "mime_type" : {
+          "type" : "string",
+          "description" : "MIME type of a file"
+        },
+        "modified" : {
+          "type" : "string",
+          "description" : "The last time the file was modified on Dropbox, in the standard\n[date format](https://www.dropbox.com/developers/core/docs#date-format) (not included for the root folder)\n"
+        },
+        "client_mtime" : {
+          "type" : "string",
+          "description" : "For files, this is the modification time set by the desktop client when the file was added to Dropbox,\nin the standard [date format](https://www.dropbox.com/developers/core/docs#date-format); since this time\nis not verified (the Dropbox server stores whatever the desktop client sends up), this should only be used\nfor display purposes (such as sorting) and not, for example, to determine if a file has changed or not\n"
+        },
+        "root" : {
+          "type" : "string",
+          "description" : "The root or top-level folder depending on your [access level](https://www.dropbox.com/developers/reference/devguide#app-permissions);\nall paths returned are relative to this root level; permitted values are either `dropbox` or `app_folder`\n"
+        },
+        "contents" : {
+          "type" : "array",
+          "description" : "Collection of meta data about contents of this folder; if `list` is `false` the `contents` key will simply\nbe omitted from the result\n",
+          "items" : {
+            "$ref" : "#/definitions/ResourceMetadata"
+          }
+        },
+        "revision" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "A **deprecated** field that semi-uniquely identifies a file; use `rev` instead"
+        },
+        "shared_folder" : {
+          "description" : "This field will be included for shared folders; if the `include_membership` parameter is passed, there will\nadditionally be a `membership` field and a `groups` field.\n",
+          "$ref" : "#/definitions/SharedFolderInfo"
+        },
+        "read_only" : {
+          "type" : "boolean",
+          "description" : "For shared folders, this field specifies whether the user has read-only access to the folder; for files\nwithin a shared folder, this specifies the read-only status of the parent shared folder\n"
+        },
+        "parent_shared_folder_id" : {
+          "type" : "string",
+          "description" : "For files within a shared folder, this field specifies the ID of the containing shared folder"
+        },
+        "modifier" : {
+          "description" : "For files within a shared folder, this field specifies which user last modified this file; if the modifying\nuser no longer exists, the value will be `null`\n",
+          "$ref" : "#/definitions/MembershipUser"
+        }
+      }
+    },
+    "PhotoInfo" : {
+      "properties" : {
+        "time_taken" : {
+          "type" : "string",
+          "description" : "Photo creation [time](https://www.dropbox.com/developers/core/docs#date-format)"
+        },
+        "lat_long" : {
+          "type" : "array",
+          "description" : "GPS coordinates - [latitude, longitude]",
+          "items" : {
+            "type" : "number",
+            "format" : "double"
+          }
+        }
+      }
+    },
+    "VideoInfo" : {
+      "properties" : {
+        "time_taken" : {
+          "type" : "string",
+          "description" : "Video creation [time](https://www.dropbox.com/developers/core/docs#date-format)"
+        },
+        "lat_long" : {
+          "type" : "array",
+          "description" : "GPS coordinates - [latitude, longitude]",
+          "items" : {
+            "type" : "number",
+            "format" : "double"
+          }
+        },
+        "duration" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Length of the video in milliseconds"
+        }
+      }
+    },
+    "SharedFolderInfo" : {
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "ID of the shared folder"
+        },
+        "groups" : {
+          "type" : "array",
+          "description" : "??? Group names (documentation is not detailed enough)",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "membership" : {
+          "type" : "array",
+          "description" : "Members who have access to this folder",
+          "items" : {
+            "$ref" : "#/definitions/MembershipInfo"
+          }
+        }
+      }
+    },
+    "MembershipInfo" : {
+      "properties" : {
+        "user" : {
+          "description" : "Short description of a user",
+          "$ref" : "#/definitions/MembershipUser"
+        },
+        "access_type" : {
+          "type" : "string",
+          "description" : "Member access type; e.g. \"owner\", \"editor\", etc. (TODO find out all possible values)"
+        },
+        "active" : {
+          "type" : "boolean",
+          "description" : "Indicates whether membership is active or not"
+        }
+      }
+    },
+    "MembershipUser" : {
+      "properties" : {
+        "uid" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The user's unique Dropbox ID"
+        },
+        "display_name" : {
+          "type" : "string",
+          "description" : "The user's display name"
+        },
+        "same_team" : {
+          "type" : "boolean",
+          "description" : "Indicates whether the user is on the same team as the linked account"
+        },
+        "member_id" : {
+          "type" : "string",
+          "description" : "The member ID of the user"
+        }
+      }
+    },
+    "DeltaResult" : {
+      "properties" : {
+        "reset" : {
+          "type" : "boolean",
+          "description" : "If `true`, clear your local state before processing the delta entries. `reset` is always `true` on the\ninitial call to `/delta` (i.e. when no `cursor` is passed in); otherwise, it is `true` in rare situations,\nsuch as after server or account maintenance, or if a user deletes their app folder\n"
+        },
+        "cursor" : {
+          "type" : "string",
+          "description" : "A string that encodes the latest information that has been returned; on the next call to `/delta`, pass in\nthis value\n"
+        },
+        "has_more" : {
+          "type" : "boolean",
+          "description" : "If `true`, then there are more entries available; you can call `/delta` again immediately to retrieve those\nentries; if `false`, then wait for at least five minutes (preferably longer) before checking again\n"
+        },
+        "entries" : {
+          "type" : "array",
+          "description" : "A list of \"delta entries\"; each delta entry is a 2-item list, where first item is resource path and second\nitem holds resource metadata or `null` if the resource is deleted - `[ <path>, <metadata> ]`, or\n`[ <path>, null ]`\n",
+          "items" : {
+            "$ref" : "#/definitions/DeltaEntry"
+          }
+        }
+      }
+    },
+    "DeltaEntry" : {
+      "type" : "array",
+      "description" : "**Note:** Unfortunately Swagger does not support arrays of objects with different type.\n\nEach delta entry is a 2-item list where first item is \"string\" that indicates a path and second is\n`ResourceMetadata` object or `null` if indicated path does not exist any more.\n",
+      "items" : {
+        "description" : "The file/folder metadata or `null`",
+        "$ref" : "#/definitions/ResourceMetadata"
+      }
+    }
+  }
+}

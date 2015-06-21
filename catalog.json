@@ -3,6 +3,10 @@
     "name": "Instagram API",
     "url": "api/json/instagram.json"
   },
+  "dropbox-core": {
+    "name": "Dropbox Core API",
+    "url": "api/json/dropbox-core.json"
+  },
   "petstore": {
     "name": "Swagger Petstore API (demo)",
     "url": "http://petstore.swagger.io/v2/swagger.json"
