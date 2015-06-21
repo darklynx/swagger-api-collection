@@ -32,8 +32,6 @@ host: api.instagram.com
 basePath: /v1
 schemes:
   - https
-consumes:
-  - application/json
 produces:
   - application/json
 
@@ -866,8 +864,6 @@ paths:
 
 # Model
 definitions:
-
-# Request objects
   MetaData:
     properties:
       code:

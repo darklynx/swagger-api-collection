@@ -38,7 +38,6 @@
     "description" : "Get geographies"
   } ],
   "schemes" : [ "https" ],
-  "consumes" : [ "application/json" ],
   "produces" : [ "application/json" ],
   "paths" : {
     "/users/{user-id}" : {
