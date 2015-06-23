@@ -298,6 +298,137 @@
           "instagram_auth" : [ ]
         } ]
       }
+    },
+    "/delta/latest_cursor" : {
+      "post" : {
+        "tags" : [ "files" ],
+        "summary" : "A way to quickly get a cursor for the server's state, for use with /delta.",
+        "description" : "A way to quickly get a cursor for the server's state, for use with `/delta`.\n\nUnlike `/delta`, `/delta/latest_cursor` does not return any entries, so your app will not know about any\nexisting files or folders in the Dropbox account. For example, if your app processes future delta entries\nand sees that a folder was deleted, your app won't know what files were in that folder. Use this endpoint\nif your app only needs to know about new files and modifications and doesn't need to know about files that\nalready exist in Dropbox.\n\nIf you need to build local state to match the server state in Dropbox, you should instead use `/delta`.\n",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "parameters" : [ {
+          "name" : "path_prefix",
+          "in" : "formData",
+          "description" : "If present, the returned cursor will be encoded with a `path_prefix` for the specified path for use\nwith `/delta`.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "include_media_info",
+          "in" : "formData",
+          "description" : "If `true`, the returned cursor will be encoded with `include_media_info` set to `true` for use\nwith `/delta`.\n",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Latest cursor for specified parameters.",
+            "schema" : {
+              "$ref" : "#/definitions/CursorInfo"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why."
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+          },
+          "403" : {
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+          },
+          "404" : {
+            "description" : "File or folder not found at the specified path."
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST)."
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota."
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/revisions/{root}/{path}" : {
+      "get" : {
+        "tags" : [ "files" ],
+        "summary" : "Obtains metadata for all available revisions of a file, including the current revision.",
+        "description" : "Obtains metadata for all available revisions of a file, including the current revision.\n\nOnly revisions up to thirty days old are available (or more if the Dropbox user has\n[Extended Version History](https://www.dropbox.com/help/113)). You can use the revision number in conjunction\nwith the `/restore` call to revert the file to its previous state.\n",
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "path",
+          "description" : "Root folder: `auto` - automatically determines the appropriate root folder using your app's permission\nlevel (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "path",
+          "description" : "The path to the file.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "rev_limit",
+          "in" : "query",
+          "description" : "Default is 10. Max is 1,000. Up to this number of recent revisions will be returned.",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "locale",
+          "in" : "query",
+          "description" : "The metadata returned will have its `size` field translated based on the given `locale`. For more\ninformation see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).\n",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A list of revisions formatted just like file metadata. More information on the returned metadata fields\nare available [here](https://www.dropbox.com/developers/core/docs#metadata-details).\n",
+            "schema" : {
+              "$ref" : "#/definitions/Revisions"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why."
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+          },
+          "403" : {
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+          },
+          "404" : {
+            "description" : "File or folder not found at the specified path."
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST)."
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota."
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
     }
   },
   "securityDefinitions" : {
@@ -502,6 +633,60 @@
         }
       }
     },
+    "FileMetadata" : {
+      "properties" : {
+        "size" : {
+          "type" : "string",
+          "description" : "A human-readable description of the file size (translated by [locale](https://www.dropbox.com/developers/core/docs#param.locale))"
+        },
+        "bytes" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The file size in bytes"
+        },
+        "path" : {
+          "type" : "string",
+          "description" : "Returns the canonical path to the file or folder"
+        },
+        "is_dir" : {
+          "type" : "boolean",
+          "description" : "Whether the given entry is a folder or not"
+        },
+        "is_deleted" : {
+          "type" : "boolean",
+          "description" : "Whether the given entry is deleted (only included if deleted files are being returned)"
+        },
+        "rev" : {
+          "type" : "string",
+          "description" : "A unique identifier for the current revision of a file; this field is the same `rev` as elsewhere in\nthe API and can be used to detect changes and avoid conflicts.\n"
+        },
+        "thumb_exists" : {
+          "type" : "boolean",
+          "description" : "`true` if the file is an image that can be converted to a thumbnail via the\n[/thumbnails](https://www.dropbox.com/developers/core/docs#thumbnails) call\n"
+        },
+        "icon" : {
+          "type" : "string",
+          "description" : "The name of the icon used to illustrate the file type in Dropbox's\n[icon library](https://www.dropbox.com/static/images/dropbox-api-icons.zip)\n"
+        },
+        "mime_type" : {
+          "type" : "string",
+          "description" : "MIME type of a file"
+        },
+        "modified" : {
+          "type" : "string",
+          "description" : "The last time the file was modified on Dropbox, in the standard\n[date format](https://www.dropbox.com/developers/core/docs#date-format) (not included for the root folder)\n"
+        },
+        "root" : {
+          "type" : "string",
+          "description" : "The root or top-level folder depending on your [access level](https://www.dropbox.com/developers/reference/devguide#app-permissions);\nall paths returned are relative to this root level; permitted values are either `dropbox` or `app_folder`\n"
+        },
+        "revision" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "A **deprecated** field that semi-uniquely identifies a file; use `rev` instead"
+        }
+      }
+    },
     "PhotoInfo" : {
       "properties" : {
         "time_taken" : {
@@ -627,6 +812,21 @@
       "items" : {
         "description" : "The file/folder metadata or `null`",
         "$ref" : "#/definitions/ResourceMetadata"
+      }
+    },
+    "CursorInfo" : {
+      "properties" : {
+        "cursor" : {
+          "type" : "string",
+          "description" : "A string that encodes the latest server state, as would be returned by `/delta` when `has_more` is `false`."
+        }
+      }
+    },
+    "Revisions" : {
+      "type" : "array",
+      "description" : "List of file revisions.",
+      "items" : {
+        "$ref" : "#/definitions/FileMetadata"
       }
     }
   }
