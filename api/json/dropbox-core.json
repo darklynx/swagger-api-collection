@@ -392,9 +392,685 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "A list of revisions formatted just like file metadata. More information on the returned metadata fields\nare available [here](https://www.dropbox.com/developers/core/docs#metadata-details).\n",
+            "description" : "A list of revisions metadata for specified file.",
             "schema" : {
               "$ref" : "#/definitions/Revisions"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why."
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+          },
+          "403" : {
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+          },
+          "404" : {
+            "description" : "File or folder not found at the specified path."
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST)."
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota."
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/restore/{root}/{path}" : {
+      "post" : {
+        "tags" : [ "files" ],
+        "summary" : "Restores a file path to a previous revision.",
+        "description" : "Restores a file path to a previous revision.\n\nUnlike downloading a file at a given revision and then re-uploading it, this call is atomic. It also saves\na bunch of bandwidth.\n",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "path",
+          "description" : "Root folder: `auto` - automatically determines the appropriate root folder using your app's permission\nlevel (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "path",
+          "description" : "The path to the file.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "rev",
+          "in" : "formData",
+          "description" : "The revision of the file to restore.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "locale",
+          "in" : "formData",
+          "description" : "The metadata returned will have its `size` field translated based on the given `locale`. For more\ninformation see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).\n",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The metadata of the restored file.",
+            "schema" : {
+              "$ref" : "#/definitions/FileMetadata"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why."
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+          },
+          "403" : {
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+          },
+          "404" : {
+            "description" : "File not found at the specified path, or unable to find the revision at that path."
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST)."
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota."
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/search/{root}/{path}" : {
+      "get" : {
+        "tags" : [ "files" ],
+        "summary" : "Search for files and folders by name.",
+        "description" : "Returns metadata for all files and folders whose filename contains the given search string as a substring.\n\nSearches are limited to the folder path and its sub-folder hierarchy provided in the call.\n\n**Note:** Recent changes may not immediately be reflected in search results due to a short delay in indexing.\n",
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "path",
+          "description" : "Root folder: `auto` - automatically determines the appropriate root folder using your app's permission\nlevel (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "path",
+          "description" : "The path to the folder you want to search from.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "query",
+          "in" : "query",
+          "description" : "The search string. This string is split (on spaces) into individual words. Files and folders will be\nreturned if they contain all words in the search string.\n",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "file_limit",
+          "in" : "query",
+          "description" : "The maximum and default value is 1,000. No more than `file_limit` search results will be returned.",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "include_deleted",
+          "in" : "query",
+          "description" : "If this parameter is set to `true`, then files and folders that have been deleted will also be included\nin the search.\n",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "locale",
+          "in" : "query",
+          "description" : "The metadata returned will have its `size` field translated based on the given `locale`. For more\ninformation see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "include_membership",
+          "in" : "query",
+          "description" : "If `true`, metadata for a shared folder will include a list of members and a list of groups.",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of metadata entries for any matching files and folders.",
+            "schema" : {
+              "$ref" : "#/definitions/SearchResult"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why."
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+          },
+          "403" : {
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+          },
+          "404" : {
+            "description" : "File not found at the specified path, or unable to find the revision at that path."
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST)."
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota."
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "files" ],
+        "summary" : "Search for files and folders by name.",
+        "description" : "Returns metadata for all files and folders whose filename contains the given search string as a substring.\n\nSearches are limited to the folder path and its sub-folder hierarchy provided in the call.\n\n**Note:** Recent changes may not immediately be reflected in search results due to a short delay in indexing.\n",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "path",
+          "description" : "Root folder: `auto` - automatically determines the appropriate root folder using your app's permission\nlevel (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "path",
+          "description" : "The path to the folder you want to search from.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "query",
+          "in" : "formData",
+          "description" : "The search string. This string is split (on spaces) into individual words. Files and folders will be\nreturned if they contain all words in the search string.\n",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "file_limit",
+          "in" : "formData",
+          "description" : "The maximum and default value is 1,000. No more than `file_limit` search results will be returned.",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "include_deleted",
+          "in" : "formData",
+          "description" : "If this parameter is set to `true`, then files and folders that have been deleted will also be included\nin the search.\n",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "locale",
+          "in" : "formData",
+          "description" : "The metadata returned will have its `size` field translated based on the given `locale`. For more\ninformation see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "include_membership",
+          "in" : "formData",
+          "description" : "If `true`, metadata for a shared folder will include a list of members and a list of groups.",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of metadata entries for any matching files and folders.",
+            "schema" : {
+              "$ref" : "#/definitions/SearchResult"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why."
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+          },
+          "403" : {
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+          },
+          "404" : {
+            "description" : "File not found at the specified path, or unable to find the revision at that path."
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST)."
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota."
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/shares/{root}/{path}" : {
+      "post" : {
+        "tags" : [ "files" ],
+        "summary" : "Creates and returns a shared link to a file or folder.",
+        "description" : "Creates and returns a [shared link](https://www.dropbox.com/help/167) to a file or folder.\n\nDropbox for Business users can set restrictions on shared links; the `visibility` field indicates what\n(if any) restrictions are set on this particular link. Possible values include:\n  * `PUBLIC` - anyone can view\n  * `TEAM_ONLY` - only the owner's team can view\n  * `PASSWORD` - a password is required\n  * `TEAM_AND_PASSWORD` - a combination of `TEAM_ONLY` and `PASSWORD` restrictions\n  * `SHARED_FOLDER_ONLY` - only [members](https://www.dropbox.com/help/6636) of the enclosing shared folder can view\n\nNote that other values may be added at any time.\n",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "path",
+          "description" : "Root folder: `auto` - automatically determines the appropriate root folder using your app's permission\nlevel (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "path",
+          "description" : "The path to the file or folder you want to link to.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "locale",
+          "in" : "formData",
+          "description" : "Use to specify language settings for user error messages and other language specific text. For more\ninformation see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "short_url",
+          "in" : "formData",
+          "description" : "When `true` (default), the URL returned will be shortened using the Dropbox URL shortener. If `false`,\nthe URL will link directly to the file's preview page.\n",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Shared link information.",
+            "schema" : {
+              "$ref" : "#/definitions/SharedLinkResult"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why."
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+          },
+          "403" : {
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+          },
+          "404" : {
+            "description" : "File or folder not found at the specified path."
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST)."
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota."
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/media/{root}/{path}" : {
+      "post" : {
+        "tags" : [ "files" ],
+        "summary" : "Returns a link directly to a file.",
+        "description" : "Returns a link directly to a file.\n\nSimilar to [/shares](https://www.dropbox.com/developers/core/docs#shares). The difference is that this\nbypasses the Dropbox webserver, used to provide a preview of the file, so that you can effectively stream\nthe contents of your media. This URL should not be used to display content directly in the browser.\n\nThe `/media` link expires after four hours, allotting enough time to stream files, but not enough to leave\na connection open indefinitely.\n",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "path",
+          "description" : "Root folder: `auto` - automatically determines the appropriate root folder using your app's permission\nlevel (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "path",
+          "description" : "The path to the media file you want a direct link to.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "locale",
+          "in" : "formData",
+          "description" : "Use to specify language settings for user error messages and other language specific text. For more\ninformation see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).\n",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Media link information.",
+            "schema" : {
+              "$ref" : "#/definitions/MediaLinkResult"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why."
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+          },
+          "403" : {
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+          },
+          "404" : {
+            "description" : "File or folder not found at the specified path."
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST)."
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota."
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/copy_ref/{root}/{path}" : {
+      "get" : {
+        "tags" : [ "files" ],
+        "summary" : "Creates and returns a copy_ref to a file.",
+        "description" : "Creates and returns a `copy_ref` to a file.\n\nThis reference string can be used to copy that file to another user's Dropbox by passing it in as the\n`from_copy_ref` parameter on [/fileops/copy](https://www.dropbox.com/developers/core/docs#fileops-copy).\n",
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "path",
+          "description" : "Root folder: `auto` - automatically determines the appropriate root folder using your app's permission\nlevel (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "path",
+          "description" : "The path to the file you want a `copy_ref` to refer to.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A copy_ref to the specified file.",
+            "schema" : {
+              "$ref" : "#/definitions/CopyRefResult"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why."
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+          },
+          "403" : {
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+          },
+          "404" : {
+            "description" : "File not found at the specified path, or unable to find the revision at that path."
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST)."
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota."
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/shared_folders" : {
+      "get" : {
+        "tags" : [ "files" ],
+        "summary" : "Returns a list of all shared folders.",
+        "description" : "Returns a list of all shared folders the authenticated user has access to.\n\nThis API call requires Full Dropbox or File type [permissions](https://www.dropbox.com/developers/reference/devguide#app-permissions).\n\nNote that `same_team` is only present if the linked account is a member of a Dropbox for Business team,\nand `member_id` is only present when this endpoint is called by a Dropbox for Business app and the user\nis on that team.\n\nThe `membership` field only contains users who have joined the shared folder and does not include users who\nhave been invited but have not accepted. When the `active` field is `false`, it means that a user has left\na shared folder (but may still rejoin).\n",
+        "parameters" : [ {
+          "name" : "include_membership",
+          "in" : "query",
+          "description" : "If `true`, include a list of members and a list of groups for the shared folder.",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A list of shared folders metadata objects.",
+            "schema" : {
+              "$ref" : "#/definitions/SharedFolders"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why."
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+          },
+          "403" : {
+            "description" : "Returned if this app does not have Full Dropbox or File type permissions, or if the user doesn't have\naccess to the specified shared folder.\n"
+          },
+          "404" : {
+            "description" : "File not found at the specified path, or unable to find the revision at that path."
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST)."
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota."
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/shared_folders/{shared_folder_id}" : {
+      "get" : {
+        "tags" : [ "files" ],
+        "summary" : "Returns metadata about a specific shared folder.",
+        "description" : "Returns metadata about a specific shared folder.\n\nThis API call requires Full Dropbox or File type [permissions](https://www.dropbox.com/developers/reference/devguide#app-permissions).\n\nNote that `same_team` is only present if the linked account is a member of a Dropbox for Business team,\nand `member_id` is only present when this endpoint is called by a Dropbox for Business app and the user\nis on that team.\n\nThe `membership` field only contains users who have joined the shared folder and does not include users who\nhave been invited but have not accepted. When the `active` field is `false`, it means that a user has left\na shared folder (but may still rejoin).\n",
+        "parameters" : [ {
+          "name" : "shared_folder_id",
+          "in" : "path",
+          "description" : "The ID of a specific shared folder.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "include_membership",
+          "in" : "query",
+          "description" : "If `true`, include a list of members and a list of groups for the shared folder.",
+          "required" : true,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The metadata for a specific shared folder.",
+            "schema" : {
+              "$ref" : "#/definitions/SharedFolderMetadata"
+            }
+          },
+          "400" : {
+            "description" : "Returned if the shared folder ID is not valid."
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+          },
+          "403" : {
+            "description" : "Returned if this app does not have Full Dropbox or File type permissions, or if the user doesn't have\naccess to the specified shared folder.\n"
+          },
+          "404" : {
+            "description" : "File not found at the specified path, or unable to find the revision at that path."
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST)."
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota."
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/save_url/{root}/{path}" : {
+      "post" : {
+        "tags" : [ "files" ],
+        "summary" : "Save a file from the specified URL into Dropbox.",
+        "description" : "Save a file from the specified URL into Dropbox.\n\nIf the given path already exists, the file will be renamed to avoid the conflict (e.g. `myfile (1).txt`).\n",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "path",
+          "description" : "Root folder: `auto` - automatically determines the appropriate root folder using your app's permission\nlevel (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "path",
+          "description" : "The path in Dropbox where the file will be saved.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "url",
+          "in" : "formData",
+          "description" : "The URL to be fetched.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Status and ID of fetching job.",
+            "schema" : {
+              "$ref" : "#/definitions/JobResult"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why."
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+          },
+          "403" : {
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+          },
+          "404" : {
+            "description" : "File or folder not found at the specified path."
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST)."
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota."
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/save_url_job/{job-id}" : {
+      "get" : {
+        "tags" : [ "files" ],
+        "summary" : "Check the status of a save URL job.",
+        "description" : "Check the status of a [save URL](https://www.dropbox.com/developers/core/docs#save-url) job.\n\nStatus field may have one of the following values:\n  * `PENDING` – The job has not yet started.\n  * `DOWNLOADING` – The job has started but hasn't yet completed.\n  * `COMPLETE` – The job is complete.\n  * `FAILED` – The job failed. An additional `error` field will describe the failure.\n",
+        "parameters" : [ {
+          "name" : "job-id",
+          "in" : "path",
+          "description" : "A job ID returned from [/save_url](https://www.dropbox.com/developers/core/docs#save-url).",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Status of fetching job.",
+            "schema" : {
+              "$ref" : "#/definitions/JobStatus"
             }
           },
           "400" : {
@@ -440,6 +1116,7 @@
   },
   "definitions" : {
     "OAuth2Token" : {
+      "required" : [ "access_token", "token_type" ],
       "properties" : {
         "access_token" : {
           "type" : "string",
@@ -453,6 +1130,7 @@
       }
     },
     "UserAccountInfo" : {
+      "required" : [ "display_name", "is_paired", "locale", "name_details", "quota_info", "referral_link", "uid" ],
       "properties" : {
         "uid" : {
           "type" : "integer",
@@ -494,6 +1172,7 @@
       }
     },
     "NameDetails" : {
+      "required" : [ "familiar_name", "given_name", "surname" ],
       "properties" : {
         "familiar_name" : {
           "type" : "string",
@@ -510,6 +1189,7 @@
       }
     },
     "Team" : {
+      "required" : [ "name", "team_id" ],
       "properties" : {
         "name" : {
           "type" : "string",
@@ -522,6 +1202,7 @@
       }
     },
     "QuotaInfo" : {
+      "required" : [ "normal", "quota", "shared" ],
       "properties" : {
         "shared" : {
           "type" : "integer",
@@ -541,6 +1222,7 @@
       }
     },
     "ResourceMetadata" : {
+      "required" : [ "bytes", "icon", "is_dir", "path", "rev", "revision", "root", "size", "thumb_exists" ],
       "properties" : {
         "size" : {
           "type" : "string",
@@ -633,7 +1315,79 @@
         }
       }
     },
+    "ResourceShortMetadata" : {
+      "required" : [ "bytes", "icon", "is_dir", "path", "rev", "revision", "root", "size", "thumb_exists" ],
+      "properties" : {
+        "size" : {
+          "type" : "string",
+          "description" : "A human-readable description of the file size (translated by [locale](https://www.dropbox.com/developers/core/docs#param.locale))"
+        },
+        "bytes" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The file size in bytes"
+        },
+        "path" : {
+          "type" : "string",
+          "description" : "Returns the canonical path to the file or folder"
+        },
+        "is_dir" : {
+          "type" : "boolean",
+          "description" : "Whether the given entry is a folder or not"
+        },
+        "is_deleted" : {
+          "type" : "boolean",
+          "description" : "Whether the given entry is deleted (only included if deleted files are being returned)"
+        },
+        "rev" : {
+          "type" : "string",
+          "description" : "A unique identifier for the current revision of a file; this field is the same `rev` as elsewhere in\nthe API and can be used to detect changes and avoid conflicts.\n"
+        },
+        "hash" : {
+          "type" : "string",
+          "description" : "A folder's `hash` is useful for indicating changes to the folder's contents in later calls to\n[/metadata](https://www.dropbox.com/developers/core/docs#metadata); this is roughly the folder equivalent\nto a file's `rev`\n"
+        },
+        "thumb_exists" : {
+          "type" : "boolean",
+          "description" : "`true` if the file is an image that can be converted to a thumbnail via the\n[/thumbnails](https://www.dropbox.com/developers/core/docs#thumbnails) call\n"
+        },
+        "icon" : {
+          "type" : "string",
+          "description" : "The name of the icon used to illustrate the file type in Dropbox's\n[icon library](https://www.dropbox.com/static/images/dropbox-api-icons.zip)\n"
+        },
+        "mime_type" : {
+          "type" : "string",
+          "description" : "MIME type of a file"
+        },
+        "modified" : {
+          "type" : "string",
+          "description" : "The last time the file was modified on Dropbox, in the standard\n[date format](https://www.dropbox.com/developers/core/docs#date-format) (not included for the root folder)\n"
+        },
+        "root" : {
+          "type" : "string",
+          "description" : "The root or top-level folder depending on your [access level](https://www.dropbox.com/developers/reference/devguide#app-permissions);\nall paths returned are relative to this root level; permitted values are either `dropbox` or `app_folder`\n"
+        },
+        "revision" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "A **deprecated** field that semi-uniquely identifies a file; use `rev` instead"
+        },
+        "shared_folder" : {
+          "description" : "This field will be included for shared folders; if the `include_membership` parameter is passed, there will\nadditionally be a `membership` field and a `groups` field.\n",
+          "$ref" : "#/definitions/SharedFolderInfo"
+        },
+        "read_only" : {
+          "type" : "boolean",
+          "description" : "For shared folders, this field specifies whether the user has read-only access to the folder; for files\nwithin a shared folder, this specifies the read-only status of the parent shared folder\n"
+        },
+        "parent_shared_folder_id" : {
+          "type" : "string",
+          "description" : "For files within a shared folder, this field specifies the ID of the containing shared folder"
+        }
+      }
+    },
     "FileMetadata" : {
+      "required" : [ "bytes", "icon", "is_dir", "mime_type", "modified", "path", "rev", "revision", "root", "size", "thumb_exists" ],
       "properties" : {
         "size" : {
           "type" : "string",
@@ -688,6 +1442,7 @@
       }
     },
     "PhotoInfo" : {
+      "required" : [ "lat_long", "time_taken" ],
       "properties" : {
         "time_taken" : {
           "type" : "string",
@@ -704,6 +1459,7 @@
       }
     },
     "VideoInfo" : {
+      "required" : [ "duration", "lat_long", "time_taken" ],
       "properties" : {
         "time_taken" : {
           "type" : "string",
@@ -725,6 +1481,7 @@
       }
     },
     "SharedFolderInfo" : {
+      "required" : [ "groups", "id" ],
       "properties" : {
         "id" : {
           "type" : "string",
@@ -747,6 +1504,7 @@
       }
     },
     "MembershipInfo" : {
+      "required" : [ "access_type", "active", "user" ],
       "properties" : {
         "user" : {
           "description" : "Short description of a user",
@@ -763,6 +1521,7 @@
       }
     },
     "MembershipUser" : {
+      "required" : [ "display_name", "member_id", "same_team", "uid" ],
       "properties" : {
         "uid" : {
           "type" : "integer",
@@ -784,6 +1543,7 @@
       }
     },
     "DeltaResult" : {
+      "required" : [ "cursor", "entries", "has_more", "reset" ],
       "properties" : {
         "reset" : {
           "type" : "boolean",
@@ -815,6 +1575,7 @@
       }
     },
     "CursorInfo" : {
+      "required" : [ "cursor" ],
       "properties" : {
         "cursor" : {
           "type" : "string",
@@ -827,6 +1588,135 @@
       "description" : "List of file revisions.",
       "items" : {
         "$ref" : "#/definitions/FileMetadata"
+      }
+    },
+    "SearchResult" : {
+      "type" : "array",
+      "description" : "List of metadata entries for any matching files and folders.",
+      "items" : {
+        "$ref" : "#/definitions/ResourceShortMetadata"
+      }
+    },
+    "SharedLinkResult" : {
+      "required" : [ "expires", "url" ],
+      "properties" : {
+        "url" : {
+          "type" : "string",
+          "description" : "Actual shared link URL"
+        },
+        "expires" : {
+          "type" : "string",
+          "description" : "Link's expiration date in Dropbox's usual [date format](https://www.dropbox.com/developers/core/docs#date-format)"
+        },
+        "visibility" : {
+          "type" : "string",
+          "description" : "Indicates what (if any) restrictions are set on this particular link",
+          "enum" : [ "PUBLIC", "TEAM_ONLY", "PASSWORD", "TEAM_AND_PASSWORD", "SHARED_FOLDER_ONLY" ]
+        }
+      }
+    },
+    "MediaLinkResult" : {
+      "required" : [ "expires", "url" ],
+      "properties" : {
+        "url" : {
+          "type" : "string",
+          "description" : "An URL that serves the media directly"
+        },
+        "expires" : {
+          "type" : "string",
+          "description" : "Link's expiration date in Dropbox's usual [date format](https://www.dropbox.com/developers/core/docs#date-format)"
+        }
+      }
+    },
+    "CopyRefResult" : {
+      "required" : [ "copy_ref", "expires" ],
+      "properties" : {
+        "copy_ref" : {
+          "type" : "string",
+          "description" : "Copy reference to the specified file"
+        },
+        "expires" : {
+          "type" : "string",
+          "description" : "Reference expiration date in Dropbox's usual [date format](https://www.dropbox.com/developers/core/docs#date-format)"
+        }
+      }
+    },
+    "SharedFolderMetadata" : {
+      "required" : [ "access_type", "groups", "owner", "path", "shared_folder_id", "shared_folder_name", "shared_link_policy" ],
+      "properties" : {
+        "shared_folder_id" : {
+          "type" : "string",
+          "description" : "ID of the shared folder"
+        },
+        "shared_folder_name" : {
+          "type" : "string",
+          "description" : "Shared folder name"
+        },
+        "path" : {
+          "type" : "string",
+          "description" : "Path to the shared folder"
+        },
+        "access_type" : {
+          "type" : "string",
+          "description" : "Member access type; e.g. \"owner\", \"editor\", etc. (TODO find out all possible values)"
+        },
+        "shared_link_policy" : {
+          "type" : "string",
+          "description" : "Shared link policy; e.g. \"all\", etc. (TODO find out all possible values)"
+        },
+        "owner" : {
+          "description" : "Owner of this shared folder",
+          "$ref" : "#/definitions/MembershipUser"
+        },
+        "groups" : {
+          "type" : "array",
+          "description" : "??? Group names (documentation is not detailed enough)",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "membership" : {
+          "type" : "array",
+          "description" : "Members who have access to this folder",
+          "items" : {
+            "$ref" : "#/definitions/MembershipInfo"
+          }
+        }
+      }
+    },
+    "SharedFolders" : {
+      "type" : "array",
+      "description" : "List of shared folders metadata.",
+      "items" : {
+        "$ref" : "#/definitions/SharedFolderMetadata"
+      }
+    },
+    "JobResult" : {
+      "required" : [ "job", "status" ],
+      "properties" : {
+        "status" : {
+          "type" : "string",
+          "description" : "Job status",
+          "enum" : [ "PENDING", "DOWNLOADING", "COMPLETE", "FAILED" ]
+        },
+        "job" : {
+          "type" : "string",
+          "description" : "Job ID to check the job's status"
+        }
+      }
+    },
+    "JobStatus" : {
+      "required" : [ "status" ],
+      "properties" : {
+        "status" : {
+          "type" : "string",
+          "description" : "Job status",
+          "enum" : [ "PENDING", "DOWNLOADING", "COMPLETE", "FAILED" ]
+        },
+        "error" : {
+          "type" : "string",
+          "description" : "Failure description; only present if status is `FAILED`"
+        }
       }
     }
   }
