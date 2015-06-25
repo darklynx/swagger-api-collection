@@ -1,7 +1,7 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "The **Core API** is the underlying interface for all of our official [Dropbox mobile apps](https://www.dropbox.com/mobile)\nand our [SDKs](https://www.dropbox.com/developers/core/sdk). It's the most direct way to access the API. This\nreference document is designed for those interested in developing for platforms not supported by the SDKs or for\nthose interested in exploring API features in detail.\n\nPlease refer to official Dropbox [developers documentation](https://www.dropbox.com/developers/core/docs) for any\nadditional remarks.\n\nCurrent limitations:\n * TODO: find out\n",
+    "description" : "The **Core API** is the underlying interface for all of our official [Dropbox mobile apps](https://www.dropbox.com/mobile)\nand our [SDKs](https://www.dropbox.com/developers/core/sdk). It's the most direct way to access the API. This\nreference document is designed for those interested in developing for platforms not supported by the SDKs or for\nthose interested in exploring API features in detail.\n\nPlease refer to official Dropbox [developers documentation](https://www.dropbox.com/developers/core/docs) for any\nadditional remarks.\n",
     "version" : "1.0.0",
     "title" : "Dropbox Core API",
     "termsOfService" : "https://www.dropbox.com/developers/reference/tos",
@@ -83,31 +83,58 @@
             }
           },
           "400" : {
-            "description" : "Bad input parameter. Error message should indicate which one and why."
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "401" : {
-            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "403" : {
-            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "404" : {
-            "description" : "File or folder not found at the specified path."
+            "description" : "File or folder not found at the specified path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "405" : {
-            "description" : "Request method not expected (generally should be GET or POST)."
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "429" : {
-            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "503" : {
-            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "507" : {
-            "description" : "User is over Dropbox storage quota."
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "5xx" : {
-            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           }
         },
         "security" : [ {
@@ -190,37 +217,70 @@
             }
           },
           "304" : {
-            "description" : "The folder contents have not changed (relies on hash parameter)."
+            "description" : "The folder contents have not changed (relies on hash parameter).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "400" : {
-            "description" : "Bad input parameter. Error message should indicate which one and why."
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "401" : {
-            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "403" : {
-            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "404" : {
-            "description" : "File or folder not found at the specified path."
+            "description" : "File or folder not found at the specified path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "405" : {
-            "description" : "Request method not expected (generally should be GET or POST)."
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "406" : {
-            "description" : "There are too many file entries to return."
+            "description" : "There are too many file entries to return.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "429" : {
-            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "503" : {
-            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "507" : {
-            "description" : "User is over Dropbox storage quota."
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "5xx" : {
-            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           }
         },
         "security" : [ {
@@ -267,31 +327,58 @@
             }
           },
           "400" : {
-            "description" : "Bad input parameter. Error message should indicate which one and why."
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "401" : {
-            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "403" : {
-            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "404" : {
-            "description" : "File or folder not found at the specified path."
+            "description" : "File or folder not found at the specified path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "405" : {
-            "description" : "Request method not expected (generally should be GET or POST)."
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "429" : {
-            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "503" : {
-            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "507" : {
-            "description" : "User is over Dropbox storage quota."
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "5xx" : {
-            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           }
         },
         "security" : [ {
@@ -326,31 +413,58 @@
             }
           },
           "400" : {
-            "description" : "Bad input parameter. Error message should indicate which one and why."
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "401" : {
-            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "403" : {
-            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "404" : {
-            "description" : "File or folder not found at the specified path."
+            "description" : "File or folder not found at the specified path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "405" : {
-            "description" : "Request method not expected (generally should be GET or POST)."
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "429" : {
-            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "503" : {
-            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "507" : {
-            "description" : "User is over Dropbox storage quota."
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "5xx" : {
-            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           }
         },
         "security" : [ {
@@ -398,31 +512,58 @@
             }
           },
           "400" : {
-            "description" : "Bad input parameter. Error message should indicate which one and why."
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "401" : {
-            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "403" : {
-            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "404" : {
-            "description" : "File or folder not found at the specified path."
+            "description" : "File or folder not found at the specified path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "405" : {
-            "description" : "Request method not expected (generally should be GET or POST)."
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "429" : {
-            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "503" : {
-            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "507" : {
-            "description" : "User is over Dropbox storage quota."
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "5xx" : {
-            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           }
         },
         "security" : [ {
@@ -470,31 +611,58 @@
             }
           },
           "400" : {
-            "description" : "Bad input parameter. Error message should indicate which one and why."
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "401" : {
-            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "403" : {
-            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "404" : {
-            "description" : "File not found at the specified path, or unable to find the revision at that path."
+            "description" : "File not found at the specified path, or unable to find the revision at that path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "405" : {
-            "description" : "Request method not expected (generally should be GET or POST)."
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "429" : {
-            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "503" : {
-            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "507" : {
-            "description" : "User is over Dropbox storage quota."
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "5xx" : {
-            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           }
         },
         "security" : [ {
@@ -560,31 +728,58 @@
             }
           },
           "400" : {
-            "description" : "Bad input parameter. Error message should indicate which one and why."
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "401" : {
-            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "403" : {
-            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "404" : {
-            "description" : "File not found at the specified path, or unable to find the revision at that path."
+            "description" : "File not found at the specified path, or unable to find the revision at that path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "405" : {
-            "description" : "Request method not expected (generally should be GET or POST)."
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "429" : {
-            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "503" : {
-            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "507" : {
-            "description" : "User is over Dropbox storage quota."
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "5xx" : {
-            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           }
         },
         "security" : [ {
@@ -649,31 +844,58 @@
             }
           },
           "400" : {
-            "description" : "Bad input parameter. Error message should indicate which one and why."
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "401" : {
-            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "403" : {
-            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "404" : {
-            "description" : "File not found at the specified path, or unable to find the revision at that path."
+            "description" : "File not found at the specified path, or unable to find the revision at that path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "405" : {
-            "description" : "Request method not expected (generally should be GET or POST)."
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "429" : {
-            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "503" : {
-            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "507" : {
-            "description" : "User is over Dropbox storage quota."
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "5xx" : {
-            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           }
         },
         "security" : [ {
@@ -721,31 +943,58 @@
             }
           },
           "400" : {
-            "description" : "Bad input parameter. Error message should indicate which one and why."
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "401" : {
-            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "403" : {
-            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "404" : {
-            "description" : "File or folder not found at the specified path."
+            "description" : "File or folder not found at the specified path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "405" : {
-            "description" : "Request method not expected (generally should be GET or POST)."
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "429" : {
-            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "503" : {
-            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "507" : {
-            "description" : "User is over Dropbox storage quota."
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "5xx" : {
-            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           }
         },
         "security" : [ {
@@ -787,31 +1036,58 @@
             }
           },
           "400" : {
-            "description" : "Bad input parameter. Error message should indicate which one and why."
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "401" : {
-            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "403" : {
-            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "404" : {
-            "description" : "File or folder not found at the specified path."
+            "description" : "File or folder not found at the specified path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "405" : {
-            "description" : "Request method not expected (generally should be GET or POST)."
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "429" : {
-            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "503" : {
-            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "507" : {
-            "description" : "User is over Dropbox storage quota."
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "5xx" : {
-            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           }
         },
         "security" : [ {
@@ -846,31 +1122,58 @@
             }
           },
           "400" : {
-            "description" : "Bad input parameter. Error message should indicate which one and why."
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "401" : {
-            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "403" : {
-            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "404" : {
-            "description" : "File not found at the specified path, or unable to find the revision at that path."
+            "description" : "File not found at the specified path, or unable to find the revision at that path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "405" : {
-            "description" : "Request method not expected (generally should be GET or POST)."
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "429" : {
-            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "503" : {
-            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "507" : {
-            "description" : "User is over Dropbox storage quota."
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "5xx" : {
-            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           }
         },
         "security" : [ {
@@ -898,31 +1201,58 @@
             }
           },
           "400" : {
-            "description" : "Bad input parameter. Error message should indicate which one and why."
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "401" : {
-            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "403" : {
-            "description" : "Returned if this app does not have Full Dropbox or File type permissions, or if the user doesn't have\naccess to the specified shared folder.\n"
+            "description" : "Returned if this app does not have Full Dropbox or File type permissions, or if the user doesn't have\naccess to the specified shared folder.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "404" : {
-            "description" : "File not found at the specified path, or unable to find the revision at that path."
+            "description" : "File not found at the specified path, or unable to find the revision at that path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "405" : {
-            "description" : "Request method not expected (generally should be GET or POST)."
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "429" : {
-            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "503" : {
-            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "507" : {
-            "description" : "User is over Dropbox storage quota."
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "5xx" : {
-            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           }
         },
         "security" : [ {
@@ -956,31 +1286,58 @@
             }
           },
           "400" : {
-            "description" : "Returned if the shared folder ID is not valid."
+            "description" : "Returned if the shared folder ID is not valid.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "401" : {
-            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "403" : {
-            "description" : "Returned if this app does not have Full Dropbox or File type permissions, or if the user doesn't have\naccess to the specified shared folder.\n"
+            "description" : "Returned if this app does not have Full Dropbox or File type permissions, or if the user doesn't have\naccess to the specified shared folder.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "404" : {
-            "description" : "File not found at the specified path, or unable to find the revision at that path."
+            "description" : "File not found at the specified path, or unable to find the revision at that path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "405" : {
-            "description" : "Request method not expected (generally should be GET or POST)."
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "429" : {
-            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "503" : {
-            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "507" : {
-            "description" : "User is over Dropbox storage quota."
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "5xx" : {
-            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           }
         },
         "security" : [ {
@@ -1022,31 +1379,58 @@
             }
           },
           "400" : {
-            "description" : "Bad input parameter. Error message should indicate which one and why."
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "401" : {
-            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "403" : {
-            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "404" : {
-            "description" : "File or folder not found at the specified path."
+            "description" : "File or folder not found at the specified path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "405" : {
-            "description" : "Request method not expected (generally should be GET or POST)."
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "429" : {
-            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "503" : {
-            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "507" : {
-            "description" : "User is over Dropbox storage quota."
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "5xx" : {
-            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           }
         },
         "security" : [ {
@@ -1074,31 +1458,466 @@
             }
           },
           "400" : {
-            "description" : "Bad input parameter. Error message should indicate which one and why."
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "401" : {
-            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n"
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "403" : {
-            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n"
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "404" : {
-            "description" : "File or folder not found at the specified path."
+            "description" : "File or folder not found at the specified path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "405" : {
-            "description" : "Request method not expected (generally should be GET or POST)."
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "429" : {
-            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n"
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "503" : {
-            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n"
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "507" : {
-            "description" : "User is over Dropbox storage quota."
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           },
           "5xx" : {
-            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/)."
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/fileops/copy" : {
+      "post" : {
+        "tags" : [ "operations" ],
+        "summary" : "Copies a file or folder to a new location.",
+        "description" : "Copies a file or folder to a new location.",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "formData",
+          "description" : "The root relative to which `from_path` and `to_path` are specified. Valid values are `auto` (recommended),\n`sandbox`, and `dropbox`.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "from_path",
+          "in" : "formData",
+          "description" : "Specifies the file or folder to be copied from relative to `root`.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "to_path",
+          "in" : "formData",
+          "description" : "Specifies the destination path, *including the new name for the file or folder*, relative to `root`.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "locale",
+          "in" : "formData",
+          "description" : "The metadata returned will have its `size` field translated based on the given locale. For more\ninformation see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "from_copy_ref",
+          "in" : "formData",
+          "description" : "Specifies a `copy_ref` generated from a previous [/copy_ref](https://www.dropbox.com/developers/core/docs#copy_ref)\ncall. Must be used instead of the `from_path` parameter.\n",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Metadata for the copy of the file or folder.",
+            "schema" : {
+              "$ref" : "#/definitions/ResourceShortMetadata"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "403" : {
+            "description" : "An invalid copy operation was attempted (e.g. there is already a file at the given destination, or trying\nto copy a shared folder).\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "404" : {
+            "description" : "The source file wasn't found at the specified path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "406" : {
+            "description" : "Too many files would be involved in the operation for it to complete successfully. The limit is\ncurrently 10,000 files and folders.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/fileops/create_folder" : {
+      "post" : {
+        "tags" : [ "operations" ],
+        "summary" : "Creates a folder.",
+        "description" : "Creates a folder.",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "formData",
+          "description" : "The root relative to which `path` is specified. Valid values are `auto` (recommended), `sandbox`, and `dropbox`.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "formData",
+          "description" : "The path to the new folder to create relative to `root`.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "locale",
+          "in" : "formData",
+          "description" : "The metadata returned will have its `size` field translated based on the given locale. For more\ninformation see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).\n",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Metadata for the new folder.",
+            "schema" : {
+              "$ref" : "#/definitions/ResourceShortMetadata"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "403" : {
+            "description" : "There is already a folder at the given destination.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "404" : {
+            "description" : "File or folder not found at the specified path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/fileops/delete" : {
+      "post" : {
+        "tags" : [ "operations" ],
+        "summary" : "Deletes a file or folder.",
+        "description" : "Deletes a file or folder.",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "formData",
+          "description" : "The root relative to which `path` is specified. Valid values are `auto` (recommended), `sandbox`, and `dropbox`.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "formData",
+          "description" : "The path to the file or folder to be deleted.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "locale",
+          "in" : "formData",
+          "description" : "The metadata returned will have its `size` field translated based on the given locale. For more\ninformation see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).\n",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Metadata for the deleted file or folder.",
+            "schema" : {
+              "$ref" : "#/definitions/ResourceShortMetadata"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "403" : {
+            "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "404" : {
+            "description" : "No file was found at the specified path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "406" : {
+            "description" : "Too many files would be involved in the operation for it to complete successfully. The limit is\ncurrently 10,000 files and folders.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          }
+        },
+        "security" : [ {
+          "instagram_auth" : [ ]
+        } ]
+      }
+    },
+    "/fileops/move" : {
+      "post" : {
+        "tags" : [ "operations" ],
+        "summary" : "Moves a file or folder to a new location.",
+        "description" : "Moves a file or folder to a new location.",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "formData",
+          "description" : "The root relative to which `from_path` and `to_path` are specified. Valid values are `auto` (recommended),\n`sandbox`, and `dropbox`.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "from_path",
+          "in" : "formData",
+          "description" : "Specifies the file or folder to be moved from relative to `root`.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "to_path",
+          "in" : "formData",
+          "description" : "Specifies the destination path, *including the new name for the file or folder*, relative to `root`.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "locale",
+          "in" : "formData",
+          "description" : "The metadata returned will have its `size` field translated based on the given locale. For more\ninformation see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).\n",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Metadata for the deleted file or folder.",
+            "schema" : {
+              "$ref" : "#/definitions/ResourceShortMetadata"
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter. Error message should indicate which one and why.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "403" : {
+            "description" : "An invalid move operation was attempted (e.g. there is already a file at the given destination, or moving\na shared folder into a shared folder).\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "404" : {
+            "description" : "The source file wasn't found at the specified path.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "405" : {
+            "description" : "Request method not expected (generally should be GET or POST).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "406" : {
+            "description" : "Too many files would be involved in the operation for it to complete successfully. The limit is\ncurrently 10,000 files and folders.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "429" : {
+            "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "503" : {
+            "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "507" : {
+            "description" : "User is over Dropbox storage quota.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "5xx" : {
+            "description" : "Server error. Check [DropboxOps](http://status.dropbox.com/).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
           }
         },
         "security" : [ {
@@ -1115,6 +1934,15 @@
     }
   },
   "definitions" : {
+    "ErrorMessage" : {
+      "required" : [ "error" ],
+      "properties" : {
+        "error" : {
+          "type" : "string",
+          "description" : "Error description"
+        }
+      }
+    },
     "OAuth2Token" : {
       "required" : [ "access_token", "token_type" ],
       "properties" : {

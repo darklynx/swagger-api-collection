@@ -19,9 +19,6 @@ info:
 
       Please refer to official Dropbox [developers documentation](https://www.dropbox.com/developers/core/docs) for any
       additional remarks.
-
-      Current limitations:
-       * TODO: find out
   termsOfService: https://www.dropbox.com/developers/reference/tos
   contact:
     name: Dropbox
@@ -108,30 +105,48 @@ paths:
             $ref: '#/definitions/UserAccountInfo'
         400:
           description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         401:
           description: |
               Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
               you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         403:
           description: |
               Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
               the user won't help here.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         404:
           description: File or folder not found at the specified path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         405:
           description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
               per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
               Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         5xx:
           description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
       security:
         - instagram_auth: []
 
@@ -226,34 +241,56 @@ paths:
             $ref: '#/definitions/ResourceMetadata'
         304:
           description: The folder contents have not changed (relies on hash parameter).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         400:
           description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         401:
           description: |
               Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
               you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         403:
           description: |
               Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
               the user won't help here.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         404:
           description: File or folder not found at the specified path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         405:
           description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         406:
           description: There are too many file entries to return.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
               per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
               Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         5xx:
           description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
       security:
         - instagram_auth: []
 
@@ -342,30 +379,48 @@ paths:
             $ref: '#/definitions/DeltaResult'
         400:
           description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         401:
           description: |
               Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
               you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         403:
           description: |
               Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
               the user won't help here.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         404:
           description: File or folder not found at the specified path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         405:
           description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
               per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
               Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         5xx:
           description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
       security:
         - instagram_auth: []
 
@@ -408,30 +463,48 @@ paths:
             $ref: '#/definitions/CursorInfo'
         400:
           description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         401:
           description: |
               Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
               you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         403:
           description: |
               Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
               the user won't help here.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         404:
           description: File or folder not found at the specified path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         405:
           description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
               per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
               Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         5xx:
           description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
       security:
         - instagram_auth: []
 
@@ -480,30 +553,48 @@ paths:
             $ref: '#/definitions/Revisions'
         400:
           description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         401:
           description: |
               Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
               you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         403:
           description: |
               Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
               the user won't help here.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         404:
           description: File or folder not found at the specified path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         405:
           description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
               per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
               Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         5xx:
           description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
       security:
         - instagram_auth: []
 
@@ -552,30 +643,48 @@ paths:
             $ref: '#/definitions/FileMetadata'
         400:
           description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         401:
           description: |
               Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
               you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         403:
           description: |
               Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
               the user won't help here.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         404:
           description: File not found at the specified path, or unable to find the revision at that path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         405:
           description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
               per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
               Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         5xx:
           description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
       security:
         - instagram_auth: []
 
@@ -643,30 +752,48 @@ paths:
             $ref: '#/definitions/SearchResult'
         400:
           description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         401:
           description: |
               Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
               you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         403:
           description: |
               Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
               the user won't help here.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         404:
           description: File not found at the specified path, or unable to find the revision at that path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         405:
           description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
               per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
               Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         5xx:
           description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
       security:
         - instagram_auth: []
 
@@ -735,30 +862,48 @@ paths:
             $ref: '#/definitions/SearchResult'
         400:
           description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         401:
           description: |
               Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
               you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         403:
           description: |
               Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
               the user won't help here.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         404:
           description: File not found at the specified path, or unable to find the revision at that path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         405:
           description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
               per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
               Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         5xx:
           description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
       security:
         - instagram_auth: []
 
@@ -816,30 +961,48 @@ paths:
             $ref: '#/definitions/SharedLinkResult'
         400:
           description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         401:
           description: |
               Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
               you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         403:
           description: |
               Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
               the user won't help here.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         404:
           description: File or folder not found at the specified path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         405:
           description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
               per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
               Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         5xx:
           description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
       security:
         - instagram_auth: []
 
@@ -887,30 +1050,48 @@ paths:
             $ref: '#/definitions/MediaLinkResult'
         400:
           description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         401:
           description: |
               Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
               you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         403:
           description: |
               Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
               the user won't help here.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         404:
           description: File or folder not found at the specified path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         405:
           description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
               per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
               Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         5xx:
           description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
       security:
         - instagram_auth: []
 
@@ -945,30 +1126,48 @@ paths:
             $ref: '#/definitions/CopyRefResult'
         400:
           description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         401:
           description: |
               Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
               you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         403:
           description: |
               Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
               the user won't help here.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         404:
           description: File not found at the specified path, or unable to find the revision at that path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         405:
           description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
               per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
               Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         5xx:
           description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
       security:
         - instagram_auth: []
 
@@ -1002,30 +1201,48 @@ paths:
             $ref: '#/definitions/SharedFolders'
         400:
           description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         401:
           description: |
               Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
               you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         403:
           description: |
               Returned if this app does not have Full Dropbox or File type permissions, or if the user doesn't have
               access to the specified shared folder.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         404:
           description: File not found at the specified path, or unable to find the revision at that path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         405:
           description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
               per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
               Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         5xx:
           description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
       security:
         - instagram_auth: []
 
@@ -1064,30 +1281,48 @@ paths:
             $ref: '#/definitions/SharedFolderMetadata'
         400:
           description: Returned if the shared folder ID is not valid.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         401:
           description: |
               Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
               you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         403:
           description: |
               Returned if this app does not have Full Dropbox or File type permissions, or if the user doesn't have
               access to the specified shared folder.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         404:
           description: File not found at the specified path, or unable to find the revision at that path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         405:
           description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
               per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
               Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         5xx:
           description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
       security:
         - instagram_auth: []
 
@@ -1128,30 +1363,48 @@ paths:
             $ref: '#/definitions/JobResult'
         400:
           description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         401:
           description: |
               Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
               you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         403:
           description: |
               Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
               the user won't help here.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         404:
           description: File or folder not found at the specified path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         405:
           description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
               per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
               Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         5xx:
           description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
       security:
         - instagram_auth: []
 
@@ -1181,35 +1434,415 @@ paths:
             $ref: '#/definitions/JobStatus'
         400:
           description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         401:
           description: |
               Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
               you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         403:
           description: |
               Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
               the user won't help here.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         404:
           description: File or folder not found at the specified path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         405:
           description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
               per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
               Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         5xx:
           description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+      security:
+        - instagram_auth: []
+
+  /fileops/copy:
+    post:
+      tags:
+        - operations
+      consumes:
+        - application/x-www-form-urlencoded
+      summary: Copies a file or folder to a new location.
+      description: Copies a file or folder to a new location.
+      parameters:
+        - name: root
+          in: formData
+          type: string
+          enum: [ 'auto', 'sandbox', 'dropbox' ]
+          required: true
+          description: |
+              The root relative to which `from_path` and `to_path` are specified. Valid values are `auto` (recommended),
+              `sandbox`, and `dropbox`.
+        - name: from_path
+          in: formData
+          type: string
+          required: false
+          description: Specifies the file or folder to be copied from relative to `root`.
+        - name: to_path
+          in: formData
+          type: string
+          required: true
+          description: Specifies the destination path, *including the new name for the file or folder*, relative to `root`.
+        - name: locale
+          in: formData
+          type: string
+          required: false
+          description: |
+              The metadata returned will have its `size` field translated based on the given locale. For more
+              information see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).
+        - name: from_copy_ref
+          in: formData
+          type: string
+          required: false
+          description: |
+              Specifies a `copy_ref` generated from a previous [/copy_ref](https://www.dropbox.com/developers/core/docs#copy_ref)
+              call. Must be used instead of the `from_path` parameter.
+      responses:
+        200:
+          description: Metadata for the copy of the file or folder.
+          schema:
+            $ref: '#/definitions/ResourceShortMetadata'
+        400:
+          description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        401:
+          description: |
+              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
+              you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        403:
+          description: |
+              An invalid copy operation was attempted (e.g. there is already a file at the given destination, or trying
+              to copy a shared folder).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        404:
+          description: The source file wasn't found at the specified path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        405:
+          description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        406:
+          description: |
+              Too many files would be involved in the operation for it to complete successfully. The limit is
+              currently 10,000 files and folders.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        429:
+          description: |
+              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
+              per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        503:
+          description: |
+              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
+              Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        507:
+          description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        5xx:
+          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+      security:
+        - instagram_auth: []
+
+  /fileops/create_folder:
+    post:
+      tags:
+        - operations
+      consumes:
+        - application/x-www-form-urlencoded
+      summary: Creates a folder.
+      description: Creates a folder.
+      parameters:
+        - name: root
+          in: formData
+          type: string
+          enum: [ 'auto', 'sandbox', 'dropbox' ]
+          required: true
+          description: |
+              The root relative to which `path` is specified. Valid values are `auto` (recommended), `sandbox`, and `dropbox`.
+        - name: path
+          in: formData
+          type: string
+          required: true
+          description: The path to the new folder to create relative to `root`.
+        - name: locale
+          in: formData
+          type: string
+          required: false
+          description: |
+              The metadata returned will have its `size` field translated based on the given locale. For more
+              information see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).
+      responses:
+        200:
+          description: Metadata for the new folder.
+          schema:
+            $ref: '#/definitions/ResourceShortMetadata'
+        400:
+          description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        401:
+          description: |
+              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
+              you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        403:
+          description: There is already a folder at the given destination.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        404:
+          description: File or folder not found at the specified path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        405:
+          description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        429:
+          description: |
+              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
+              per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        503:
+          description: |
+              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
+              Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        507:
+          description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        5xx:
+          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+      security:
+        - instagram_auth: []
+
+  /fileops/delete:
+    post:
+      tags:
+        - operations
+      consumes:
+        - application/x-www-form-urlencoded
+      summary: Deletes a file or folder.
+      description: Deletes a file or folder.
+      parameters:
+        - name: root
+          in: formData
+          type: string
+          enum: [ 'auto', 'sandbox', 'dropbox' ]
+          required: true
+          description: |
+              The root relative to which `path` is specified. Valid values are `auto` (recommended), `sandbox`, and `dropbox`.
+        - name: path
+          in: formData
+          type: string
+          required: true
+          description: The path to the file or folder to be deleted.
+        - name: locale
+          in: formData
+          type: string
+          required: false
+          description: |
+              The metadata returned will have its `size` field translated based on the given locale. For more
+              information see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).
+      responses:
+        200:
+          description: Metadata for the deleted file or folder.
+          schema:
+            $ref: '#/definitions/ResourceShortMetadata'
+        400:
+          description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        401:
+          description: |
+              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
+              you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        403:
+          description: |
+              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
+              the user won't help here.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        404:
+          description: No file was found at the specified path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        405:
+          description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        406:
+          description: |
+              Too many files would be involved in the operation for it to complete successfully. The limit is
+              currently 10,000 files and folders.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        429:
+          description: |
+              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
+              per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        503:
+          description: |
+              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
+              Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        507:
+          description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        5xx:
+          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+      security:
+        - instagram_auth: []
+
+  /fileops/move:
+    post:
+      tags:
+        - operations
+      consumes:
+        - application/x-www-form-urlencoded
+      summary: Moves a file or folder to a new location.
+      description: Moves a file or folder to a new location.
+      parameters:
+        - name: root
+          in: formData
+          type: string
+          enum: [ 'auto', 'sandbox', 'dropbox' ]
+          required: true
+          description: |
+              The root relative to which `from_path` and `to_path` are specified. Valid values are `auto` (recommended),
+              `sandbox`, and `dropbox`.
+        - name: from_path
+          in: formData
+          type: string
+          required: true
+          description: Specifies the file or folder to be moved from relative to `root`.
+        - name: to_path
+          in: formData
+          type: string
+          required: true
+          description: Specifies the destination path, *including the new name for the file or folder*, relative to `root`.
+        - name: locale
+          in: formData
+          type: string
+          required: false
+          description: |
+              The metadata returned will have its `size` field translated based on the given locale. For more
+              information see [locale notes](https://www.dropbox.com/developers/core/docs#param.locale).
+      responses:
+        200:
+          description: Metadata for the deleted file or folder.
+          schema:
+            $ref: '#/definitions/ResourceShortMetadata'
+        400:
+          description: Bad input parameter. Error message should indicate which one and why.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        401:
+          description: |
+              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
+              you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        403:
+          description: |
+              An invalid move operation was attempted (e.g. there is already a file at the given destination, or moving
+              a shared folder into a shared folder).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        404:
+          description: The source file wasn't found at the specified path.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        405:
+          description: Request method not expected (generally should be GET or POST).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        406:
+          description: |
+              Too many files would be involved in the operation for it to complete successfully. The limit is
+              currently 10,000 files and folders.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        429:
+          description: |
+              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
+              per-user basis.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        503:
+          description: |
+              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
+              Otherwise, this indicates a transient server error, and your app should retry its request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        507:
+          description: User is over Dropbox storage quota.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        5xx:
+          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
       security:
         - instagram_auth: []
 
 # Model
 definitions:
+  ErrorMessage:
+    required:
+      - error
+    properties:
+      error:
+        type: string
+        description: Error description
   OAuth2Token:
     required:
       - access_token
