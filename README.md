@@ -13,7 +13,7 @@ API descriptions for different RESTful APIs could be found in:
 Currently available API descriptions:
 
  * `instagram.yaml` - [Instagram API](https://instagram.com/developer/endpoints/) description
- * `dropbox-core.yaml` - [Dropbox Core API](https://www.dropbox.com/developers/core/docs) description (incomplete)
+ * `dropbox-core.yaml` - [Dropbox Core API](https://www.dropbox.com/developers/core/docs) description
 
 
 ## Browser

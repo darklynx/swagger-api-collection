@@ -19,6 +19,13 @@ info:
 
       Please refer to official Dropbox [developers documentation](https://www.dropbox.com/developers/core/docs) for any
       additional remarks.
+
+      Please note:
+        * `https://api-content.dropbox.com` end-points are covered by Dropbox Content API document (see `dropbox-content.yaml`)
+        * `https://api-notify.dropbox.com` end-points are covered by Dropbox Notify Appendix document (see `dropbox-notify.yaml`)
+
+      Please refer to Dropbox for Business API document (see `dropbox-business.yaml`) team, groups, members and other
+      functionality available for company subscription accounts.
   termsOfService: https://www.dropbox.com/developers/reference/tos
   contact:
     name: Dropbox
