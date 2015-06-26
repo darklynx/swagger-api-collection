@@ -33,15 +33,32 @@
         var option = $('#input_baseUrl option').first();
         if (option && option.val()) {
           window.swaggerUi = new SwaggerUi({
+            catalog: data,
             url: option.val(),
             dom_id: "swagger-ui-container",
             supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
             onComplete: function(swaggerApi, swaggerUi){
+              var currentUrl = this.url;
+              var currentApi = null;
+              var currentApiOpts = null;
+              $.each( this.catalog, function( key, val ) {
+                if ( currentUrl.endsWith( val.url ) ) {
+                  currentApi = key;
+                  currentApiOpts = val;
+                }
+              });
+              if (currentApi) {
+                log("Selected API: " + currentApi + "(" + currentApiOpts.name + "), located at: " + currentUrl);
+              } else {
+                log("No API found for URL: " + currentUrl);
+              }
+
               if(typeof initOAuth == "function") {
                 initOAuth({
-                  clientId: "your-client-id",
-                  realm: "your-realms",
-                  appName: "Swagger UI"
+                  clientId: currentApiOpts.clientId,
+                  oauth2apikey: currentApiOpts.oauth2apikey,
+                  // realm: "your-realms",
+                  appName: "Swagger UI Test App"
                 });
               }
 
@@ -49,8 +66,6 @@
                 hljs.highlightBlock(e)
               });
 
-              var currentUrl = this.url;
-              log("Selected API location: " + currentUrl);
               $('#input_baseUrl option').each(function(i, e) {
                 if ( currentUrl.endsWith( $(e).val() ) ) {
                   $(e).attr("selected", true);
@@ -76,7 +91,8 @@
         if (window.swaggerUi) {
           var key = encodeURIComponent($('#input_apiKey')[0].value);
           if(key && key.trim() != "") {
-              var apiKeyAuth = new SwaggerClient.ApiKeyAuthorization("access_token", key, "query");
+              // TODO: this should be adjusted to respect authSchemes of selected API
+              var apiKeyAuth = new SwaggerClient.ApiKeyAuthorization("api_key", key, "query");
               window.swaggerUi.api.clientAuthorizations.add("api_key", apiKeyAuth);
               log("added key " + key);
           }

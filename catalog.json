@@ -1,14 +1,18 @@
 {
   "instagram": {
     "name": "Instagram API",
-    "url": "api/json/instagram.json"
+    "url": "api/json/instagram.json",
+    "clientId": "a5ef5e0a819248e98c2e67b41919c77a",
+    "oauth2apikey": "api_key"
   },
   "dropbox-core": {
     "name": "Dropbox Core API",
-    "url": "api/json/dropbox-core.json"
+    "url": "api/json/dropbox-core.json",
+    "clientId": "k3ptuh4b1rjz82n"
   },
   "petstore": {
     "name": "Swagger Petstore API (demo)",
-    "url": "http://petstore.swagger.io/v2/swagger.json"
+    "url": "http://petstore.swagger.io/v2/swagger.json",
+    "clientId": "your-client-id"
   }
 }
