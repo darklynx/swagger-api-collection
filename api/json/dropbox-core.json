@@ -43,7 +43,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -59,7 +59,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -138,7 +138,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -284,7 +284,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -382,7 +382,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -468,7 +468,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -567,7 +567,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -666,7 +666,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -783,7 +783,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       },
       "post" : {
@@ -899,7 +899,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -998,7 +998,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -1091,7 +1091,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -1177,7 +1177,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -1256,7 +1256,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -1341,7 +1341,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -1434,7 +1434,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -1513,7 +1513,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -1624,7 +1624,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -1717,7 +1717,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -1816,7 +1816,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     },
@@ -1921,7 +1921,7 @@
           }
         },
         "security" : [ {
-          "instagram_auth" : [ ]
+          "dropbox_auth" : [ ]
         } ]
       }
     }
@@ -1932,7 +1932,7 @@
       "authorizationUrl" : "https://www.dropbox.com/1/oauth2/authorize",
       "flow" : "implicit",
       "scopes" : {
-        "dummy" : "Does not work properly w/o scopes"
+        "dummy" : "DO NOT CHECK!!! Swagger UI OAuth requires scopes to be defined, Dropbox from the other side does not accept any scope"
       }
     }
   },
