@@ -22,7 +22,7 @@
     "name" : "files",
     "description" : "Files and metadata"
   }, {
-    "name" : "operations",
+    "name" : "fileops",
     "description" : "File operations"
   } ],
   "schemes" : [ "https" ],
@@ -1519,7 +1519,7 @@
     },
     "/fileops/copy" : {
       "post" : {
-        "tags" : [ "operations" ],
+        "tags" : [ "fileops" ],
         "summary" : "Copies a file or folder to a new location.",
         "description" : "Copies a file or folder to a new location.",
         "consumes" : [ "application/x-www-form-urlencoded" ],
@@ -1630,7 +1630,7 @@
     },
     "/fileops/create_folder" : {
       "post" : {
-        "tags" : [ "operations" ],
+        "tags" : [ "fileops" ],
         "summary" : "Creates a folder.",
         "description" : "Creates a folder.",
         "consumes" : [ "application/x-www-form-urlencoded" ],
@@ -1723,7 +1723,7 @@
     },
     "/fileops/delete" : {
       "post" : {
-        "tags" : [ "operations" ],
+        "tags" : [ "fileops" ],
         "summary" : "Deletes a file or folder.",
         "description" : "Deletes a file or folder.",
         "consumes" : [ "application/x-www-form-urlencoded" ],
@@ -1822,7 +1822,7 @@
     },
     "/fileops/move" : {
       "post" : {
-        "tags" : [ "operations" ],
+        "tags" : [ "fileops" ],
         "summary" : "Moves a file or folder to a new location.",
         "description" : "Moves a file or folder to a new location.",
         "consumes" : [ "application/x-www-form-urlencoded" ],
@@ -1930,7 +1930,10 @@
     "dropbox_auth" : {
       "type" : "oauth2",
       "authorizationUrl" : "https://www.dropbox.com/1/oauth2/authorize",
-      "flow" : "implicit"
+      "flow" : "implicit",
+      "scopes" : {
+        "dummy" : "Does not work properly w/o scopes"
+      }
     }
   },
   "definitions" : {

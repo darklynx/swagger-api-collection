@@ -46,7 +46,7 @@ tags:
     description: Dropbox accounts
   - name: files
     description: Files and metadata
-  - name: operations
+  - name: fileops
     description: File operations
 
 # Security
@@ -58,6 +58,8 @@ securityDefinitions:
     type: oauth2
     authorizationUrl: https://www.dropbox.com/1/oauth2/authorize
     flow: implicit
+    scopes:
+      dummy: Does not work properly w/o scopes
 
 # URL patterns
 paths:
@@ -1489,7 +1491,7 @@ paths:
   /fileops/copy:
     post:
       tags:
-        - operations
+        - fileops
       consumes:
         - application/x-www-form-urlencoded
       summary: Copies a file or folder to a new location.
@@ -1588,7 +1590,7 @@ paths:
   /fileops/create_folder:
     post:
       tags:
-        - operations
+        - fileops
       consumes:
         - application/x-www-form-urlencoded
       summary: Creates a folder.
@@ -1666,7 +1668,7 @@ paths:
   /fileops/delete:
     post:
       tags:
-        - operations
+        - fileops
       consumes:
         - application/x-www-form-urlencoded
       summary: Deletes a file or folder.
@@ -1752,7 +1754,7 @@ paths:
   /fileops/move:
     post:
       tags:
-        - operations
+        - fileops
       consumes:
         - application/x-www-form-urlencoded
       summary: Moves a file or folder to a new location.
