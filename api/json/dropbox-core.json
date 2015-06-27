@@ -1,7 +1,7 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "The **Core API** is the underlying interface for all of our official [Dropbox mobile apps](https://www.dropbox.com/mobile)\nand our [SDKs](https://www.dropbox.com/developers/core/sdk). It's the most direct way to access the API. This\nreference document is designed for those interested in developing for platforms not supported by the SDKs or for\nthose interested in exploring API features in detail.\n\nPlease refer to official Dropbox [developers documentation](https://www.dropbox.com/developers/core/docs) for any\nadditional remarks.\n\nPlease note:\n  * `https://api-content.dropbox.com` end-points are covered by Dropbox Content API document (see `dropbox-content.yaml`)\n  * `https://api-notify.dropbox.com` end-points are covered by Dropbox Notify Appendix document (see `dropbox-notify.yaml`)\n\nPlease refer to Dropbox for Business API document (see `dropbox-business.yaml`) team, groups, members and other\nfunctionality available for company subscription accounts.\n",
+    "description" : "The **Core API** is the underlying interface for all of our official [Dropbox mobile apps](https://www.dropbox.com/mobile)\nand our [SDKs](https://www.dropbox.com/developers/core/sdk). It's the most direct way to access the API. This\nreference document is designed for those interested in developing for platforms not supported by the SDKs or for\nthose interested in exploring API features in detail.\n\nPlease refer to official Dropbox [developers documentation](https://www.dropbox.com/developers/core/docs) for any\nadditional remarks.\n\nPlease note:\n  * `https://api-content.dropbox.com` end-points are covered by Dropbox Content API document (see `dropbox-content.yaml`)\n  * `https://api-notify.dropbox.com` end-points are covered by Dropbox Notify Appendix document (see `dropbox-notify.yaml`)\n\nPlease refer to Dropbox for Business API document (see `dropbox-business.yaml`) team, groups, members and other\nfunctionality available for company subscription accounts.\n\n**OAuth note:** if you wish to try HTTP request directly from Swagger UI you have to authorize agains\n\"Swagger UI Test App\". This application is configured with following redirect URI:\n  * `http://localhost:8000/o2c.html` - Swagger UI running at `localhost`, port `8000`\n  * `http://localhost:8080/o2c.html` - Swagger UI running at `localhost`, port `8080`\n",
     "version" : "1.0.0",
     "title" : "Dropbox Core API",
     "termsOfService" : "https://www.dropbox.com/developers/reference/tos",
@@ -1930,10 +1930,7 @@
     "dropbox_auth" : {
       "type" : "oauth2",
       "authorizationUrl" : "https://www.dropbox.com/1/oauth2/authorize",
-      "flow" : "implicit",
-      "scopes" : {
-        "dummy" : "DO NOT CHECK!!! Swagger UI OAuth requires scopes to be defined, Dropbox from the other side does not accept any scope"
-      }
+      "flow" : "implicit"
     }
   },
   "definitions" : {
