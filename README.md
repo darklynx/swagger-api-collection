@@ -30,7 +30,7 @@ Python comes with a [simple HTTP server](https://docs.python.org/2/library/simpl
     Serving HTTP on 0.0.0.0 port 8000 ...
 
 
-Now you can open browser at URL: `http://localhost:8000/`
+Now you can open a browser and go to the URL: `http://localhost:8000/`
 
 ### Twisted
 
@@ -42,7 +42,7 @@ Now you can open browser at URL: `http://localhost:8000/`
     2015-06-20 00:09:13+0200 [-] reactor class: twisted.internet.epollreactor.EPollReactor.
     2015-06-20 00:09:13+0200 [-] Site starting on 8080
 
-Now you can open browser at URL: `http://localhost:8080/`
+Now you can open a browser and go to the URL: `http://localhost:8080/`
 
 ### NodeJS
 
@@ -56,7 +56,7 @@ Launch the server with following command:
     Starting up http-server, serving . on: http://0.0.0.0:8080
     Hit CTRL-C to stop the server
 
-Now you can open browser at URL: `http://localhost:8080/`
+Now you can open a browser and go to the URL: `http://localhost:8080/`
 
 ### Other alternatives
 
