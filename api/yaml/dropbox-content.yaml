@@ -1,0 +1,106 @@
+###########################################################
+#
+#  Description of Dropbox Core API
+#
+#  License: MIT (see http://choosealicense.com/licenses/mit/)
+#  Author: Vladimir Lyubitelev
+#
+swagger: '2.0'
+
+# Description
+info:
+  version: 1.0.0
+  title: Dropbox Content API
+  description: |
+      The **Content API** is a part of [Dropbox Core API](https://www.dropbox.com/developers/core/docs) that has a
+      separate enpoint for content related operations: `https://api-content.dropbox.com`
+
+      Please refer to Dropbox **Core API** document if you are interested in tokens management, account information,
+      metadata retrieval or file operations.
+  termsOfService: https://www.dropbox.com/developers/reference/tos
+  contact:
+    name: Dropbox
+    url: https://www.dropbox.com/developers
+
+host: api-content.dropbox.com
+basePath: /1
+schemes:
+  - https
+
+# Groups and their descriptions
+tags:
+  - name: files
+    description: Files content management
+
+# Security
+securityDefinitions:
+  dropbox_auth:
+    description: |
+        See Dropbox [OAuth official Guide](https://www.dropbox.com/developers/reference/oauthguide) and
+        [Short Example](https://blogs.dropbox.com/developers/2013/07/using-oauth-2-0-with-the-core-api)
+    type: oauth2
+    authorizationUrl: https://www.dropbox.com/1/oauth2/authorize
+    flow: implicit
+
+# URL patterns
+paths:
+  /files/{root}/{path}:
+    get:
+      tags:
+        - files
+      produces:
+        - application/octet-stream
+      summary: Downloads a file.
+      description: |
+          Downloads a file.
+
+          This method also supports [HTTP Range Retrieval Requests](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.35.2)
+          to allow retrieving partial file contents.
+      parameters:
+        - name: root
+          in: path
+          type: string
+          enum: [ 'auto', 'sandbox', 'dropbox' ]
+          required: true
+          description: |
+              Root folder: `auto` - automatically determines the appropriate root folder using your app's permission
+              level (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.
+        - name: path
+          in: path
+          type: string
+          required: true
+          description: The path to the file you want to retrieve.
+        - name: rev
+          in: query
+          type: string
+          required: false
+          description: The revision of the file to retrieve. This defaults to the most recent revision.
+      responses:
+        200:
+          description: |
+              The specified file's contents at the requested revision.
+
+              The HTTP response contains the [content metadata](https://www.dropbox.com/developers/core/docs#metadata-details)
+              in JSON format within an `x-dropbox-metadata` header.
+        401:
+          description: |
+              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
+              you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        404:
+          description: The file wasn't found at the specified path, or wasn't found at the specified `rev`.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+      security:
+        - dropbox_auth: []
+
+# Model
+definitions:
+  ErrorMessage:
+    required:
+      - error
+    properties:
+      error:
+        type: string
+        description: Error description

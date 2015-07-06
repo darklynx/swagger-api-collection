@@ -1,0 +1,88 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "The **Content API** is a part of [Dropbox Core API](https://www.dropbox.com/developers/core/docs) that has a\nseparate enpoint for content related operations: `https://api-content.dropbox.com`\n\nPlease refer to Dropbox **Core API** document if you are interested in tokens management, account information,\nmetadata retrieval or file operations.\n",
+    "version" : "1.0.0",
+    "title" : "Dropbox Content API",
+    "termsOfService" : "https://www.dropbox.com/developers/reference/tos",
+    "contact" : {
+      "name" : "Dropbox",
+      "url" : "https://www.dropbox.com/developers"
+    }
+  },
+  "host" : "api-content.dropbox.com",
+  "basePath" : "/1",
+  "tags" : [ {
+    "name" : "files",
+    "description" : "Files content management"
+  } ],
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/files/{root}/{path}" : {
+      "get" : {
+        "tags" : [ "files" ],
+        "summary" : "Downloads a file.",
+        "description" : "Downloads a file.\n\nThis method also supports [HTTP Range Retrieval Requests](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.35.2)\nto allow retrieving partial file contents.\n",
+        "produces" : [ "application/octet-stream" ],
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "path",
+          "description" : "Root folder: `auto` - automatically determines the appropriate root folder using your app's permission\nlevel (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "path",
+          "description" : "The path to the file you want to retrieve.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "rev",
+          "in" : "query",
+          "description" : "The revision of the file to retrieve. This defaults to the most recent revision.",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The specified file's contents at the requested revision.\n\nThe HTTP response contains the [content metadata](https://www.dropbox.com/developers/core/docs#metadata-details)\nin JSON format within an `x-dropbox-metadata` header.\n"
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "404" : {
+            "description" : "The file wasn't found at the specified path, or wasn't found at the specified `rev`.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          }
+        },
+        "security" : [ {
+          "dropbox_auth" : [ ]
+        } ]
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "dropbox_auth" : {
+      "type" : "oauth2",
+      "authorizationUrl" : "https://www.dropbox.com/1/oauth2/authorize",
+      "flow" : "implicit"
+    }
+  },
+  "definitions" : {
+    "ErrorMessage" : {
+      "required" : [ "error" ],
+      "properties" : {
+        "error" : {
+          "type" : "string",
+          "description" : "Error description"
+        }
+      }
+    }
+  }
+}

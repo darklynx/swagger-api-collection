@@ -10,6 +10,11 @@
     "url": "api/json/dropbox-core.json",
     "clientId": "k3ptuh4b1rjz82n"
   },
+  "dropbox-content": {
+    "name": "Dropbox Core API (content)",
+    "url": "api/json/dropbox-content.json",
+    "clientId": "k3ptuh4b1rjz82n"
+  },
   "petstore": {
     "name": "Swagger Petstore API (demo)",
     "url": "http://petstore.swagger.io/v2/swagger.json",
