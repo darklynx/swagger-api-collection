@@ -135,10 +135,6 @@ paths:
           description: File or folder not found at the specified path.
           schema:
             $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
@@ -275,10 +271,6 @@ paths:
           description: File or folder not found at the specified path.
           schema:
             $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
         406:
           description: There are too many file entries to return.
           schema:
@@ -409,10 +401,6 @@ paths:
           description: File or folder not found at the specified path.
           schema:
             $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
@@ -491,10 +479,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         404:
           description: File or folder not found at the specified path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
           schema:
             $ref: '#/definitions/ErrorMessage'
         429:
@@ -583,10 +567,6 @@ paths:
           description: File or folder not found at the specified path.
           schema:
             $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
@@ -671,10 +651,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         404:
           description: File not found at the specified path, or unable to find the revision at that path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
           schema:
             $ref: '#/definitions/ErrorMessage'
         429:
@@ -782,10 +758,6 @@ paths:
           description: File not found at the specified path, or unable to find the revision at that path.
           schema:
             $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
@@ -892,10 +864,6 @@ paths:
           description: File not found at the specified path, or unable to find the revision at that path.
           schema:
             $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
@@ -991,10 +959,6 @@ paths:
           description: File or folder not found at the specified path.
           schema:
             $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
@@ -1080,10 +1044,6 @@ paths:
           description: File or folder not found at the specified path.
           schema:
             $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
@@ -1156,10 +1116,6 @@ paths:
           description: File not found at the specified path, or unable to find the revision at that path.
           schema:
             $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
@@ -1229,10 +1185,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         404:
           description: File not found at the specified path, or unable to find the revision at that path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
           schema:
             $ref: '#/definitions/ErrorMessage'
         429:
@@ -1309,10 +1261,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         404:
           description: File not found at the specified path, or unable to find the revision at that path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
           schema:
             $ref: '#/definitions/ErrorMessage'
         429:
@@ -1393,10 +1341,6 @@ paths:
           description: File or folder not found at the specified path.
           schema:
             $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
@@ -1462,10 +1406,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         404:
           description: File or folder not found at the specified path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
           schema:
             $ref: '#/definitions/ErrorMessage'
         429:
@@ -1557,10 +1497,6 @@ paths:
           description: The source file wasn't found at the specified path.
           schema:
             $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
         406:
           description: |
               Too many files would be involved in the operation for it to complete successfully. The limit is
@@ -1641,10 +1577,6 @@ paths:
           description: File or folder not found at the specified path.
           schema:
             $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
         429:
           description: |
               Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
@@ -1719,10 +1651,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         404:
           description: No file was found at the specified path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
           schema:
             $ref: '#/definitions/ErrorMessage'
         406:
@@ -1811,10 +1739,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         404:
           description: The source file wasn't found at the specified path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        405:
-          description: Request method not expected (generally should be GET or POST).
           schema:
             $ref: '#/definitions/ErrorMessage'
         406:
