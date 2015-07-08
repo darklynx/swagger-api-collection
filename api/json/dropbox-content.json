@@ -65,6 +65,166 @@
           "dropbox_auth" : [ ]
         } ]
       }
+    },
+    "/files_put/{root}/{path}" : {
+      "post" : {
+        "tags" : [ "files" ],
+        "summary" : "Uploads a file using PUT semantics.",
+        "description" : "Uploads a file using PUT semantics.\n\nThe preferred HTTP method for this call is **PUT**. For compatibility with browser environments, the **POST**\nHTTP method is also recognized.\n\n**Note:** Providing a `Content-Length` header set to the size of the uploaded file is required so that the\nserver can verify that it has received the entire file contents.\n\n**Note:** `/files_put` has a maximum file size limit of 150 MB and does not support uploads with chunked\nencoding. To upload larger files, use [/chunked_upload](https://www.dropbox.com/developers/core/docs#chunked-upload)\ninstead.\n",
+        "consumes" : [ "application/octet-stream", "text/plain" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "path",
+          "description" : "Root folder: `auto` - automatically determines the appropriate root folder using your app's permission\nlevel (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "path",
+          "description" : "The full path to the file you want to write to. This parameter should *not* point to a folder.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "locale",
+          "in" : "query",
+          "description" : "The metadata returned on successful upload will have its `size` field translated based on the given locale.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "overwrite",
+          "in" : "query",
+          "description" : "This value, either `true` (default) or `false`, determines whether an existing file will be overwritten\nby this upload. If `true`, any existing file will be overwritten. If `false`, the other parameters\ndetermine whether a conflict occurs and how that conflict is resolved.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "parent_rev",
+          "in" : "query",
+          "description" : "If present, this parameter specifies the revision of the file you're editing. If `parent_rev` matches the\nlatest version of the file on the user's Dropbox, that file will be replaced. Otherwise, a conflict will\noccur. If you specify a `parent_rev` and that revision doesn't exist, the file won't save (error 400).\nYou can get the most recent rev by performing a call to [/metadata](https://www.dropbox.com/developers/core/docs#metadata).\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "autorename",
+          "in" : "query",
+          "description" : "This value, either `true` (default) or `false`, determines what happens when there is a conflict. If `true`,\nthe file being uploaded will be automatically renamed to avoid the conflict. (For example, `test.txt` might\nbe automatically renamed to `test (1).txt`.) The new name can be obtained from the returned metadata.\nIf `false`, the call will fail with a 409 (Conflict) response code.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "file_content",
+          "description" : "The file contents to be uploaded. Since the entire PUT body will be treated as the file, any parameters\nmust be passed as part of the request URL. The request URL should be signed just as you would sign any\nother OAuth request URL.\n",
+          "required" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The metadata for the uploaded file. More information on the returned metadata fields are\navailable [here](https://www.dropbox.com/developers/core/docs#metadata-details).\n",
+            "schema" : {
+              "$ref" : "#/definitions/FileMetadata"
+            }
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "409" : {
+            "description" : "The call failed because a conflict occurred. This means a file already existed at the specified path,\n`overwrite` was false, and the `parent_rev` (if specified) didn't match the current `rev`.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "411" : {
+            "description" : "Missing `Content-Length` header (this endpoint doesn't support HTTP chunked transfer encoding).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          }
+        },
+        "security" : [ {
+          "dropbox_auth" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "files" ],
+        "summary" : "Uploads a file using PUT semantics.",
+        "description" : "Uploads a file using PUT semantics.\n\nThe preferred HTTP method for this call is **PUT**. For compatibility with browser environments, the **POST**\nHTTP method is also recognized.\n\n**Note:** Providing a `Content-Length` header set to the size of the uploaded file is required so that the\nserver can verify that it has received the entire file contents.\n\n**Note:** `/files_put` has a maximum file size limit of 150 MB and does not support uploads with chunked\nencoding. To upload larger files, use [/chunked_upload](https://www.dropbox.com/developers/core/docs#chunked-upload)\ninstead.\n",
+        "consumes" : [ "application/octet-stream", "text/plain" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "path",
+          "description" : "Root folder: `auto` - automatically determines the appropriate root folder using your app's permission\nlevel (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "path",
+          "description" : "The full path to the file you want to write to. This parameter should *not* point to a folder.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "locale",
+          "in" : "query",
+          "description" : "The metadata returned on successful upload will have its `size` field translated based on the given locale.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "overwrite",
+          "in" : "query",
+          "description" : "This value, either `true` (default) or `false`, determines whether an existing file will be overwritten\nby this upload. If `true`, any existing file will be overwritten. If `false`, the other parameters\ndetermine whether a conflict occurs and how that conflict is resolved.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "parent_rev",
+          "in" : "query",
+          "description" : "If present, this parameter specifies the revision of the file you're editing. If `parent_rev` matches the\nlatest version of the file on the user's Dropbox, that file will be replaced. Otherwise, a conflict will\noccur. If you specify a `parent_rev` and that revision doesn't exist, the file won't save (error 400).\nYou can get the most recent rev by performing a call to [/metadata](https://www.dropbox.com/developers/core/docs#metadata).\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "autorename",
+          "in" : "query",
+          "description" : "This value, either `true` (default) or `false`, determines what happens when there is a conflict. If `true`,\nthe file being uploaded will be automatically renamed to avoid the conflict. (For example, `test.txt` might\nbe automatically renamed to `test (1).txt`.) The new name can be obtained from the returned metadata.\nIf `false`, the call will fail with a 409 (Conflict) response code.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "file_content",
+          "description" : "The file contents to be uploaded. Since the entire PUT body will be treated as the file, any parameters\nmust be passed as part of the request URL. The request URL should be signed just as you would sign any\nother OAuth request URL.\n",
+          "required" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The metadata for the uploaded file. More information on the returned metadata fields are\navailable [here](https://www.dropbox.com/developers/core/docs#metadata-details).\n",
+            "schema" : {
+              "$ref" : "#/definitions/FileMetadata"
+            }
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "409" : {
+            "description" : "The call failed because a conflict occurred. This means a file already existed at the specified path,\n`overwrite` was false, and the `parent_rev` (if specified) didn't match the current `rev`.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "411" : {
+            "description" : "Missing `Content-Length` header (this endpoint doesn't support HTTP chunked transfer encoding).",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          }
+        },
+        "security" : [ {
+          "dropbox_auth" : [ ]
+        } ]
+      }
     }
   },
   "securityDefinitions" : {
@@ -81,6 +241,61 @@
         "error" : {
           "type" : "string",
           "description" : "Error description"
+        }
+      }
+    },
+    "FileMetadata" : {
+      "required" : [ "bytes", "icon", "is_dir", "mime_type", "modified", "path", "rev", "revision", "root", "size", "thumb_exists" ],
+      "properties" : {
+        "size" : {
+          "type" : "string",
+          "description" : "A human-readable description of the file size (translated by [locale](https://www.dropbox.com/developers/core/docs#param.locale))"
+        },
+        "bytes" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The file size in bytes"
+        },
+        "path" : {
+          "type" : "string",
+          "description" : "Returns the canonical path to the file or folder"
+        },
+        "is_dir" : {
+          "type" : "boolean",
+          "description" : "Whether the given entry is a folder or not"
+        },
+        "is_deleted" : {
+          "type" : "boolean",
+          "description" : "Whether the given entry is deleted (only included if deleted files are being returned)"
+        },
+        "rev" : {
+          "type" : "string",
+          "description" : "A unique identifier for the current revision of a file; this field is the same `rev` as elsewhere in\nthe API and can be used to detect changes and avoid conflicts.\n"
+        },
+        "thumb_exists" : {
+          "type" : "boolean",
+          "description" : "`true` if the file is an image that can be converted to a thumbnail via the\n[/thumbnails](https://www.dropbox.com/developers/core/docs#thumbnails) call\n"
+        },
+        "icon" : {
+          "type" : "string",
+          "description" : "The name of the icon used to illustrate the file type in Dropbox's\n[icon library](https://www.dropbox.com/static/images/dropbox-api-icons.zip)\n"
+        },
+        "mime_type" : {
+          "type" : "string",
+          "description" : "MIME type of a file"
+        },
+        "modified" : {
+          "type" : "string",
+          "description" : "The last time the file was modified on Dropbox, in the standard\n[date format](https://www.dropbox.com/developers/core/docs#date-format) (not included for the root folder)\n"
+        },
+        "root" : {
+          "type" : "string",
+          "description" : "The root or top-level folder depending on your [access level](https://www.dropbox.com/developers/reference/devguide#app-permissions);\nall paths returned are relative to this root level; permitted values are either `dropbox` or `app_folder`\n"
+        },
+        "revision" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "A **deprecated** field that semi-uniquely identifies a file; use `rev` instead"
         }
       }
     }
