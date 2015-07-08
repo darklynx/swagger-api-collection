@@ -296,6 +296,73 @@ paths:
       security:
         - dropbox_auth: []
 
+  /thumbnails/{root}/{path}:
+    get:
+      tags:
+        - files
+      produces:
+        - application/octet-stream
+      summary: Gets a thumbnail for an image.
+      description: |
+          Gets a thumbnail for an image.
+
+          This method currently supports files with the following file extensions: "jpg", "jpeg", "png", "tiff", "tif", "gif", and "bmp".
+
+          Photos that are larger than 20MB in size won't be converted to a thumbnail.
+      parameters:
+        - name: root
+          in: path
+          type: string
+          enum: [ 'auto', 'sandbox', 'dropbox' ]
+          required: true
+          description: |
+              Root folder: `auto` - automatically determines the appropriate root folder using your app's permission
+              level (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.
+        - name: path
+          in: path
+          type: string
+          required: true
+          description: The path to the image file you want to thumbnail.
+        - name: format
+          in: query
+          type: string
+          enum:
+            - jpeg
+            - png
+          required: false
+          description: |
+              For images that are photos, `jpeg` (default) should be preferred, while `png` is better for screenshots and digital art.
+        - name: size
+          in: query
+          type: string
+          enum: [ 'xs', 's', 'm', 'l', 'xl' ]
+          required: false
+          description: Default size is `s`. Sizes in pixels are `xs` - 32x32, `s` - 64x64, `m` - 128x128, `l` - 640x480, `xl` - 1024x768
+      responses:
+        200:
+          description: |
+              A thumbnail of the specified image's contents. The image returned may be larger or smaller than the size
+              requested, depending on the size and aspect ratio of the original image.
+
+              The HTTP response contains the [content metadata](https://www.dropbox.com/developers/core/docs#metadata-details)
+              in JSON format within an `x-dropbox-metadata` header.
+        401:
+          description: |
+              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
+              you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        404:
+          description: The file path wasn't found or the file extension doesn't allow conversion to a thumbnail.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        415:
+          description: The image is invalid and cannot be converted to a thumbnail.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+      security:
+        - dropbox_auth: []
+
 # Model
 definitions:
   ErrorMessage:
