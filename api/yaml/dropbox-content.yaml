@@ -12,11 +12,18 @@ info:
   version: 1.0.0
   title: Dropbox Content API
   description: |
-      The **Content API** is a part of [Dropbox Core API](https://www.dropbox.com/developers/core/docs) that has a
-      separate enpoint for content related operations: `https://api-content.dropbox.com`
+      The Dropbox **Content API** is a part of [Dropbox Core API](https://www.dropbox.com/developers/core/docs) with a separate
+      end-point for file content management operations: `https://api-content.dropbox.com`
 
-      Please refer to Dropbox **Core API** document if you are interested in tokens management, account information,
-      metadata retrieval or file operations.
+      The Dropbox **Core API** document (see `dropbox-core.yaml`) describes tokens management, account information,
+      metadata retrieval and file operations.
+
+      **OAuth note:** if you wish to try HTTP request directly from Swagger UI you have to authorize agains
+      "Swagger UI Test App". This application is configured with following redirect URI:
+        * `http://localhost:8000/o2c.html` - Swagger UI running at `localhost`, port `8000`
+        * `http://localhost:8080/o2c.html` - Swagger UI running at `localhost`, port `8080`
+
+      Last update: 2015-07-09
   termsOfService: https://www.dropbox.com/developers/reference/tos
   contact:
     name: Dropbox
@@ -138,7 +145,7 @@ paths:
           description: The metadata returned on successful upload will have its `size` field translated based on the given locale.
         - name: overwrite
           in: query
-          type: string
+          type: boolean
           required: false
           description: |
               This value, either `true` (default) or `false`, determines whether an existing file will be overwritten
@@ -155,7 +162,7 @@ paths:
               You can get the most recent rev by performing a call to [/metadata](https://www.dropbox.com/developers/core/docs#metadata).
         - name: autorename
           in: query
-          type: string
+          type: boolean
           required: false
           description: |
               This value, either `true` (default) or `false`, determines what happens when there is a conflict. If `true`,
@@ -167,7 +174,7 @@ paths:
           type: string
           required: true
           description: |
-              The file contents to be uploaded. Since the entire PUT body will be treated as the file, any parameters
+              The file contents to be uploaded. Since the entire `PUT` body will be treated as the file, any parameters
               must be passed as part of the request URL. The request URL should be signed just as you would sign any
               other OAuth request URL.
       responses:
@@ -238,7 +245,7 @@ paths:
           description: The metadata returned on successful upload will have its `size` field translated based on the given locale.
         - name: overwrite
           in: query
-          type: string
+          type: boolean
           required: false
           description: |
               This value, either `true` (default) or `false`, determines whether an existing file will be overwritten
@@ -255,7 +262,7 @@ paths:
               You can get the most recent rev by performing a call to [/metadata](https://www.dropbox.com/developers/core/docs#metadata).
         - name: autorename
           in: query
-          type: string
+          type: boolean
           required: false
           description: |
               This value, either `true` (default) or `false`, determines what happens when there is a conflict. If `true`,
@@ -267,7 +274,7 @@ paths:
           type: string
           required: true
           description: |
-              The file contents to be uploaded. Since the entire PUT body will be treated as the file, any parameters
+              The file contents to be uploaded. Since the entire `PUT` body will be treated as the file, any parameters
               must be passed as part of the request URL. The request URL should be signed just as you would sign any
               other OAuth request URL.
       responses:
@@ -306,7 +313,7 @@ paths:
       description: |
           Gets a thumbnail for an image.
 
-          This method currently supports files with the following file extensions: "jpg", "jpeg", "png", "tiff", "tif", "gif", and "bmp".
+          This method currently supports files with the following file extensions: .jpg, .jpeg, .png, .tiff, .tif, .gif, .bmp
 
           Photos that are larger than 20MB in size won't be converted to a thumbnail.
       parameters:
@@ -358,6 +365,233 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         415:
           description: The image is invalid and cannot be converted to a thumbnail.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+      security:
+        - dropbox_auth: []
+
+  /previews/{root}/{path}:
+    get:
+      tags:
+        - files
+      produces:
+        - application/pdf
+        - text/html
+      summary: Gets a preview for a file.
+      description: |
+          Gets a preview for a file.
+
+          Previews are only generated for the files with the following extensions: .doc, .docx, .docm, .ppt, .pps,
+          .ppsx, .ppsm, .pptx, .pptm, .xls, .xlsx, .xlsm, .rtf
+      parameters:
+        - name: root
+          in: path
+          type: string
+          enum: [ 'auto', 'sandbox', 'dropbox' ]
+          required: true
+          description: |
+              Root folder: `auto` - automatically determines the appropriate root folder using your app's permission
+              level (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.
+        - name: path
+          in: path
+          type: string
+          required: true
+          description: The absolute path to the file you want to preview.
+        - name: rev
+          in: query
+          type: string
+          required: false
+          description: The revision of the file to retrieve. This defaults to the most recent revision.
+      responses:
+        200:
+          description: |
+              Data that represents a preview of the file. The Content-Type header will be either `application/pdf` or
+              `text/html`. There is a `Original-Content-Length` header which contains the size of the preview data.
+        401:
+          description: |
+              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
+              you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        404:
+          description: The file wasn't found at the specified path, or wasn't found at the specified `rev`.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        409:
+          description: No preview has been generated yet or unable to generate a preview for the file.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+      security:
+        - dropbox_auth: []
+
+  /chunked_upload:
+    put:
+      tags:
+        - files
+      consumes:
+        - application/octet-stream
+      produces:
+        - application/json
+      summary: Uploads large files to Dropbox in multiple chunks.
+      description: |
+          Uploads large files to Dropbox in multiple chunks. Also has the ability to resume if the upload is interrupted.
+          This allows for uploads larger than the `/files_put` maximum of 150 MB.
+
+          Typical usage:
+            1. Send a PUT request to `/chunked_upload` with the first chunk of the file without setting `upload_id`, and
+            receive an `upload_id` in return.
+            2. Repeatedly `PUT` subsequent chunks using the `upload_id` to identify the upload in progress and an `offset`
+            representing the number of bytes transferred so far.
+            3. After each chunk has been uploaded, the server returns a new offset representing the total amount transferred.
+            4. After the last chunk, `POST` to `/commit_chunked_upload` to complete the upload.
+
+          Chunks can be any size up to 150 MB. A typical chunk is 4 MB. Using large chunks will mean fewer calls
+          to `/chunked_upload` and faster overall throughput. However, whenever a transfer is interrupted, you will
+          have to resume at the beginning of the last chunk, so it is often safer to use smaller chunks.
+
+          If the offset you submit does not match the expected offset on the server, the server will ignore the request
+          and respond with a 400 error that includes the current offset. To resume upload, seek to the correct offset
+          (in bytes) within the file and then resume uploading from that point.
+
+          A chunked upload can take a maximum of 48 hours before expiring.
+      parameters:
+        - name: upload_id
+          in: query
+          type: string
+          required: false
+          description: |
+              The unique ID of the in-progress upload on the server. If left blank, the server will create a new
+              upload session.
+        - name: offset
+          in: query
+          type: integer
+          format: int64
+          required: false
+          description: |
+              The byte offset of this chunk, relative to the beginning of the full file. The server will verify that
+              this matches the offset it expects. If it does not, the server will return an error with the expected
+              offset.
+        - name: file_content
+          in: body
+          type: string
+          required: true
+          description: |
+              A chunk of data from the file being uploaded. If resuming, the chunk should begin at the number of bytes
+              into the file that equals the `offset`.
+      responses:
+        200:
+          description: |
+              Data that represents a preview of the file. The Content-Type header will be either `application/pdf` or
+              `text/html`. There is a `Original-Content-Length` header which contains the size of the preview data.
+          schema:
+            $ref: '#/definitions/ChunkedUploadInfo'
+        400:
+          description: |
+              The `offset` parameter does not match up with what the server expects. The body of the error response
+              will be JSON similar to the above, indicating the correct `offset` to upload.
+          schema:
+            $ref: '#/definitions/ChunkedUploadError'
+        401:
+          description: |
+              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
+              you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        404:
+          description: The `upload_id` does not exist or has expired.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+      security:
+        - dropbox_auth: []
+
+  /commit_chunked_upload/{root}/{path}:
+    post:
+      tags:
+        - files
+      produces:
+        - application/json
+      summary: Completes an upload initiated by the chunked upload method.
+      description: |
+          Completes an upload initiated by the `/chunked_upload` method. Saves a file uploaded via `/chunked_upload` to
+          a user's Dropbox.
+
+          `/commit_chunked_upload` is similar to `/files_put`. The main difference is that while `/files_put` takes the
+          file contents in the request body, `/commit_chunked_upload` takes a parameter `upload_id`, which is obtained
+          when the file contents are uploaded via `/chunked_upload`.
+      parameters:
+        - name: root
+          in: path
+          type: string
+          enum: [ 'auto', 'sandbox', 'dropbox' ]
+          required: true
+          description: |
+              Root folder: `auto` - automatically determines the appropriate root folder using your app's permission
+              level (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.
+        - name: path
+          in: path
+          type: string
+          required: true
+          description: The full path to the file you want to write to. This parameter should not point to a folder.
+        - name: locale
+          in: query
+          type: string
+          required: false
+          description: |
+              The metadata returned on successful upload will have its `size` field translated based on the given locale.
+        - name: overwrite
+          in: query
+          type: boolean
+          required: false
+          description: |
+              This value, either `true` (default) or `false`, determines whether an existing file will be overwritten by
+              this upload. If `true`, any existing file will be overwritten. If `false`, the other parameters determine
+              whether a conflict occurs and how that conflict is resolved.
+        - name: parent_rev
+          in: query
+          type: string
+          required: false
+          description: |
+              If present, this parameter specifies the revision of the file you're editing. If `parent_rev` matches the
+              latest version of the file on the user's Dropbox, that file will be replaced. Otherwise, a conflict will
+              occur. If you specify a `parent_rev` and that revision doesn't exist, the file won't save (error 400).
+              You can get the most recent `rev` by performing a call to [/metadata](https://www.dropbox.com/developers/core/docs#metadata).
+        - name: autorename
+          in: query
+          type: boolean
+          required: false
+          description: |
+              This value, either `true` (default) or `false`, determines what happens when there is a conflict. If `true`,
+              the file being uploaded will be automatically renamed to avoid the conflict. (For example, `test.txt` might
+              be automatically renamed to `test (1).txt`.) The new name can be obtained from the returned metadata.
+              If `false`, the call will fail with a 409 (Conflict) response code.
+        - name: upload_id
+          in: query
+          type: string
+          required: true
+          description: Used to identify the chunked upload session you'd like to commit.
+      responses:
+        200:
+          description: |
+              The metadata for the uploaded file. More information on the returned metadata fields are
+              available [here](https://www.dropbox.com/developers/core/docs#metadata-details).
+          schema:
+            $ref: '#/definitions/FileMetadata'
+        400:
+          description: |
+              Returned if the request does not contain an `upload_id` or if there is no chunked upload matching
+              the given `upload_id`.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        401:
+          description: |
+              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
+              you should re-authenticate the user.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        409:
+          description: |
+              The call failed because a conflict occurred. This means a file already existed at the specified path,
+              overwrite was `false`, and the `parent_rev` (if specified) didn't match the current `rev`.
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -434,3 +668,41 @@ definitions:
       revision:
         type: integer
         description: A **deprecated** field that semi-uniquely identifies a file; use `rev` instead
+
+  ChunkedUploadInfo:
+    required:
+      - upload_id
+      - offset
+      - expires
+    properties:
+      upload_id:
+        type: string
+        description: The unique ID of the in-progress upload on the server
+      offset:
+        type: integer
+        format: int64
+        description: The total amount of bytes transferred to the server for this upload session
+      expires:
+        type: string
+        description: The time this upload session will expire at in the standard [date format](https://www.dropbox.com/developers/core/docs#date-format)
+
+  ChunkedUploadError:
+    required:
+      - upload_id
+      - offset
+      - expires
+      - error
+    properties:
+      upload_id:
+        type: string
+        description: The unique ID of the in-progress upload on the server
+      offset:
+        type: integer
+        format: int64
+        description: The total amount of bytes transferred to the server for this upload session
+      expires:
+        type: string
+        description: The time this upload session will expire at in the standard [date format](https://www.dropbox.com/developers/core/docs#date-format)
+      error:
+        type: string
+        description: Error description

@@ -1,7 +1,7 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "The **Content API** is a part of [Dropbox Core API](https://www.dropbox.com/developers/core/docs) that has a\nseparate enpoint for content related operations: `https://api-content.dropbox.com`\n\nPlease refer to Dropbox **Core API** document if you are interested in tokens management, account information,\nmetadata retrieval or file operations.\n",
+    "description" : "The Dropbox **Content API** is a part of [Dropbox Core API](https://www.dropbox.com/developers/core/docs) with a separate\nend-point for file content management operations: `https://api-content.dropbox.com`\n\nThe Dropbox **Core API** document (see `dropbox-core.yaml`) describes tokens management, account information,\nmetadata retrieval and file operations.\n\n**OAuth note:** if you wish to try HTTP request directly from Swagger UI you have to authorize agains\n\"Swagger UI Test App\". This application is configured with following redirect URI:\n  * `http://localhost:8000/o2c.html` - Swagger UI running at `localhost`, port `8000`\n  * `http://localhost:8080/o2c.html` - Swagger UI running at `localhost`, port `8080`\n\nLast update: 2015-07-09\n",
     "version" : "1.0.0",
     "title" : "Dropbox Content API",
     "termsOfService" : "https://www.dropbox.com/developers/reference/tos",
@@ -97,7 +97,7 @@
           "in" : "query",
           "description" : "This value, either `true` (default) or `false`, determines whether an existing file will be overwritten\nby this upload. If `true`, any existing file will be overwritten. If `false`, the other parameters\ndetermine whether a conflict occurs and how that conflict is resolved.\n",
           "required" : false,
-          "type" : "string"
+          "type" : "boolean"
         }, {
           "name" : "parent_rev",
           "in" : "query",
@@ -109,11 +109,11 @@
           "in" : "query",
           "description" : "This value, either `true` (default) or `false`, determines what happens when there is a conflict. If `true`,\nthe file being uploaded will be automatically renamed to avoid the conflict. (For example, `test.txt` might\nbe automatically renamed to `test (1).txt`.) The new name can be obtained from the returned metadata.\nIf `false`, the call will fail with a 409 (Conflict) response code.\n",
           "required" : false,
-          "type" : "string"
+          "type" : "boolean"
         }, {
           "in" : "body",
           "name" : "file_content",
-          "description" : "The file contents to be uploaded. Since the entire PUT body will be treated as the file, any parameters\nmust be passed as part of the request URL. The request URL should be signed just as you would sign any\nother OAuth request URL.\n",
+          "description" : "The file contents to be uploaded. Since the entire `PUT` body will be treated as the file, any parameters\nmust be passed as part of the request URL. The request URL should be signed just as you would sign any\nother OAuth request URL.\n",
           "required" : true
         } ],
         "responses" : {
@@ -176,7 +176,7 @@
           "in" : "query",
           "description" : "This value, either `true` (default) or `false`, determines whether an existing file will be overwritten\nby this upload. If `true`, any existing file will be overwritten. If `false`, the other parameters\ndetermine whether a conflict occurs and how that conflict is resolved.\n",
           "required" : false,
-          "type" : "string"
+          "type" : "boolean"
         }, {
           "name" : "parent_rev",
           "in" : "query",
@@ -188,11 +188,11 @@
           "in" : "query",
           "description" : "This value, either `true` (default) or `false`, determines what happens when there is a conflict. If `true`,\nthe file being uploaded will be automatically renamed to avoid the conflict. (For example, `test.txt` might\nbe automatically renamed to `test (1).txt`.) The new name can be obtained from the returned metadata.\nIf `false`, the call will fail with a 409 (Conflict) response code.\n",
           "required" : false,
-          "type" : "string"
+          "type" : "boolean"
         }, {
           "in" : "body",
           "name" : "file_content",
-          "description" : "The file contents to be uploaded. Since the entire PUT body will be treated as the file, any parameters\nmust be passed as part of the request URL. The request URL should be signed just as you would sign any\nother OAuth request URL.\n",
+          "description" : "The file contents to be uploaded. Since the entire `PUT` body will be treated as the file, any parameters\nmust be passed as part of the request URL. The request URL should be signed just as you would sign any\nother OAuth request URL.\n",
           "required" : true
         } ],
         "responses" : {
@@ -230,7 +230,7 @@
       "get" : {
         "tags" : [ "files" ],
         "summary" : "Gets a thumbnail for an image.",
-        "description" : "Gets a thumbnail for an image.\n\nThis method currently supports files with the following file extensions: \"jpg\", \"jpeg\", \"png\", \"tiff\", \"tif\", \"gif\", and \"bmp\".\n\nPhotos that are larger than 20MB in size won't be converted to a thumbnail.\n",
+        "description" : "Gets a thumbnail for an image.\n\nThis method currently supports files with the following file extensions: .jpg, .jpeg, .png, .tiff, .tif, .gif, .bmp\n\nPhotos that are larger than 20MB in size won't be converted to a thumbnail.\n",
         "produces" : [ "application/octet-stream" ],
         "parameters" : [ {
           "name" : "root",
@@ -278,6 +278,198 @@
           },
           "415" : {
             "description" : "The image is invalid and cannot be converted to a thumbnail.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          }
+        },
+        "security" : [ {
+          "dropbox_auth" : [ ]
+        } ]
+      }
+    },
+    "/previews/{root}/{path}" : {
+      "get" : {
+        "tags" : [ "files" ],
+        "summary" : "Gets a preview for a file.",
+        "description" : "Gets a preview for a file.\n\nPreviews are only generated for the files with the following extensions: .doc, .docx, .docm, .ppt, .pps,\n.ppsx, .ppsm, .pptx, .pptm, .xls, .xlsx, .xlsm, .rtf\n",
+        "produces" : [ "application/pdf", "text/html" ],
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "path",
+          "description" : "Root folder: `auto` - automatically determines the appropriate root folder using your app's permission\nlevel (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "path",
+          "description" : "The absolute path to the file you want to preview.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "rev",
+          "in" : "query",
+          "description" : "The revision of the file to retrieve. This defaults to the most recent revision.",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Data that represents a preview of the file. The Content-Type header will be either `application/pdf` or\n`text/html`. There is a `Original-Content-Length` header which contains the size of the preview data.\n"
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "404" : {
+            "description" : "The file wasn't found at the specified path, or wasn't found at the specified `rev`.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "409" : {
+            "description" : "No preview has been generated yet or unable to generate a preview for the file.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          }
+        },
+        "security" : [ {
+          "dropbox_auth" : [ ]
+        } ]
+      }
+    },
+    "/chunked_upload" : {
+      "put" : {
+        "tags" : [ "files" ],
+        "summary" : "Uploads large files to Dropbox in multiple chunks.",
+        "description" : "Uploads large files to Dropbox in multiple chunks. Also has the ability to resume if the upload is interrupted.\nThis allows for uploads larger than the `/files_put` maximum of 150 MB.\n\nTypical usage:\n  1. Send a PUT request to `/chunked_upload` with the first chunk of the file without setting `upload_id`, and\n  receive an `upload_id` in return.\n  2. Repeatedly `PUT` subsequent chunks using the `upload_id` to identify the upload in progress and an `offset`\n  representing the number of bytes transferred so far.\n  3. After each chunk has been uploaded, the server returns a new offset representing the total amount transferred.\n  4. After the last chunk, `POST` to `/commit_chunked_upload` to complete the upload.\n\nChunks can be any size up to 150 MB. A typical chunk is 4 MB. Using large chunks will mean fewer calls\nto `/chunked_upload` and faster overall throughput. However, whenever a transfer is interrupted, you will\nhave to resume at the beginning of the last chunk, so it is often safer to use smaller chunks.\n\nIf the offset you submit does not match the expected offset on the server, the server will ignore the request\nand respond with a 400 error that includes the current offset. To resume upload, seek to the correct offset\n(in bytes) within the file and then resume uploading from that point.\n\nA chunked upload can take a maximum of 48 hours before expiring.\n",
+        "consumes" : [ "application/octet-stream" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "upload_id",
+          "in" : "query",
+          "description" : "The unique ID of the in-progress upload on the server. If left blank, the server will create a new\nupload session.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "The byte offset of this chunk, relative to the beginning of the full file. The server will verify that\nthis matches the offset it expects. If it does not, the server will return an error with the expected\noffset.\n",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "file_content",
+          "description" : "A chunk of data from the file being uploaded. If resuming, the chunk should begin at the number of bytes\ninto the file that equals the `offset`.\n",
+          "required" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Data that represents a preview of the file. The Content-Type header will be either `application/pdf` or\n`text/html`. There is a `Original-Content-Length` header which contains the size of the preview data.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ChunkedUploadInfo"
+            }
+          },
+          "400" : {
+            "description" : "The `offset` parameter does not match up with what the server expects. The body of the error response\nwill be JSON similar to the above, indicating the correct `offset` to upload.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ChunkedUploadError"
+            }
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "404" : {
+            "description" : "The `upload_id` does not exist or has expired.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          }
+        },
+        "security" : [ {
+          "dropbox_auth" : [ ]
+        } ]
+      }
+    },
+    "/commit_chunked_upload/{root}/{path}" : {
+      "post" : {
+        "tags" : [ "files" ],
+        "summary" : "Completes an upload initiated by the chunked upload method.",
+        "description" : "Completes an upload initiated by the `/chunked_upload` method. Saves a file uploaded via `/chunked_upload` to\na user's Dropbox.\n\n`/commit_chunked_upload` is similar to `/files_put`. The main difference is that while `/files_put` takes the\nfile contents in the request body, `/commit_chunked_upload` takes a parameter `upload_id`, which is obtained\nwhen the file contents are uploaded via `/chunked_upload`.\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "root",
+          "in" : "path",
+          "description" : "Root folder: `auto` - automatically determines the appropriate root folder using your app's permission\nlevel (recommended); `sandbox` - the codename for app folder level; `dropbox` - full dropbox access.\n",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "auto", "sandbox", "dropbox" ]
+        }, {
+          "name" : "path",
+          "in" : "path",
+          "description" : "The full path to the file you want to write to. This parameter should not point to a folder.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "locale",
+          "in" : "query",
+          "description" : "The metadata returned on successful upload will have its `size` field translated based on the given locale.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "overwrite",
+          "in" : "query",
+          "description" : "This value, either `true` (default) or `false`, determines whether an existing file will be overwritten by\nthis upload. If `true`, any existing file will be overwritten. If `false`, the other parameters determine\nwhether a conflict occurs and how that conflict is resolved.\n",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "parent_rev",
+          "in" : "query",
+          "description" : "If present, this parameter specifies the revision of the file you're editing. If `parent_rev` matches the\nlatest version of the file on the user's Dropbox, that file will be replaced. Otherwise, a conflict will\noccur. If you specify a `parent_rev` and that revision doesn't exist, the file won't save (error 400).\nYou can get the most recent `rev` by performing a call to [/metadata](https://www.dropbox.com/developers/core/docs#metadata).\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "autorename",
+          "in" : "query",
+          "description" : "This value, either `true` (default) or `false`, determines what happens when there is a conflict. If `true`,\nthe file being uploaded will be automatically renamed to avoid the conflict. (For example, `test.txt` might\nbe automatically renamed to `test (1).txt`.) The new name can be obtained from the returned metadata.\nIf `false`, the call will fail with a 409 (Conflict) response code.\n",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "upload_id",
+          "in" : "query",
+          "description" : "Used to identify the chunked upload session you'd like to commit.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The metadata for the uploaded file. More information on the returned metadata fields are\navailable [here](https://www.dropbox.com/developers/core/docs#metadata-details).\n",
+            "schema" : {
+              "$ref" : "#/definitions/FileMetadata"
+            }
+          },
+          "400" : {
+            "description" : "Returned if the request does not contain an `upload_id` or if there is no chunked upload matching\nthe given `upload_id`.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "401" : {
+            "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          },
+          "409" : {
+            "description" : "The call failed because a conflict occurred. This means a file already existed at the specified path,\noverwrite was `false`, and the `parent_rev` (if specified) didn't match the current `rev`.\n",
             "schema" : {
               "$ref" : "#/definitions/ErrorMessage"
             }
@@ -358,6 +550,46 @@
           "type" : "integer",
           "format" : "int32",
           "description" : "A **deprecated** field that semi-uniquely identifies a file; use `rev` instead"
+        }
+      }
+    },
+    "ChunkedUploadInfo" : {
+      "required" : [ "expires", "offset", "upload_id" ],
+      "properties" : {
+        "upload_id" : {
+          "type" : "string",
+          "description" : "The unique ID of the in-progress upload on the server"
+        },
+        "offset" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The total amount of bytes transferred to the server for this upload session"
+        },
+        "expires" : {
+          "type" : "string",
+          "description" : "The time this upload session will expire at in the standard [date format](https://www.dropbox.com/developers/core/docs#date-format)"
+        }
+      }
+    },
+    "ChunkedUploadError" : {
+      "required" : [ "error", "expires", "offset", "upload_id" ],
+      "properties" : {
+        "upload_id" : {
+          "type" : "string",
+          "description" : "The unique ID of the in-progress upload on the server"
+        },
+        "offset" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The total amount of bytes transferred to the server for this upload session"
+        },
+        "expires" : {
+          "type" : "string",
+          "description" : "The time this upload session will expire at in the standard [date format](https://www.dropbox.com/developers/core/docs#date-format)"
+        },
+        "error" : {
+          "type" : "string",
+          "description" : "Error description"
         }
       }
     }

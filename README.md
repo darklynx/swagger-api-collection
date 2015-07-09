@@ -14,7 +14,7 @@ Currently available API descriptions:
 
  * `instagram.yaml` - [Instagram API](https://instagram.com/developer/endpoints/) description
  * `dropbox-core.yaml` - [Dropbox Core API](https://www.dropbox.com/developers/core/docs) description
- * `dropbox-content.yaml` - [Dropbox Core API](https://www.dropbox.com/developers/core/docs) description; content end-point (incomplete)
+ * `dropbox-content.yaml` - [Dropbox Core API](https://www.dropbox.com/developers/core/docs) description; content end-point
 
 
 ## Browser
