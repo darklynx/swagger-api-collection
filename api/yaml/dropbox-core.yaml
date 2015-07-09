@@ -12,7 +12,7 @@ info:
   version: 1.0.0
   title: Dropbox Core API
   description: |
-      The **Core API** is the underlying interface for all of our official [Dropbox mobile apps](https://www.dropbox.com/mobile)
+      The Dropbox **Core API** is the underlying interface for all of our official [Dropbox mobile apps](https://www.dropbox.com/mobile)
       and our [SDKs](https://www.dropbox.com/developers/core/sdk). It's the most direct way to access the API. This
       reference document is designed for those interested in developing for platforms not supported by the SDKs or for
       those interested in exploring API features in detail.
@@ -21,16 +21,18 @@ info:
       additional remarks.
 
       Please note:
-        * `https://api-content.dropbox.com` end-points are covered by Dropbox Content API document (see `dropbox-content.yaml`)
-        * `https://api-notify.dropbox.com` end-points are covered by Dropbox Notify Appendix document (see `dropbox-notify.yaml`)
+        * `https://api-content.dropbox.com` end-point is covered by Dropbox Content API document (see `dropbox-content.yaml`)
+        * `https://api-notify.dropbox.com` end-point is covered by Dropbox Notify Appendix document (see `dropbox-notify.yaml`)
 
-      Please refer to Dropbox for Business API document (see `dropbox-business.yaml`) team, groups, members and other
+      The Dropbox for Business API document (see `dropbox-business.yaml`) describes team, groups, members and other
       functionality available for company subscription accounts.
 
       **OAuth note:** if you wish to try HTTP request directly from Swagger UI you have to authorize agains
       "Swagger UI Test App". This application is configured with following redirect URI:
         * `http://localhost:8000/o2c.html` - Swagger UI running at `localhost`, port `8000`
         * `http://localhost:8080/o2c.html` - Swagger UI running at `localhost`, port `8080`
+
+      Last update: 2015-07-09
   termsOfService: https://www.dropbox.com/developers/reference/tos
   contact:
     name: Dropbox
