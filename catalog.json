@@ -15,6 +15,11 @@
     "url": "api/json/dropbox-content.json",
     "clientId": "k3ptuh4b1rjz82n"
   },
+  "dropbox-notify": {
+    "name": "Dropbox Core API (notify)",
+    "url": "api/json/dropbox-notify.json",
+    "clientId": "no-oauth"
+  },
   "petstore": {
     "name": "Swagger Petstore API (demo)",
     "url": "http://petstore.swagger.io/v2/swagger.json",

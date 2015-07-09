@@ -1,0 +1,85 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "The Dropbox **Notify Appendix** is a part of [Dropbox Core API](https://www.dropbox.com/developers/core/docs) with\na separate end-point for notification call: `https://api-notify.dropbox.com`\n\nThe Dropbox **Core API** document (see `dropbox-core.yaml`) describes tokens management, account information,\nmetadata retrieval and file operations.\n\nLast update: 2015-07-09\n",
+    "version" : "1.0.0",
+    "title" : "Dropbox Notify Appendix",
+    "termsOfService" : "https://www.dropbox.com/developers/reference/tos",
+    "contact" : {
+      "name" : "Dropbox",
+      "url" : "https://www.dropbox.com/developers"
+    }
+  },
+  "host" : "api-notify.dropbox.com",
+  "basePath" : "/1",
+  "tags" : [ {
+    "name" : "files",
+    "description" : "Files content management"
+  } ],
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/longpoll_delta" : {
+      "get" : {
+        "tags" : [ "files" ],
+        "summary" : "A long-poll endpoint to wait for changes on an account.",
+        "description" : "A long-poll endpoint to wait for changes on an account. In conjunction with [/delta](https://www.dropbox.com/developers/core/docs#delta),\nthis call gives you a low-latency way to monitor an account for file changes.\n\nNote that this call goes to **api-notify.dropbox.com** instead of *api.dropbox.com*.\n\nUnlike most other API endpoints, this call does not require OAuth authentication. The passed in `cursor` can\nonly be acquired via an authenticated call to [/delta](https://www.dropbox.com/developers/core/docs#delta).\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "cursor",
+          "in" : "query",
+          "description" : "A delta cursor as returned from a call to [/delta](https://www.dropbox.com/developers/core/docs#delta).\nNote that a `cursor` returned from a call to [/delta](https://www.dropbox.com/developers/core/docs#delta)\nwith `include_media_info=true` is incompatible with `/longpoll_delta` and an error will be returned.\n",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "timeout",
+          "in" : "query",
+          "description" : "An optional integer indicating a timeout, in seconds. The default value is 30 seconds, which is also the\nminimum allowed value. The maximum is 480 seconds. The request will block for at most this length of time,\nplus up to 90 seconds of random jitter added to avoid the [thundering herd problem](https://en.wikipedia.org/wiki/Thundering_herd_problem).\nCare should be taken when using this parameter, as some network infrastructure does not support long\ntimeouts.\n",
+          "required" : false,
+          "type" : "integer",
+          "maximum" : 480.0,
+          "minimum" : 30.0,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The connection will block until there are changes available or a timeout occurs. In both cases, the HTTP\nstatus code will be 200, and the response will be a JSON dictionary. The value of the changes field\nindicates whether new changes are available. If this value is `true`, you should call [/delta](https://www.dropbox.com/developers/core/docs#delta)\nto retrieve the changes. If this value is `false`, it means the call to `/longpoll_delta` timed out.\n\nIf present, the value of the `backoff` field indicates how many seconds your code should wait before\ncalling `/longpoll_delta` again.\n",
+            "schema" : {
+              "$ref" : "#/definitions/LongPollResult"
+            }
+          },
+          "400" : {
+            "description" : "One or more parameters were invalid.",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorMessage"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "ErrorMessage" : {
+      "required" : [ "error" ],
+      "properties" : {
+        "error" : {
+          "type" : "string",
+          "description" : "Error description"
+        }
+      }
+    },
+    "LongPollResult" : {
+      "required" : [ "changes" ],
+      "properties" : {
+        "changes" : {
+          "type" : "boolean",
+          "description" : "Indicates whether new changes are available, `false` means the call to `/longpoll_delta` timed out of waiting for changes"
+        },
+        "backoff" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Indicates how many seconds to wait before calling `/longpoll_delta` again"
+        }
+      }
+    }
+  }
+}

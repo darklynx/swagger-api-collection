@@ -1,0 +1,113 @@
+###########################################################
+#
+#  Description of Dropbox Core API
+#
+#  License: MIT (see http://choosealicense.com/licenses/mit/)
+#  Author: Vladimir Lyubitelev
+#
+swagger: '2.0'
+
+# Description
+info:
+  version: 1.0.0
+  title: Dropbox Notify Appendix
+  description: |
+      The Dropbox **Notify Appendix** is a part of [Dropbox Core API](https://www.dropbox.com/developers/core/docs) with
+      a separate end-point for notification call: `https://api-notify.dropbox.com`
+
+      The Dropbox **Core API** document (see `dropbox-core.yaml`) describes tokens management, account information,
+      metadata retrieval and file operations.
+
+      Last update: 2015-07-09
+  termsOfService: https://www.dropbox.com/developers/reference/tos
+  contact:
+    name: Dropbox
+    url: https://www.dropbox.com/developers
+
+host: api-notify.dropbox.com
+basePath: /1
+schemes:
+  - https
+
+# Groups and their descriptions
+tags:
+  - name: files
+    description: Files content management
+
+# URL patterns
+paths:
+  /longpoll_delta:
+    get:
+      tags:
+        - files
+      produces:
+        - application/json
+      summary: A long-poll endpoint to wait for changes on an account.
+      description: |
+          A long-poll endpoint to wait for changes on an account. In conjunction with [/delta](https://www.dropbox.com/developers/core/docs#delta),
+          this call gives you a low-latency way to monitor an account for file changes.
+
+          Note that this call goes to **api-notify.dropbox.com** instead of *api.dropbox.com*.
+
+          Unlike most other API endpoints, this call does not require OAuth authentication. The passed in `cursor` can
+          only be acquired via an authenticated call to [/delta](https://www.dropbox.com/developers/core/docs#delta).
+      parameters:
+        - name: cursor
+          in: query
+          type: string
+          required: true
+          description: |
+              A delta cursor as returned from a call to [/delta](https://www.dropbox.com/developers/core/docs#delta).
+              Note that a `cursor` returned from a call to [/delta](https://www.dropbox.com/developers/core/docs#delta)
+              with `include_media_info=true` is incompatible with `/longpoll_delta` and an error will be returned.
+        - name: timeout
+          in: query
+          type: integer
+          format: int32
+          minimum: 30
+          maximum: 480
+          required: false
+          description: |
+              An optional integer indicating a timeout, in seconds. The default value is 30 seconds, which is also the
+              minimum allowed value. The maximum is 480 seconds. The request will block for at most this length of time,
+              plus up to 90 seconds of random jitter added to avoid the [thundering herd problem](https://en.wikipedia.org/wiki/Thundering_herd_problem).
+              Care should be taken when using this parameter, as some network infrastructure does not support long
+              timeouts.
+      responses:
+        200:
+          description: |
+              The connection will block until there are changes available or a timeout occurs. In both cases, the HTTP
+              status code will be 200, and the response will be a JSON dictionary. The value of the changes field
+              indicates whether new changes are available. If this value is `true`, you should call [/delta](https://www.dropbox.com/developers/core/docs#delta)
+              to retrieve the changes. If this value is `false`, it means the call to `/longpoll_delta` timed out.
+
+              If present, the value of the `backoff` field indicates how many seconds your code should wait before
+              calling `/longpoll_delta` again.
+          schema:
+            $ref: '#/definitions/LongPollResult'
+        400:
+          description: One or more parameters were invalid.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+
+# Model
+definitions:
+  ErrorMessage:
+    required:
+      - error
+    properties:
+      error:
+        type: string
+        description: Error description
+
+  LongPollResult:
+    required:
+      - changes
+    properties:
+      changes:
+        type: boolean
+        description: Indicates whether new changes are available, `false` means the call to `/longpoll_delta` timed out of waiting for changes
+      backoff:
+        type: integer
+        format: int32
+        description: Indicates how many seconds to wait before calling `/longpoll_delta` again
