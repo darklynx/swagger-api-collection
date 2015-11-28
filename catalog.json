@@ -6,17 +6,17 @@
     "oauth2apikey": "api_key"
   },
   "dropbox-core": {
-    "name": "Dropbox Core API",
+    "name": "Dropbox Core API v1",
     "url": "api/json/dropbox-core.json",
     "clientId": "k3ptuh4b1rjz82n"
   },
   "dropbox-content": {
-    "name": "Dropbox Core API (content)",
+    "name": "Dropbox Core API v1 (content)",
     "url": "api/json/dropbox-content.json",
     "clientId": "k3ptuh4b1rjz82n"
   },
   "dropbox-notify": {
-    "name": "Dropbox Core API (notify)",
+    "name": "Dropbox Core API v1 (notify)",
     "url": "api/json/dropbox-notify.json",
     "clientId": "no-oauth"
   },
