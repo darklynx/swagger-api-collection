@@ -7,7 +7,7 @@
     "termsOfService" : "https://instagram.com/about/legal/terms/api/",
     "contact" : {
       "name" : "Instagram",
-      "url" : "https://instagram.com/developer"
+      "url" : "https://instagram.com/developer/support"
     }
   },
   "host" : "api.instagram.com",
@@ -1596,5 +1596,9 @@
         }
       }
     }
+  },
+  "externalDocs" : {
+    "description" : "Instagram Developer Documentation",
+    "url" : "https://instagram.com/developer"
   }
 }

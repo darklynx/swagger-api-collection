@@ -29,7 +29,11 @@ info:
   termsOfService: https://instagram.com/about/legal/terms/api/
   contact:
     name: Instagram
-    url: https://instagram.com/developer
+    url: https://instagram.com/developer/support
+
+externalDocs:
+  description: Instagram Developer Documentation
+  url: https://instagram.com/developer
 
 host: api.instagram.com
 basePath: /v1

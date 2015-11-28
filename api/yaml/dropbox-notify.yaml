@@ -1,6 +1,6 @@
 ###########################################################
 #
-#  Description of Dropbox Core API
+#  Description of Dropbox Content API v1
 #
 #  License: MIT (see http://choosealicense.com/licenses/mit/)
 #  Author: Vladimir Lyubitelev
@@ -10,19 +10,23 @@ swagger: '2.0'
 # Description
 info:
   version: 1.0.0
-  title: Dropbox Notify Appendix
+  title: Dropbox Notify Appendix API v1
   description: |
-      The Dropbox **Notify Appendix** is a part of [Dropbox Core API](https://www.dropbox.com/developers/core/docs) with
-      a separate end-point for notification call: `https://api-notify.dropbox.com`
+      The Dropbox **Notify Appendix** is a part of [Dropbox Core API](https://www.dropbox.com/developers-v1/core/docs)
+      with a separate end-point for notification call: `https://api-notify.dropbox.com`
 
       The Dropbox **Core API** document (see `dropbox-core.yaml`) describes tokens management, account information,
       metadata retrieval and file operations.
 
-      Last update: 2015-07-09
+      Last update: 2015-11-28
   termsOfService: https://www.dropbox.com/developers/reference/tos
   contact:
     name: Dropbox
     url: https://www.dropbox.com/developers
+
+externalDocs:
+  description: Developers documentation API v1
+  url: https://www.dropbox.com/developers-v1/core/docs
 
 host: api-notify.dropbox.com
 basePath: /1

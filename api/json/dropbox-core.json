@@ -1,9 +1,9 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "The Dropbox **Core API** is the underlying interface for all of our official [Dropbox mobile apps](https://www.dropbox.com/mobile)\nand our [SDKs](https://www.dropbox.com/developers/core/sdk). It's the most direct way to access the API. This\nreference document is designed for those interested in developing for platforms not supported by the SDKs or for\nthose interested in exploring API features in detail.\n\nPlease refer to official Dropbox [developers documentation](https://www.dropbox.com/developers/core/docs) for any\nadditional remarks.\n\nPlease note:\n  * `https://api-content.dropbox.com` end-point is covered by Dropbox Content API document (see `dropbox-content.yaml`)\n  * `https://api-notify.dropbox.com` end-point is covered by Dropbox Notify Appendix document (see `dropbox-notify.yaml`)\n\nThe Dropbox for Business API document (see `dropbox-business.yaml`) describes team, groups, members and other\nfunctionality available for company subscription accounts.\n\n**OAuth note:** if you wish to try HTTP request directly from Swagger UI you have to authorize agains\n\"Swagger UI Test App\". This application is configured with following redirect URI:\n  * `http://localhost:8000/o2c.html` - Swagger UI running at `localhost`, port `8000`\n  * `http://localhost:8080/o2c.html` - Swagger UI running at `localhost`, port `8080`\n\nLast update: 2015-07-09\n",
+    "description" : "The Dropbox **Core API** is the underlying interface for all of our official [Dropbox mobile apps](https://www.dropbox.com/mobile)\nand our [SDKs](https://www.dropbox.com/developers/core/sdk). It's the most direct way to access the API. This\nreference document is designed for those interested in developing for platforms not supported by the SDKs or for\nthose interested in exploring API features in detail.\n\nPlease refer to official Dropbox [developers documentation](https://www.dropbox.com/developers-v1/core/docs) for any\nadditional remarks.\n\nPlease note:\n  * `https://api-content.dropbox.com` end-point is covered by Dropbox Content API document (see `dropbox-content.yaml`)\n  * `https://api-notify.dropbox.com` end-point is covered by Dropbox Notify Appendix document (see `dropbox-notify.yaml`)\n\n**OAuth note:** if you wish to try HTTP request directly from Swagger UI you have to authorize agains\n\"Swagger UI Test App\". This application is configured with following redirect URI:\n  * `http://localhost:8000/o2c.html` - Swagger UI running at `localhost`, port `8000`\n  * `http://localhost:8080/o2c.html` - Swagger UI running at `localhost`, port `8080`\n\nLast update: 2015-11-28\n",
     "version" : "1.0.0",
-    "title" : "Dropbox Core API",
+    "title" : "Dropbox Core API v1",
     "termsOfService" : "https://www.dropbox.com/developers/reference/tos",
     "contact" : {
       "name" : "Dropbox",
@@ -1814,6 +1814,7 @@
   },
   "securityDefinitions" : {
     "dropbox_auth" : {
+      "description" : "See Dropbox [OAuth official Guide](https://www.dropbox.com/developers/reference/oauthguide) and\n[Short Example](https://blogs.dropbox.com/developers/2013/07/using-oauth-2-0-with-the-core-api)\n",
       "type" : "oauth2",
       "authorizationUrl" : "https://www.dropbox.com/1/oauth2/authorize",
       "flow" : "implicit"
@@ -2008,7 +2009,6 @@
         },
         "revision" : {
           "type" : "integer",
-          "format" : "int32",
           "description" : "A **deprecated** field that semi-uniquely identifies a file; use `rev` instead"
         },
         "shared_folder" : {
@@ -2083,7 +2083,6 @@
         },
         "revision" : {
           "type" : "integer",
-          "format" : "int32",
           "description" : "A **deprecated** field that semi-uniquely identifies a file; use `rev` instead"
         },
         "shared_folder" : {
@@ -2150,7 +2149,6 @@
         },
         "revision" : {
           "type" : "integer",
-          "format" : "int32",
           "description" : "A **deprecated** field that semi-uniquely identifies a file; use `rev` instead"
         }
       }
@@ -2189,7 +2187,6 @@
         },
         "duration" : {
           "type" : "integer",
-          "format" : "int32",
           "description" : "Length of the video in milliseconds"
         }
       }
@@ -2433,5 +2430,9 @@
         }
       }
     }
+  },
+  "externalDocs" : {
+    "description" : "Developers documentation API v1",
+    "url" : "https://www.dropbox.com/developers-v1/core/docs"
   }
 }

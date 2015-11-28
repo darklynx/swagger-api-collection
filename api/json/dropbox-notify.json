@@ -1,9 +1,9 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "The Dropbox **Notify Appendix** is a part of [Dropbox Core API](https://www.dropbox.com/developers/core/docs) with\na separate end-point for notification call: `https://api-notify.dropbox.com`\n\nThe Dropbox **Core API** document (see `dropbox-core.yaml`) describes tokens management, account information,\nmetadata retrieval and file operations.\n\nLast update: 2015-07-09\n",
+    "description" : "The Dropbox **Notify Appendix** is a part of [Dropbox Core API](https://www.dropbox.com/developers-v1/core/docs)\nwith a separate end-point for notification call: `https://api-notify.dropbox.com`\n\nThe Dropbox **Core API** document (see `dropbox-core.yaml`) describes tokens management, account information,\nmetadata retrieval and file operations.\n\nLast update: 2015-11-28\n",
     "version" : "1.0.0",
-    "title" : "Dropbox Notify Appendix",
+    "title" : "Dropbox Notify Appendix API v1",
     "termsOfService" : "https://www.dropbox.com/developers/reference/tos",
     "contact" : {
       "name" : "Dropbox",
@@ -81,5 +81,9 @@
         }
       }
     }
+  },
+  "externalDocs" : {
+    "description" : "Developers documentation API v1",
+    "url" : "https://www.dropbox.com/developers-v1/core/docs"
   }
 }

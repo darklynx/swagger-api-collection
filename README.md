@@ -13,9 +13,9 @@ API descriptions for different RESTful APIs could be found in:
 Currently available API descriptions:
 
  * `instagram.yaml` - [Instagram API](https://instagram.com/developer/endpoints/) description
- * `dropbox-core.yaml` - [Dropbox Core API](https://www.dropbox.com/developers/core/docs) description
- * `dropbox-content.yaml` - [Dropbox Core API](https://www.dropbox.com/developers/core/docs) description; content end-point
- * `dropbox-notify.yaml` - [Dropbox Core API](https://www.dropbox.com/developers/core/docs) description; notify end-point
+ * `dropbox-core.yaml` - [Dropbox Core API v1](https://www.dropbox.com/developers/core/docs) description
+ * `dropbox-content.yaml` - [Dropbox Core API v1](https://www.dropbox.com/developers/core/docs) description; content end-point
+ * `dropbox-notify.yaml` - [Dropbox Core API v1](https://www.dropbox.com/developers/core/docs) description; notify end-point
 
 ## Browser
 
