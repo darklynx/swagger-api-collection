@@ -71,7 +71,6 @@
         "tags" : [ "files" ],
         "summary" : "Uploads a file using PUT semantics.",
         "description" : "Uploads a file using PUT semantics.\n\nThe preferred HTTP method for this call is **PUT**. For compatibility with browser environments, the **POST**\nHTTP method is also recognized.\n\n**Note:** Providing a `Content-Length` header set to the size of the uploaded file is required so that the\nserver can verify that it has received the entire file contents.\n\n**Note:** `/files_put` has a maximum file size limit of 150 MB and does not support uploads with chunked\nencoding. To upload larger files, use [/chunked_upload](https://www.dropbox.com/developers/core/docs#chunked-upload)\ninstead.\n",
-        "consumes" : [ "application/octet-stream", "text/plain" ],
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "name" : "root",
@@ -153,7 +152,6 @@
         "tags" : [ "files" ],
         "summary" : "Uploads a file using PUT semantics.",
         "description" : "Uploads a file using PUT semantics.\n\nThe preferred HTTP method for this call is **PUT**. For compatibility with browser environments, the **POST**\nHTTP method is also recognized.\n\n**Note:** Providing a `Content-Length` header set to the size of the uploaded file is required so that the\nserver can verify that it has received the entire file contents.\n\n**Note:** `/files_put` has a maximum file size limit of 150 MB and does not support uploads with chunked\nencoding. To upload larger files, use [/chunked_upload](https://www.dropbox.com/developers/core/docs#chunked-upload)\ninstead.\n",
-        "consumes" : [ "application/octet-stream", "text/plain" ],
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "name" : "root",
@@ -353,7 +351,6 @@
         "tags" : [ "files" ],
         "summary" : "Uploads large files to Dropbox in multiple chunks.",
         "description" : "Uploads large files to Dropbox in multiple chunks. Also has the ability to resume if the upload is interrupted.\nThis allows for uploads larger than the `/files_put` maximum of 150 MB.\n\nTypical usage:\n  1. Send a PUT request to `/chunked_upload` with the first chunk of the file without setting `upload_id`, and\n  receive an `upload_id` in return.\n  2. Repeatedly `PUT` subsequent chunks using the `upload_id` to identify the upload in progress and an `offset`\n  representing the number of bytes transferred so far.\n  3. After each chunk has been uploaded, the server returns a new offset representing the total amount transferred.\n  4. After the last chunk, `POST` to `/commit_chunked_upload` to complete the upload.\n\nChunks can be any size up to 150 MB. A typical chunk is 4 MB. Using large chunks will mean fewer calls\nto `/chunked_upload` and faster overall throughput. However, whenever a transfer is interrupted, you will\nhave to resume at the beginning of the last chunk, so it is often safer to use smaller chunks.\n\nIf the offset you submit does not match the expected offset on the server, the server will ignore the request\nand respond with a 400 error that includes the current offset. To resume upload, seek to the correct offset\n(in bytes) within the file and then resume uploading from that point.\n\nA chunked upload can take a maximum of 48 hours before expiring.\n",
-        "consumes" : [ "application/octet-stream" ],
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "name" : "upload_id",

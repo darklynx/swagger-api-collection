@@ -110,9 +110,6 @@ paths:
     put:
       tags:
         - files
-      consumes:
-        - application/octet-stream
-        - text/plain
       produces:
         - application/json
       summary: Uploads a file using PUT semantics.
@@ -211,9 +208,6 @@ paths:
     post:
       tags:
         - files
-      consumes:
-        - application/octet-stream
-        - text/plain
       produces:
         - application/json
       summary: Uploads a file using PUT semantics.
@@ -434,8 +428,6 @@ paths:
     put:
       tags:
         - files
-      consumes:
-        - application/octet-stream
       produces:
         - application/json
       summary: Uploads large files to Dropbox in multiple chunks.
