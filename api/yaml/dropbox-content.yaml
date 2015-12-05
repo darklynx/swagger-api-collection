@@ -175,12 +175,13 @@ paths:
               If `false`, the call will fail with a 409 (Conflict) response code.
         - name: file_content
           in: body
-          type: string
           required: true
           description: |
               The file contents to be uploaded. Since the entire `PUT` body will be treated as the file, any parameters
               must be passed as part of the request URL. The request URL should be signed just as you would sign any
               other OAuth request URL.
+          schema:
+            type: file
       responses:
         200:
           description: |
@@ -275,12 +276,13 @@ paths:
               If `false`, the call will fail with a 409 (Conflict) response code.
         - name: file_content
           in: body
-          type: string
           required: true
           description: |
               The file contents to be uploaded. Since the entire `PUT` body will be treated as the file, any parameters
               must be passed as part of the request URL. The request URL should be signed just as you would sign any
               other OAuth request URL.
+          schema:
+            type: file
       responses:
         200:
           description: |
@@ -477,11 +479,12 @@ paths:
               offset.
         - name: file_content
           in: body
-          type: string
           required: true
           description: |
               A chunk of data from the file being uploaded. If resuming, the chunk should begin at the number of bytes
               into the file that equals the `offset`.
+          schema:
+            type: file
       responses:
         200:
           description: |

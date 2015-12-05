@@ -114,7 +114,10 @@
           "in" : "body",
           "name" : "file_content",
           "description" : "The file contents to be uploaded. Since the entire `PUT` body will be treated as the file, any parameters\nmust be passed as part of the request URL. The request URL should be signed just as you would sign any\nother OAuth request URL.\n",
-          "required" : true
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/file_content_1"
+          }
         } ],
         "responses" : {
           "200" : {
@@ -193,7 +196,10 @@
           "in" : "body",
           "name" : "file_content",
           "description" : "The file contents to be uploaded. Since the entire `PUT` body will be treated as the file, any parameters\nmust be passed as part of the request URL. The request URL should be signed just as you would sign any\nother OAuth request URL.\n",
-          "required" : true
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/file_content"
+          }
         } ],
         "responses" : {
           "200" : {
@@ -366,7 +372,10 @@
           "in" : "body",
           "name" : "file_content",
           "description" : "A chunk of data from the file being uploaded. If resuming, the chunk should begin at the number of bytes\ninto the file that equals the `offset`.\n",
-          "required" : true
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/file_content_2"
+          }
         } ],
         "responses" : {
           "200" : {
@@ -592,6 +601,15 @@
           "description" : "Error description"
         }
       }
+    },
+    "file_content" : {
+      "type" : "file"
+    },
+    "file_content_1" : {
+      "type" : "file"
+    },
+    "file_content_2" : {
+      "type" : "file"
     }
   },
   "externalDocs" : {
