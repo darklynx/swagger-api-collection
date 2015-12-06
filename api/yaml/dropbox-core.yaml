@@ -144,6 +144,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -152,10 +156,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -284,6 +284,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -292,10 +296,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -410,6 +410,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -418,10 +422,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -490,6 +490,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -498,10 +502,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -576,6 +576,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -584,10 +588,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -662,6 +662,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -670,10 +674,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -767,6 +767,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -775,10 +779,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -873,6 +873,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -881,10 +885,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -968,6 +968,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -976,10 +980,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -1053,6 +1053,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -1061,10 +1065,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -1125,6 +1125,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -1133,10 +1137,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -1196,6 +1196,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -1204,10 +1208,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -1272,6 +1272,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -1280,10 +1284,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -1350,6 +1350,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -1358,10 +1362,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -1417,6 +1417,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -1425,10 +1429,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -1512,6 +1512,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -1520,10 +1524,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -1586,6 +1586,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -1594,10 +1598,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -1668,6 +1668,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -1676,10 +1680,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
@@ -1756,6 +1756,10 @@ paths:
               per-user basis.
           schema:
             $ref: '#/definitions/ErrorMessage'
+        500:
+          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+          schema:
+            $ref: '#/definitions/ErrorMessage'
         503:
           description: |
               If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
@@ -1764,10 +1768,6 @@ paths:
             $ref: '#/definitions/ErrorMessage'
         507:
           description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
-        5xx:
-          description: Server error. Check [DropboxOps](http://status.dropbox.com/).
           schema:
             $ref: '#/definitions/ErrorMessage'
       security:
