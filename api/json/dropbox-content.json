@@ -475,7 +475,7 @@
             }
           },
           "409" : {
-            "description" : "The call failed because a conflict occurred. This means a file already existed at the specified path,\noverwrite was `false`, and the `parent_rev` (if specified) didn't match the current `rev`.\n",
+            "description" : "The call failed because a conflict occurred. This means a file already existed at the specified path,\n`overwrite` was false, and the `parent_rev` (if specified) didn't match the current `rev`.\n",
             "schema" : {
               "$ref" : "#/definitions/ErrorMessage"
             }
@@ -607,6 +607,32 @@
     },
     "file_content_2" : {
       "type" : "file"
+    }
+  },
+  "responses" : {
+    "Conflict" : {
+      "description" : "The call failed because a conflict occurred. This means a file already existed at the specified path,\n`overwrite` was false, and the `parent_rev` (if specified) didn't match the current `rev`.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
+    },
+    "LengthRequired" : {
+      "description" : "Missing `Content-Length` header (this endpoint doesn't support HTTP chunked transfer encoding).",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
+    },
+    "NotFound" : {
+      "description" : "The file wasn't found at the specified path, or wasn't found at the specified `rev`.",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
+    },
+    "Unauthorized" : {
+      "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
     }
   },
   "externalDocs" : {

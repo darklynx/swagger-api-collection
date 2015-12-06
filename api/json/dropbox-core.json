@@ -2431,6 +2431,80 @@
       }
     }
   },
+  "responses" : {
+    "BadRequest" : {
+      "description" : "Bad input parameter. Error message should indicate which one and why.",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
+    },
+    "FileNotFound" : {
+      "description" : "File not found at the specified path, or unable to find the revision at that path.",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
+    },
+    "Forbidden" : {
+      "description" : "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating\nthe user won't help here.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
+    },
+    "InsufficientStorage" : {
+      "description" : "User is over Dropbox storage quota.",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
+    },
+    "InternalServerError" : {
+      "description" : "Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
+    },
+    "NotAcceptable" : {
+      "description" : "Too many files would be involved in the operation for it to complete successfully. The limit is\ncurrently 10,000 files and folders.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
+    },
+    "NotFound" : {
+      "description" : "File or folder not found at the specified path.",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
+    },
+    "NotModified" : {
+      "description" : "The folder contents have not changed (relies on hash parameter).",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
+    },
+    "ServiceUnavailable" : {
+      "description" : "If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.\nOtherwise, this indicates a transient server error, and your app should retry its request.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
+    },
+    "SharedFolderForbidden" : {
+      "description" : "Returned if this app does not have Full Dropbox or File type permissions, or if the user doesn't have\naccess to the specified shared folder.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
+    },
+    "TooManyRequests" : {
+      "description" : "Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or\nper-user basis.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
+    },
+    "Unauthorized" : {
+      "description" : "Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,\nyou should re-authenticate the user.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorMessage"
+      }
+    }
+  },
   "externalDocs" : {
     "description" : "Developers documentation API v1",
     "url" : "https://www.dropbox.com/developers-v1/core/docs"

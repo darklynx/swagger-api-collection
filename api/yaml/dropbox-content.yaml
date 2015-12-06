@@ -53,6 +53,29 @@ securityDefinitions:
     authorizationUrl: https://www.dropbox.com/1/oauth2/authorize
     flow: implicit
 
+# Error responses
+responses:
+  Unauthorized:
+    description: |
+        Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
+        you should re-authenticate the user.
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+  NotFound:
+    description: The file wasn't found at the specified path, or wasn't found at the specified `rev`.
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+  Conflict:
+    description: |
+        The call failed because a conflict occurred. This means a file already existed at the specified path,
+        `overwrite` was false, and the `parent_rev` (if specified) didn't match the current `rev`.
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+  LengthRequired:
+    description: Missing `Content-Length` header (this endpoint doesn't support HTTP chunked transfer encoding).
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+
 # URL patterns
 paths:
   /files/{root}/{path}:
@@ -94,15 +117,9 @@ paths:
               The HTTP response contains the [content metadata](https://www.dropbox.com/developers/core/docs#metadata-details)
               in JSON format within an `x-dropbox-metadata` header.
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         404:
-          description: The file wasn't found at the specified path, or wasn't found at the specified `rev`.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotFound'
       security:
         - dropbox_auth: []
 
@@ -187,21 +204,11 @@ paths:
           schema:
             $ref: '#/definitions/FileMetadata'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         409:
-          description: |
-              The call failed because a conflict occurred. This means a file already existed at the specified path,
-              `overwrite` was false, and the `parent_rev` (if specified) didn't match the current `rev`.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Conflict'
         411:
-          description: Missing `Content-Length` header (this endpoint doesn't support HTTP chunked transfer encoding).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/LengthRequired'
       security:
         - dropbox_auth: []
 
@@ -285,21 +292,11 @@ paths:
           schema:
             $ref: '#/definitions/FileMetadata'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         409:
-          description: |
-              The call failed because a conflict occurred. This means a file already existed at the specified path,
-              `overwrite` was false, and the `parent_rev` (if specified) didn't match the current `rev`.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Conflict'
         411:
-          description: Missing `Content-Length` header (this endpoint doesn't support HTTP chunked transfer encoding).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/LengthRequired'
       security:
         - dropbox_auth: []
 
@@ -354,11 +351,7 @@ paths:
               The HTTP response contains the [content metadata](https://www.dropbox.com/developers/core/docs#metadata-details)
               in JSON format within an `x-dropbox-metadata` header.
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         404:
           description: The file path wasn't found or the file extension doesn't allow conversion to a thumbnail.
           schema:
@@ -408,15 +401,9 @@ paths:
               Data that represents a preview of the file. The Content-Type header will be either `application/pdf` or
               `text/html`. There is a `Original-Content-Length` header which contains the size of the preview data.
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         404:
-          description: The file wasn't found at the specified path, or wasn't found at the specified `rev`.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotFound'
         409:
           description: No preview has been generated yet or unable to generate a preview for the file.
           schema:
@@ -491,11 +478,7 @@ paths:
           schema:
             $ref: '#/definitions/ChunkedUploadError'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         404:
           description: The `upload_id` does not exist or has expired.
           schema:
@@ -582,17 +565,9 @@ paths:
           schema:
             $ref: '#/definitions/ErrorMessage'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         409:
-          description: |
-              The call failed because a conflict occurred. This means a file already existed at the specified path,
-              overwrite was `false`, and the `parent_rev` (if specified) didn't match the current `rev`.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Conflict'
       security:
         - dropbox_auth: []
 

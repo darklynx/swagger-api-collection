@@ -67,6 +67,69 @@ securityDefinitions:
     authorizationUrl: https://www.dropbox.com/1/oauth2/authorize
     flow: implicit
 
+# Error responses
+responses:
+  NotModified:
+    description: The folder contents have not changed (relies on hash parameter).
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+  BadRequest:
+    description: Bad input parameter. Error message should indicate which one and why.
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+  Unauthorized:
+    description: |
+        Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
+        you should re-authenticate the user.
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+  Forbidden:
+    description: |
+        Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
+        the user won't help here.
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+  SharedFolderForbidden:
+    description: |
+        Returned if this app does not have Full Dropbox or File type permissions, or if the user doesn't have
+        access to the specified shared folder.
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+  NotFound:
+    description: File or folder not found at the specified path.
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+  FileNotFound:
+    description: File not found at the specified path, or unable to find the revision at that path.
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+  NotAcceptable:
+    description: |
+        Too many files would be involved in the operation for it to complete successfully. The limit is
+        currently 10,000 files and folders.
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+  TooManyRequests:
+    description: |
+        Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
+        per-user basis.
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+  InternalServerError:
+    description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+  ServiceUnavailable:
+    description: |
+        If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
+        Otherwise, this indicates a transient server error, and your app should retry its request.
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+  InsufficientStorage:
+    description: User is over Dropbox storage quota.
+    schema:
+      $ref: '#/definitions/ErrorMessage'
+
 # URL patterns
 paths:
   /oauth2/token_from_oauth1:
@@ -119,45 +182,21 @@ paths:
           schema:
             $ref: '#/definitions/UserAccountInfo'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
-              the user won't help here.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Forbidden'
         404:
-          description: File or folder not found at the specified path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotFound'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -251,53 +290,27 @@ paths:
           schema:
             $ref: '#/definitions/ResourceMetadata'
         304:
-          description: The folder contents have not changed (relies on hash parameter).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotModified'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
-              the user won't help here.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Forbidden'
         404:
-          description: File or folder not found at the specified path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotFound'
         406:
           description: There are too many file entries to return.
           schema:
             $ref: '#/definitions/ErrorMessage'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -385,45 +398,21 @@ paths:
           schema:
             $ref: '#/definitions/DeltaResult'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
-              the user won't help here.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Forbidden'
         404:
-          description: File or folder not found at the specified path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotFound'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -465,45 +454,21 @@ paths:
           schema:
             $ref: '#/definitions/CursorInfo'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
-              the user won't help here.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Forbidden'
         404:
-          description: File or folder not found at the specified path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotFound'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -551,45 +516,21 @@ paths:
           schema:
             $ref: '#/definitions/Revisions'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
-              the user won't help here.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Forbidden'
         404:
-          description: File or folder not found at the specified path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotFound'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -637,45 +578,21 @@ paths:
           schema:
             $ref: '#/definitions/FileMetadata'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
-              the user won't help here.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Forbidden'
         404:
-          description: File not found at the specified path, or unable to find the revision at that path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/FileNotFound'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -742,45 +659,21 @@ paths:
           schema:
             $ref: '#/definitions/SearchResult'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
-              the user won't help here.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Forbidden'
         404:
-          description: File not found at the specified path, or unable to find the revision at that path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/FileNotFound'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -848,45 +741,21 @@ paths:
           schema:
             $ref: '#/definitions/SearchResult'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
-              the user won't help here.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Forbidden'
         404:
-          description: File not found at the specified path, or unable to find the revision at that path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/FileNotFound'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -943,45 +812,21 @@ paths:
           schema:
             $ref: '#/definitions/SharedLinkResult'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
-              the user won't help here.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Forbidden'
         404:
-          description: File or folder not found at the specified path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotFound'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -1028,45 +873,21 @@ paths:
           schema:
             $ref: '#/definitions/MediaLinkResult'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
-              the user won't help here.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Forbidden'
         404:
-          description: File or folder not found at the specified path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotFound'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -1100,45 +921,21 @@ paths:
           schema:
             $ref: '#/definitions/CopyRefResult'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
-              the user won't help here.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Forbidden'
         404:
-          description: File not found at the specified path, or unable to find the revision at that path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/FileNotFound'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -1171,45 +968,21 @@ paths:
           schema:
             $ref: '#/definitions/SharedFolders'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Returned if this app does not have Full Dropbox or File type permissions, or if the user doesn't have
-              access to the specified shared folder.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/SharedFolderForbidden'
         404:
-          description: File not found at the specified path, or unable to find the revision at that path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/FileNotFound'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -1251,41 +1024,19 @@ paths:
           schema:
             $ref: '#/definitions/ErrorMessage'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Returned if this app does not have Full Dropbox or File type permissions, or if the user doesn't have
-              access to the specified shared folder.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/SharedFolderForbidden'
         404:
-          description: File not found at the specified path, or unable to find the revision at that path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/FileNotFound'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -1325,45 +1076,21 @@ paths:
           schema:
             $ref: '#/definitions/JobResult'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
-              the user won't help here.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Forbidden'
         404:
-          description: File or folder not found at the specified path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotFound'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -1392,45 +1119,21 @@ paths:
           schema:
             $ref: '#/definitions/JobStatus'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
-              the user won't help here.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Forbidden'
         404:
-          description: File or folder not found at the specified path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotFound'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -1481,15 +1184,9 @@ paths:
           schema:
             $ref: '#/definitions/ResourceShortMetadata'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
           description: |
               An invalid copy operation was attempted (e.g. there is already a file at the given destination, or trying
@@ -1501,31 +1198,15 @@ paths:
           schema:
             $ref: '#/definitions/ErrorMessage'
         406:
-          description: |
-              Too many files would be involved in the operation for it to complete successfully. The limit is
-              currently 10,000 files and folders.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotAcceptable'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -1563,43 +1244,23 @@ paths:
           schema:
             $ref: '#/definitions/ResourceShortMetadata'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
           description: There is already a folder at the given destination.
           schema:
             $ref: '#/definitions/ErrorMessage'
         404:
-          description: File or folder not found at the specified path.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotFound'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -1637,51 +1298,25 @@ paths:
           schema:
             $ref: '#/definitions/ResourceShortMetadata'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
-          description: |
-              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating
-              the user won't help here.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Forbidden'
         404:
           description: No file was found at the specified path.
           schema:
             $ref: '#/definitions/ErrorMessage'
         406:
-          description: |
-              Too many files would be involved in the operation for it to complete successfully. The limit is
-              currently 10,000 files and folders.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotAcceptable'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
@@ -1725,15 +1360,9 @@ paths:
           schema:
             $ref: '#/definitions/ResourceShortMetadata'
         400:
-          description: Bad input parameter. Error message should indicate which one and why.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/BadRequest'
         401:
-          description: |
-              Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix,
-              you should re-authenticate the user.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/Unauthorized'
         403:
           description: |
               An invalid move operation was attempted (e.g. there is already a file at the given destination, or moving
@@ -1745,31 +1374,15 @@ paths:
           schema:
             $ref: '#/definitions/ErrorMessage'
         406:
-          description: |
-              Too many files would be involved in the operation for it to complete successfully. The limit is
-              currently 10,000 files and folders.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/NotAcceptable'
         429:
-          description: |
-              Your app is making too many requests and is being rate limited. 429s can trigger on a per-app or
-              per-user basis.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/TooManyRequests'
         500:
-          description: Server error, applies to any other HTTP 5xx status. Check [DropboxOps](http://status.dropbox.com/).
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InternalServerError'
         503:
-          description: |
-              If the response includes the `Retry-After` header, this means your OAuth 1.0 app is being rate limited.
-              Otherwise, this indicates a transient server error, and your app should retry its request.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/ServiceUnavailable'
         507:
-          description: User is over Dropbox storage quota.
-          schema:
-            $ref: '#/definitions/ErrorMessage'
+          $ref: '#/responses/InsufficientStorage'
       security:
         - dropbox_auth: []
 
