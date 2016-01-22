@@ -574,6 +574,7 @@ paths:
 # Model
 definitions:
   ErrorMessage:
+    type: object
     required:
       - error
     properties:
@@ -582,6 +583,7 @@ definitions:
         description: Error description
 
   FileMetadata:
+    type: object
     required:
       - size
       - bytes
@@ -644,6 +646,7 @@ definitions:
         description: A **deprecated** field that semi-uniquely identifies a file; use `rev` instead
 
   ChunkedUploadInfo:
+    type: object
     required:
       - upload_id
       - offset
@@ -661,6 +664,7 @@ definitions:
         description: The time this upload session will expire at in the standard [date format](https://www.dropbox.com/developers/core/docs#date-format)
 
   ChunkedUploadError:
+    type: object
     required:
       - upload_id
       - offset

@@ -1389,13 +1389,16 @@ paths:
 # Model
 definitions:
   ErrorMessage:
+    type: object
     required:
       - error
     properties:
       error:
         type: string
         description: Error description
+
   OAuth2Token:
+    type: object
     required:
       - access_token
       - token_type
@@ -1409,6 +1412,7 @@ definitions:
         description: Token type; the token type will always be "bearer"
 
   UserAccountInfo:
+    type: object
     required:
       - uid
       - display_name
@@ -1448,6 +1452,7 @@ definitions:
         description: The user's quota information
 
   NameDetails:
+    type: object
     required:
       - familiar_name
       - given_name
@@ -1464,6 +1469,7 @@ definitions:
         description: The user's surname
 
   Team:
+    type: object
     required:
       - name
       - team_id
@@ -1476,6 +1482,7 @@ definitions:
         description: The ID of the team the user belongs to
 
   QuotaInfo:
+    type: object
     required:
       - shared
       - quota
@@ -1499,6 +1506,7 @@ definitions:
         description: The user's used quota outside of shared folders (bytes)
 
   ResourceMetadata:
+    type: object
     required:
       - size
       - bytes
@@ -1603,6 +1611,7 @@ definitions:
             user no longer exists, the value will be `null`
 
   ResourceShortMetadata:
+    type: object
     required:
       - size
       - bytes
@@ -1682,6 +1691,7 @@ definitions:
         description: For files within a shared folder, this field specifies the ID of the containing shared folder
 
   FileMetadata:
+    type: object
     required:
       - size
       - bytes
@@ -1744,6 +1754,7 @@ definitions:
         description: A **deprecated** field that semi-uniquely identifies a file; use `rev` instead
 
   PhotoInfo:
+    type: object
     required:
       - time_taken
       - lat_long
@@ -1759,6 +1770,7 @@ definitions:
           format: double
 
   VideoInfo:
+    type: object
     required:
       - time_taken
       - lat_long
@@ -1778,6 +1790,7 @@ definitions:
         description: Length of the video in milliseconds
 
   SharedFolderInfo:
+    type: object
     required:
       - id
       - groups
@@ -1797,6 +1810,7 @@ definitions:
           $ref: '#/definitions/MembershipInfo'
 
   MembershipInfo:
+    type: object
     required:
       - user
       - access_type
@@ -1813,6 +1827,7 @@ definitions:
         description: Indicates whether membership is active or not
 
   MembershipUser:
+    type: object
     required:
       - uid
       - display_name
@@ -1834,6 +1849,7 @@ definitions:
         description: The member ID of the user
 
   DeltaResult:
+    type: object
     required:
       - reset
       - cursor
@@ -1877,6 +1893,7 @@ definitions:
       description: The file/folder metadata or `null`
 
   CursorInfo:
+    type: object
     required:
       - cursor
     properties:
@@ -1897,6 +1914,7 @@ definitions:
       $ref: '#/definitions/ResourceShortMetadata'
 
   SharedLinkResult:
+    type: object
     required:
       - url
       - expires
@@ -1918,6 +1936,7 @@ definitions:
         description: Indicates what (if any) restrictions are set on this particular link
 
   MediaLinkResult:
+    type: object
     required:
       - url
       - expires
@@ -1930,6 +1949,7 @@ definitions:
         description: Link's expiration date in Dropbox's usual [date format](https://www.dropbox.com/developers/core/docs#date-format)
 
   CopyRefResult:
+    type: object
     required:
       - copy_ref
       - expires
@@ -1942,6 +1962,7 @@ definitions:
         description: Reference expiration date in Dropbox's usual [date format](https://www.dropbox.com/developers/core/docs#date-format)
 
   SharedFolderMetadata:
+    type: object
     required:
       - shared_folder_id
       - shared_folder_name
@@ -1987,6 +2008,7 @@ definitions:
       $ref: '#/definitions/SharedFolderMetadata'
 
   JobResult:
+    type: object
     required:
       - status
       - job
@@ -2004,6 +2026,7 @@ definitions:
         description: Job ID to check the job's status
 
   JobStatus:
+    type: object
     required:
       - status
     properties:

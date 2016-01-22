@@ -1822,6 +1822,7 @@
   },
   "definitions" : {
     "ErrorMessage" : {
+      "type" : "object",
       "required" : [ "error" ],
       "properties" : {
         "error" : {
@@ -1831,6 +1832,7 @@
       }
     },
     "OAuth2Token" : {
+      "type" : "object",
       "required" : [ "access_token", "token_type" ],
       "properties" : {
         "access_token" : {
@@ -1845,6 +1847,7 @@
       }
     },
     "UserAccountInfo" : {
+      "type" : "object",
       "required" : [ "display_name", "is_paired", "locale", "name_details", "quota_info", "referral_link", "uid" ],
       "properties" : {
         "uid" : {
@@ -1887,6 +1890,7 @@
       }
     },
     "NameDetails" : {
+      "type" : "object",
       "required" : [ "familiar_name", "given_name", "surname" ],
       "properties" : {
         "familiar_name" : {
@@ -1904,6 +1908,7 @@
       }
     },
     "Team" : {
+      "type" : "object",
       "required" : [ "name", "team_id" ],
       "properties" : {
         "name" : {
@@ -1917,6 +1922,7 @@
       }
     },
     "QuotaInfo" : {
+      "type" : "object",
       "required" : [ "normal", "quota", "shared" ],
       "properties" : {
         "shared" : {
@@ -1937,6 +1943,7 @@
       }
     },
     "ResourceMetadata" : {
+      "type" : "object",
       "required" : [ "bytes", "icon", "is_dir", "path", "rev", "revision", "root", "size", "thumb_exists" ],
       "properties" : {
         "size" : {
@@ -2030,6 +2037,7 @@
       }
     },
     "ResourceShortMetadata" : {
+      "type" : "object",
       "required" : [ "bytes", "icon", "is_dir", "path", "rev", "revision", "root", "size", "thumb_exists" ],
       "properties" : {
         "size" : {
@@ -2100,6 +2108,7 @@
       }
     },
     "FileMetadata" : {
+      "type" : "object",
       "required" : [ "bytes", "icon", "is_dir", "mime_type", "modified", "path", "rev", "revision", "root", "size", "thumb_exists" ],
       "properties" : {
         "size" : {
@@ -2154,6 +2163,7 @@
       }
     },
     "PhotoInfo" : {
+      "type" : "object",
       "required" : [ "lat_long", "time_taken" ],
       "properties" : {
         "time_taken" : {
@@ -2171,6 +2181,7 @@
       }
     },
     "VideoInfo" : {
+      "type" : "object",
       "required" : [ "duration", "lat_long", "time_taken" ],
       "properties" : {
         "time_taken" : {
@@ -2192,6 +2203,7 @@
       }
     },
     "SharedFolderInfo" : {
+      "type" : "object",
       "required" : [ "groups", "id" ],
       "properties" : {
         "id" : {
@@ -2215,6 +2227,7 @@
       }
     },
     "MembershipInfo" : {
+      "type" : "object",
       "required" : [ "access_type", "active", "user" ],
       "properties" : {
         "user" : {
@@ -2232,6 +2245,7 @@
       }
     },
     "MembershipUser" : {
+      "type" : "object",
       "required" : [ "display_name", "member_id", "same_team", "uid" ],
       "properties" : {
         "uid" : {
@@ -2254,6 +2268,7 @@
       }
     },
     "DeltaResult" : {
+      "type" : "object",
       "required" : [ "cursor", "entries", "has_more", "reset" ],
       "properties" : {
         "reset" : {
@@ -2286,6 +2301,7 @@
       }
     },
     "CursorInfo" : {
+      "type" : "object",
       "required" : [ "cursor" ],
       "properties" : {
         "cursor" : {
@@ -2309,6 +2325,7 @@
       }
     },
     "SharedLinkResult" : {
+      "type" : "object",
       "required" : [ "expires", "url" ],
       "properties" : {
         "url" : {
@@ -2327,6 +2344,7 @@
       }
     },
     "MediaLinkResult" : {
+      "type" : "object",
       "required" : [ "expires", "url" ],
       "properties" : {
         "url" : {
@@ -2340,6 +2358,7 @@
       }
     },
     "CopyRefResult" : {
+      "type" : "object",
       "required" : [ "copy_ref", "expires" ],
       "properties" : {
         "copy_ref" : {
@@ -2353,6 +2372,7 @@
       }
     },
     "SharedFolderMetadata" : {
+      "type" : "object",
       "required" : [ "access_type", "groups", "owner", "path", "shared_folder_id", "shared_folder_name", "shared_link_policy" ],
       "properties" : {
         "shared_folder_id" : {
@@ -2403,6 +2423,7 @@
       }
     },
     "JobResult" : {
+      "type" : "object",
       "required" : [ "job", "status" ],
       "properties" : {
         "status" : {
@@ -2417,6 +2438,7 @@
       }
     },
     "JobStatus" : {
+      "type" : "object",
       "required" : [ "status" ],
       "properties" : {
         "status" : {

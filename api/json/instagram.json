@@ -972,6 +972,7 @@
   },
   "definitions" : {
     "MetaData" : {
+      "type" : "object",
       "properties" : {
         "code" : {
           "type" : "integer",
@@ -981,6 +982,7 @@
       }
     },
     "IdPaginationInfo" : {
+      "type" : "object",
       "properties" : {
         "next_url" : {
           "type" : "string",
@@ -993,6 +995,7 @@
       }
     },
     "CursorPaginationInfo" : {
+      "type" : "object",
       "properties" : {
         "next_url" : {
           "type" : "string",
@@ -1005,6 +1008,7 @@
       }
     },
     "UserResponse" : {
+      "type" : "object",
       "properties" : {
         "meta" : {
           "description" : "Response meta-data",
@@ -1017,6 +1021,7 @@
       }
     },
     "UserInfo" : {
+      "type" : "object",
       "properties" : {
         "id" : {
           "type" : "string",
@@ -1049,6 +1054,7 @@
       }
     },
     "UserCounts" : {
+      "type" : "object",
       "properties" : {
         "media" : {
           "type" : "integer",
@@ -1068,6 +1074,7 @@
       }
     },
     "UsersInfoResponse" : {
+      "type" : "object",
       "properties" : {
         "meta" : {
           "description" : "Response meta-data",
@@ -1083,6 +1090,7 @@
       }
     },
     "UsersPagingResponse" : {
+      "type" : "object",
       "properties" : {
         "pagination" : {
           "description" : "Information for pagination",
@@ -1102,6 +1110,7 @@
       }
     },
     "UserShortInfo" : {
+      "type" : "object",
       "properties" : {
         "id" : {
           "type" : "string",
@@ -1122,6 +1131,7 @@
       }
     },
     "MediaResponse" : {
+      "type" : "object",
       "properties" : {
         "meta" : {
           "description" : "Response meta-data",
@@ -1134,6 +1144,7 @@
       }
     },
     "MediaSearchResponse" : {
+      "type" : "object",
       "properties" : {
         "meta" : {
           "description" : "Response meta-data",
@@ -1149,6 +1160,7 @@
       }
     },
     "MediaEntry" : {
+      "type" : "object",
       "properties" : {
         "attribution" : {
           "type" : "string",
@@ -1224,6 +1236,7 @@
       }
     },
     "LocationInfo" : {
+      "type" : "object",
       "properties" : {
         "id" : {
           "type" : "string",
@@ -1246,6 +1259,7 @@
       }
     },
     "CommentsCollection" : {
+      "type" : "object",
       "properties" : {
         "count" : {
           "type" : "integer",
@@ -1261,6 +1275,7 @@
       }
     },
     "CommentEntry" : {
+      "type" : "object",
       "properties" : {
         "id" : {
           "type" : "string",
@@ -1281,6 +1296,7 @@
       }
     },
     "LikesCollection" : {
+      "type" : "object",
       "properties" : {
         "count" : {
           "type" : "integer",
@@ -1296,6 +1312,7 @@
       }
     },
     "ImagesData" : {
+      "type" : "object",
       "properties" : {
         "low_resolution" : {
           "description" : "Image in low resolution",
@@ -1312,6 +1329,7 @@
       }
     },
     "VideosData" : {
+      "type" : "object",
       "properties" : {
         "low_resolution" : {
           "description" : "Video in low resolution",
@@ -1324,6 +1342,7 @@
       }
     },
     "ImageInfo" : {
+      "type" : "object",
       "properties" : {
         "url" : {
           "type" : "string",
@@ -1340,6 +1359,7 @@
       }
     },
     "UserInPhoto" : {
+      "type" : "object",
       "properties" : {
         "position" : {
           "description" : "Position in photo",
@@ -1352,6 +1372,7 @@
       }
     },
     "Position" : {
+      "type" : "object",
       "properties" : {
         "x" : {
           "type" : "number",
@@ -1366,6 +1387,7 @@
       }
     },
     "CaptionData" : {
+      "type" : "object",
       "properties" : {
         "id" : {
           "type" : "string",
@@ -1386,6 +1408,7 @@
       }
     },
     "RelationshipResponse" : {
+      "type" : "object",
       "properties" : {
         "meta" : {
           "description" : "Response meta-data",
@@ -1398,6 +1421,7 @@
       }
     },
     "RelationshipInfo" : {
+      "type" : "object",
       "properties" : {
         "outgoing_status" : {
           "type" : "string",
@@ -1416,6 +1440,7 @@
       }
     },
     "RelationshipPostResponse" : {
+      "type" : "object",
       "properties" : {
         "meta" : {
           "description" : "Response meta-data",
@@ -1428,6 +1453,7 @@
       }
     },
     "RelationshipStatus" : {
+      "type" : "object",
       "properties" : {
         "outgoing_status" : {
           "type" : "string",
@@ -1437,6 +1463,7 @@
       }
     },
     "CommentsResponse" : {
+      "type" : "object",
       "properties" : {
         "meta" : {
           "description" : "Response meta-data",
@@ -1452,6 +1479,7 @@
       }
     },
     "StatusResponse" : {
+      "type" : "object",
       "properties" : {
         "meta" : {
           "description" : "Response meta-data",
@@ -1464,6 +1492,7 @@
       }
     },
     "TagInfoResponse" : {
+      "type" : "object",
       "properties" : {
         "meta" : {
           "description" : "Response meta-data",
@@ -1476,6 +1505,7 @@
       }
     },
     "TagInfo" : {
+      "type" : "object",
       "properties" : {
         "media_count" : {
           "type" : "integer",
@@ -1489,6 +1519,7 @@
       }
     },
     "TagMediaResponse" : {
+      "type" : "object",
       "properties" : {
         "pagination" : {
           "description" : "Information for pagination",
@@ -1508,6 +1539,7 @@
       }
     },
     "TagPaginationInfo" : {
+      "type" : "object",
       "properties" : {
         "next_max_tag_id" : {
           "type" : "string",
@@ -1536,6 +1568,7 @@
       }
     },
     "TagSearchResponse" : {
+      "type" : "object",
       "properties" : {
         "meta" : {
           "description" : "Response meta-data",
@@ -1551,6 +1584,7 @@
       }
     },
     "LocationInfoResponse" : {
+      "type" : "object",
       "properties" : {
         "meta" : {
           "description" : "Response meta-data",
@@ -1563,6 +1597,7 @@
       }
     },
     "LocationMediaResponse" : {
+      "type" : "object",
       "properties" : {
         "pagination" : {
           "description" : "Information for pagination",
@@ -1582,6 +1617,7 @@
       }
     },
     "LocationSearchResponse" : {
+      "type" : "object",
       "properties" : {
         "meta" : {
           "description" : "Response meta-data",

@@ -97,6 +97,7 @@ paths:
 # Model
 definitions:
   ErrorMessage:
+    type: object
     required:
       - error
     properties:
@@ -105,6 +106,7 @@ definitions:
         description: Error description
 
   LongPollResult:
+    type: object
     required:
       - changes
     properties:

@@ -59,6 +59,7 @@
   },
   "definitions" : {
     "ErrorMessage" : {
+      "type" : "object",
       "required" : [ "error" ],
       "properties" : {
         "error" : {
@@ -68,6 +69,7 @@
       }
     },
     "LongPollResult" : {
+      "type" : "object",
       "required" : [ "changes" ],
       "properties" : {
         "changes" : {
