@@ -1,11 +1,11 @@
 # REST API Collection
 
-My collection of RESTful API descriptions in [Swagger format](https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md)
+My collection of RESTful API descriptions in [Open API](https://openapis.org) (former [Swagger](http://swagger.io)) format.
 
 API descriptions for different RESTful APIs could be found in:
 
- * `api/yaml` - contains API descriptions in YAML [Swagger format](https://github.com/swagger-api/swagger-spec)
- * `api/json` - contains API descriptions in JSON [Swagger format](https://github.com/swagger-api/swagger-spec), automatically generated from YAML with a help of [swagger-codegen](https://github.com/swagger-api/swagger-codegen) project
+ * `api/yaml` - contains API descriptions in YAML [Open API format](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
+ * `api/json` - contains API descriptions in JSON [Open API format](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md), automatically generated from YAML with a help of [swagger-codegen](https://github.com/swagger-api/swagger-codegen) project
 
 
 ## Collection
