@@ -98,7 +98,7 @@
           "200" : {
             "description" : "Users feed entries.",
             "schema" : {
-              "$ref" : "#/definitions/MediaResponse"
+              "$ref" : "#/definitions/MediaListResponse"
             }
           }
         },
@@ -158,7 +158,7 @@
           "200" : {
             "description" : "Users media entries.",
             "schema" : {
-              "$ref" : "#/definitions/MediaResponse"
+              "$ref" : "#/definitions/MediaListResponse"
             }
           }
         },
@@ -191,7 +191,7 @@
           "200" : {
             "description" : "Users media entries.",
             "schema" : {
-              "$ref" : "#/definitions/MediaResponse"
+              "$ref" : "#/definitions/MediaListResponse"
             }
           }
         },
@@ -385,7 +385,7 @@
           "200" : {
             "description" : "Media resource information.",
             "schema" : {
-              "$ref" : "#/definitions/MediaResponse"
+              "$ref" : "#/definitions/MediaEntryResponse"
             }
           }
         },
@@ -412,7 +412,7 @@
           "200" : {
             "description" : "Media resource information.",
             "schema" : {
-              "$ref" : "#/definitions/MediaResponse"
+              "$ref" : "#/definitions/MediaEntryResponse"
             }
           }
         },
@@ -730,7 +730,7 @@
           "200" : {
             "description" : "List of media entries with this tag.",
             "schema" : {
-              "$ref" : "#/definitions/TagMediaResponse"
+              "$ref" : "#/definitions/TagMediaListResponse"
             }
           }
         },
@@ -837,7 +837,7 @@
           "200" : {
             "description" : "List of media entries from this location.",
             "schema" : {
-              "$ref" : "#/definitions/LocationMediaResponse"
+              "$ref" : "#/definitions/MediaListResponse"
             }
           }
         },
@@ -937,7 +937,7 @@
           "200" : {
             "description" : "List of recent media entries from a geography subscription.",
             "schema" : {
-              "$ref" : "#/definitions/LocationMediaResponse"
+              "$ref" : "#/definitions/MediaListResponse"
             }
           }
         },
@@ -1130,16 +1130,23 @@
         }
       }
     },
-    "MediaResponse" : {
+    "MediaListResponse" : {
       "type" : "object",
       "properties" : {
+        "pagination" : {
+          "description" : "Information for pagination",
+          "$ref" : "#/definitions/IdPaginationInfo"
+        },
         "meta" : {
           "description" : "Response meta-data",
           "$ref" : "#/definitions/MetaData"
         },
         "data" : {
-          "description" : "Media resource information",
-          "$ref" : "#/definitions/MediaEntry"
+          "type" : "array",
+          "description" : "List of media entries",
+          "items" : {
+            "$ref" : "#/definitions/MediaEntry"
+          }
         }
       }
     },
@@ -1462,6 +1469,19 @@
         }
       }
     },
+    "MediaEntryResponse" : {
+      "type" : "object",
+      "properties" : {
+        "meta" : {
+          "description" : "Response meta-data",
+          "$ref" : "#/definitions/MetaData"
+        },
+        "data" : {
+          "description" : "Media resource information",
+          "$ref" : "#/definitions/MediaEntry"
+        }
+      }
+    },
     "CommentsResponse" : {
       "type" : "object",
       "properties" : {
@@ -1518,7 +1538,7 @@
         }
       }
     },
-    "TagMediaResponse" : {
+    "TagMediaListResponse" : {
       "type" : "object",
       "properties" : {
         "pagination" : {
@@ -1593,26 +1613,6 @@
         "data" : {
           "description" : "Location brief information",
           "$ref" : "#/definitions/LocationInfo"
-        }
-      }
-    },
-    "LocationMediaResponse" : {
-      "type" : "object",
-      "properties" : {
-        "pagination" : {
-          "description" : "Information for pagination",
-          "$ref" : "#/definitions/IdPaginationInfo"
-        },
-        "meta" : {
-          "description" : "Response meta-data",
-          "$ref" : "#/definitions/MetaData"
-        },
-        "data" : {
-          "type" : "array",
-          "description" : "List of media entries from this location",
-          "items" : {
-            "$ref" : "#/definitions/MediaEntry"
-          }
         }
       }
     },

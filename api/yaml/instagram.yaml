@@ -140,7 +140,7 @@ paths:
         200:
           description: Users feed entries.
           schema:
-            $ref: '#/definitions/MediaResponse'
+            $ref: '#/definitions/MediaListResponse'
       security:
         - api_key: []
         - instagram_auth:
@@ -193,7 +193,7 @@ paths:
         200:
           description: Users media entries.
           schema:
-            $ref: '#/definitions/MediaResponse'
+            $ref: '#/definitions/MediaListResponse'
       security:
         - api_key: []
         - instagram_auth:
@@ -224,7 +224,7 @@ paths:
         200:
           description: Users media entries.
           schema:
-            $ref: '#/definitions/MediaResponse'
+            $ref: '#/definitions/MediaListResponse'
       security:
         - api_key: []
         - instagram_auth:
@@ -390,7 +390,7 @@ paths:
         200:
           description: Media resource information.
           schema:
-            $ref: '#/definitions/MediaResponse'
+            $ref: '#/definitions/MediaEntryResponse'
       security:
         - api_key: []
         - instagram_auth:
@@ -417,7 +417,7 @@ paths:
         200:
           description: Media resource information.
           schema:
-            $ref: '#/definitions/MediaResponse'
+            $ref: '#/definitions/MediaEntryResponse'
       security:
         - api_key: []
         - instagram_auth:
@@ -693,7 +693,7 @@ paths:
         200:
           description: List of media entries with this tag.
           schema:
-            $ref: '#/definitions/TagMediaResponse'
+            $ref: '#/definitions/TagMediaListResponse'
       security:
         - api_key: []
         - instagram_auth:
@@ -781,7 +781,7 @@ paths:
         200:
           description: List of media entries from this location.
           schema:
-            $ref: '#/definitions/LocationMediaResponse'
+            $ref: '#/definitions/MediaListResponse'
       security:
         - api_key: []
         - instagram_auth:
@@ -878,7 +878,7 @@ paths:
         200:
           description: List of recent media entries from a geography subscription.
           schema:
-            $ref: '#/definitions/LocationMediaResponse'
+            $ref: '#/definitions/MediaListResponse'
       security:
         - api_key: []
         - instagram_auth:
@@ -1008,7 +1008,7 @@ definitions:
         type: string
         description: User full name
 
-  MediaResponse:
+  MediaListResponse:
     type: object
     properties:
       pagination:
@@ -1267,7 +1267,7 @@ definitions:
         enum: [ 'none', 'follows', 'requested' ]
         description: Status of outgoing relationship
 
-  MediaResponse:
+  MediaEntryResponse:
     type: object
     properties:
       meta:
@@ -1320,7 +1320,7 @@ definitions:
         type: string
         description: Tag name
 
-  TagMediaResponse:
+  TagMediaListResponse:
     type: object
     properties:
       pagination:
@@ -1378,21 +1378,6 @@ definitions:
       data:
         $ref: '#/definitions/LocationInfo'
         description: Location brief information
-
-  LocationMediaResponse:
-    type: object
-    properties:
-      pagination:
-        $ref: '#/definitions/IdPaginationInfo'
-        description: Information for pagination
-      meta:
-        $ref: '#/definitions/MetaData'
-        description: Response meta-data
-      data:
-        type: array
-        description: List of media entries from this location
-        items:
-          $ref: '#/definitions/MediaEntry'
 
   LocationSearchResponse:
     type: object
