@@ -44,6 +44,7 @@ definitions:
       name:
         type: string
         description: Company name
+        example: Secret agency
       ceo:
         $ref: '#/definitions/Person'
         description: CEO of the company
@@ -62,9 +63,12 @@ definitions:
       first_name:
         type: string
         description: Persons first name
+        example: James
       last_name:
         type: string
         description: Persons last (family) name
+        example: Bond
       age:
         type: number
         description: Persons approximate age
+        example: 32
