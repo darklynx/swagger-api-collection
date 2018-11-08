@@ -1,0 +1,70 @@
+swagger: '2.0'
+
+# Description
+info:
+  version: 0.0.1
+  title: Simple Properties Demo
+  description: |
+      Demonstrates the current issue of ReDoc with properties description override
+
+host: localhost
+basePath: /demo
+schemes:
+  - http
+
+# URL patterns
+paths:
+  /companies/{companyId}:
+    get:
+      produces:
+        - application/json
+      summary: Get Company
+      description: |
+          Returns company description with a list of employees.
+      parameters:
+        - name: companyId
+          in: path
+          type: string
+          required: true
+          description: The ID of the company.
+      responses:
+        200:
+          description: Company description.
+          schema:
+            $ref: '#/definitions/Company'
+        404:
+          description: Not Found, company with such ID does not exist.
+
+# Model
+definitions:
+  Company:
+    type: object
+    description: Company short description
+    properties:
+      name:
+        type: string
+        description: Company name
+      ceo:
+        $ref: '#/definitions/Person'
+        description: CEO of the company
+      cto:
+        $ref: '#/definitions/Person'
+        description: CTO of the company
+      employees:
+        type: array
+        description: Company employees
+        items:
+          $ref: '#/definitions/Person'
+  Person:
+    type: object
+    description: Brief information about a person
+    properties:
+      first_name:
+        type: string
+        description: Persons first name
+      last_name:
+        type: string
+        description: Persons last (family) name
+      age:
+        type: number
+        description: Persons approximate age
