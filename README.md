@@ -19,17 +19,22 @@ Currently available API descriptions:
 
 ## Browser
 
-This project contains a pre-build version of [Swagger UI](https://github.com/swagger-api/swagger-ui) that could be used to navigate through APIs in interactive way.
+This project contains a simple HTML page that renders REST APIs with a help of [ReDoc](https://github.com/Redocly/redoc) library.
 
-Simply launch a web-server that targets a root directory and open `index.html` in any browser.
+Simply launch a web-server that targets a root directory and open `index.html` in any browser, or use the provided bash script:
 
-### Python
+```bash
+$ ./browse.sh
+```
 
-Python comes with a [simple HTTP server](https://docs.python.org/2/library/simplehttpserver.html) out of the box:
+### Python 3.x
 
-    ~/rest-api-collection > python -m SimpleHTTPServer
-    Serving HTTP on 0.0.0.0 port 8000 ...
+Python 3.x comes with a prebuild [HTTP server](https://docs.python.org/3/library/http.server.html):
 
+```bash
+~/rest-api-collection$ python3 -m http.server 8000
+Serving HTTP on :: port 8000 (http://[::]:8000/) ...
+```
 
 Now you can open a browser and go to the URL: `http://localhost:8000/`
 
@@ -37,11 +42,13 @@ Now you can open a browser and go to the URL: `http://localhost:8000/`
 
 [Twisted](http://twistedmatrix.com) is a cross-platform event-driven networking engine written in Python:
 
-    ~/rest-api-collection > twistd -no web --path=.
-    2015-06-20 00:09:13+0200 [-] Log opened.
-    2015-06-20 00:09:13+0200 [-] twistd 14.0.2 (/usr/bin/python 2.7.9) starting up.
-    2015-06-20 00:09:13+0200 [-] reactor class: twisted.internet.epollreactor.EPollReactor.
-    2015-06-20 00:09:13+0200 [-] Site starting on 8080
+```bash
+~/rest-api-collection$ twistd -no web --path=.
+2015-06-20 00:09:13+0200 [-] Log opened.
+2015-06-20 00:09:13+0200 [-] twistd 14.0.2 (/usr/bin/python 2.7.9) starting up.
+2015-06-20 00:09:13+0200 [-] reactor class: twisted.internet.epollreactor.EPollReactor.
+2015-06-20 00:09:13+0200 [-] Site starting on 8080
+```
 
 Now you can open a browser and go to the URL: `http://localhost:8080/`
 
@@ -49,13 +56,17 @@ Now you can open a browser and go to the URL: `http://localhost:8080/`
 
 Install [node.js](https://nodejs.org/) if you haven't already. Then use the node package manager (`npm`) to install the [http-server](https://github.com/nodeapps/http-server) package:
 
-    ~ > npm install http-server -g
+```bash
+$ npm install http-server -g
+```
 
 Launch the server with following command:
 
-    ~/rest-api-collection > http-server .
-    Starting up http-server, serving . on: http://0.0.0.0:8080
-    Hit CTRL-C to stop the server
+```bash
+~/rest-api-collection$ http-server .
+Starting up http-server, serving . on: http://0.0.0.0:8080
+Hit CTRL-C to stop the server
+```
 
 Now you can open a browser and go to the URL: `http://localhost:8080/`
 
@@ -66,5 +77,3 @@ If you didn't like anything from above, please have a look at the [big list of H
 ## License
 
 The API descriptions in YAML and JSON Swagger format are desctributed under MIT license that could be found in `api/` folder.
-
-The Swagger UI browser is licensed under [Apache License, Version 2.0](https://github.com/swagger-api/swagger-ui/blob/master/LICENSE)

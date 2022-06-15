@@ -1,23 +1,23 @@
 {
   "instagram": {
     "name": "Instagram API",
-    "url": "api/json/instagram.json",
+    "url": "api/yaml/instagram.yaml",
     "clientId": "a5ef5e0a819248e98c2e67b41919c77a",
     "oauth2apikey": "api_key"
   },
   "dropbox-core": {
     "name": "Dropbox Core API v1",
-    "url": "api/json/dropbox-core.json",
+    "url": "api/yaml/dropbox-core.yaml",
     "clientId": "k3ptuh4b1rjz82n"
   },
   "dropbox-content": {
     "name": "Dropbox Core API v1 (content)",
-    "url": "api/json/dropbox-content.json",
+    "url": "api/yaml/dropbox-content.yaml",
     "clientId": "k3ptuh4b1rjz82n"
   },
   "dropbox-notify": {
     "name": "Dropbox Core API v1 (notify)",
-    "url": "api/json/dropbox-notify.json",
+    "url": "api/yaml/dropbox-notify.yaml",
     "clientId": "no-oauth"
   },
   "petstore": {
