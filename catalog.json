@@ -22,7 +22,7 @@
   },
   "petstore": {
     "name": "Swagger Petstore API (demo)",
-    "url": "http://petstore.swagger.io/v2/swagger.json",
+    "url": "https://petstore.swagger.io/v2/swagger.json",
     "clientId": "your-client-id"
   }
 }
