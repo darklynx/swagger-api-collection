@@ -32,7 +32,7 @@ $ ./browse.sh
 Python 3.x comes with a prebuild [HTTP server](https://docs.python.org/3/library/http.server.html):
 
 ```bash
-~/rest-api-collection$ python3 -m http.server 8000
+$ python3 -m http.server 8000
 Serving HTTP on :: port 8000 (http://[::]:8000/) ...
 ```
 
@@ -43,7 +43,7 @@ Now you can open a browser and go to the URL: `http://localhost:8000/`
 [Twisted](http://twistedmatrix.com) is a cross-platform event-driven networking engine written in Python:
 
 ```bash
-~/rest-api-collection$ twistd -no web --path=.
+$ twistd -no web --path=.
 2015-06-20 00:09:13+0200 [-] Log opened.
 2015-06-20 00:09:13+0200 [-] twistd 14.0.2 (/usr/bin/python 2.7.9) starting up.
 2015-06-20 00:09:13+0200 [-] reactor class: twisted.internet.epollreactor.EPollReactor.
@@ -63,7 +63,7 @@ $ npm install http-server -g
 Launch the server with following command:
 
 ```bash
-~/rest-api-collection$ http-server .
+$ http-server .
 Starting up http-server, serving . on: http://0.0.0.0:8080
 Hit CTRL-C to stop the server
 ```
